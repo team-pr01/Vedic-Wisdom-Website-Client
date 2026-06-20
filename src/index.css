@@ -11,6 +11,10 @@
 
   --color-primary-10: #DB940D;
   --color-primary-20: #FFD482;
+  --color-primary-30: #FFB72F;
+  --color-primary-40: #ffb72f1a;
+  --color-primary-50: #FFF0D4;
+  --color-primary-60: #FFCF72;
 
   /* secondary */
   --color-secondary-10: #1a1f2c;
@@ -22,9 +26,8 @@
   --color-neutral-20: #F3F3F3;
   --color-neutral-30: #FAFAFA;
   --color-neutral-40: #281240;
-  --color-neutral-45: #696767;
-  --color-neutral-50: #d4d4d4;
-  --color-neutral-55: #b0b0b0;
+  --color-neutral-45: #FEFDF8;
+  --color-neutral-50: #535353;
 
   /* accent */
   --color-accent-10: #f17556;
@@ -34,14 +37,20 @@
 
   /* Shadows */
   --shadow-button: 0 4px 8px 1px rgba(238, 189, 64, 0.40);
+  --shadow-hero-user-community-box: 0 0 16px 3px rgba(255, 255, 255, 0.60) inset, 0 4px 8px 1px rgba(238, 189, 64, 0.24);
 
   /* Gradients */
   --bg-gradient-primary-button: radial-gradient(50% 50% at 50% 0%, rgba(255, 202, 97, 0.60) 0%, rgba(238, 191, 99, 0.00) 100%), linear-gradient(180deg, #EEBF63 0%, #EEBA08 100%);
+  --bg-gradient-hero: linear-gradient(180deg, #FEFDF8 20%, #FFF0D4 100%);
 }
 
 .bg-gradient-primary-button {
   background: var(--bg-gradient-primary-button);
 }
+.bg-gradient-hero {
+  background: var(--bg-gradient-hero);
+}
+
 button {
   cursor: pointer;
 }
