@@ -1,1 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
 @import "tailwindcss";
+
+@theme {
+  /* Fonts */
+  --font-Manrope: "Manrope", sans-serif;
+
+  /* Colors */
+
+  /* Primary */
+
+  --color-primary-10: #DB940D;
+  --color-primary-20: #FFD482;
+
+  /* secondary */
+  --color-secondary-10: #1a1f2c;
+
+  /* neutral */
+
+  --color-neutral-5: #000;
+  --color-neutral-10: #221907;
+  --color-neutral-20: #F3F3F3;
+  --color-neutral-30: #FAFAFA;
+  --color-neutral-40: #281240;
+  --color-neutral-45: #696767;
+  --color-neutral-50: #d4d4d4;
+  --color-neutral-55: #b0b0b0;
+
+  /* accent */
+  --color-accent-10: #f17556;
+  --color-accent-20: #d61349;
+  --color-accent-25: #ffcece;
+  --color-accent-30: #ae0000;
+
+  /* Shadows */
+  --shadow-button: 0 4px 8px 1px rgba(238, 189, 64, 0.40);
+
+  /* Gradients */
+  --bg-gradient-primary-button: radial-gradient(50% 50% at 50% 0%, rgba(255, 202, 97, 0.60) 0%, rgba(238, 191, 99, 0.00) 100%), linear-gradient(180deg, #EEBF63 0%, #EEBA08 100%);
+}
+
+.bg-gradient-primary-button {
+  background: var(--bg-gradient-primary-button);
+}
+button {
+  cursor: pointer;
+}
