@@ -2,20 +2,19 @@ import { Link } from "react-router-dom";
 import Container from "../../Reusable/Container/Container";
 import Button from "../../Reusable/Button/Button";
 import { ICONS, IMAGES } from "../../../assets";
+import Badge from "../../Reusable/Badge/Badge";
 
 const Hero = () => {
   return (
     <div className="bg-gradient-hero rounded-b-[68px] font-Manrope pt-20 relative">
       <Container>
         <div className="flex flex-col gap-5 items-center text-center">
-          <div className="bg-primary-40 border border-primary-30 rounded-tr-sm rounded-tl-4xl rounded-bl-sm rounded-br-4xl text-neutral-10 text-xl font-bold text-center px-4 py-3 w-fit">
-            “ॐ नमः शिवाय”
-          </div>
-          <h1 className="text-neutral-40 text-[80px] font-medium leading-20">
+          <Badge label="“ॐ नमः शिवाय”" />
+          <h1 className="heading">
             Ancient <span className="text-primary-10">Wisdom</span> <br />
             Modern <span className="text-primary-10">Living.</span>
           </h1>
-          <p className="text-neutral-10 text-sm max-w-175 mx-auto">
+          <p className="description">
             Your AI-powered gateway to Vedic knowledge, Sanatan traditions, and
             a dharma-aligned life. Sacred texts, Jyotish, Ayurveda, Yoga, and
             community — all in one beautiful app.

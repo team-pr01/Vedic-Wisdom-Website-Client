@@ -42,6 +42,7 @@
   /* Gradients */
   --bg-gradient-primary-button: radial-gradient(50% 50% at 50% 0%, rgba(255, 202, 97, 0.60) 0%, rgba(238, 191, 99, 0.00) 100%), linear-gradient(180deg, #EEBF63 0%, #EEBA08 100%);
   --bg-gradient-hero: linear-gradient(180deg, #FEFDF8 20%, #FFF0D4 100%);
+  --bg-gradient-app-features: linear-gradient(180deg, #FFF 0%, #FFF9F1 50%, #FFF 100%);
 }
 
 .bg-gradient-primary-button {
@@ -50,7 +51,18 @@
 .bg-gradient-hero {
   background: var(--bg-gradient-hero);
 }
+.bg-gradient-app-features {
+  background: var(--bg-gradient-app-features);
+}
 
 button {
   cursor: pointer;
 }
+
+.heading {
+    @apply text-neutral-40 text-[66px] font-medium leading-17 font-Manrope;
+  }
+
+.description {
+    @apply text-neutral-10 text-sm max-w-175 mx-auto font-Manrope;
+  }
