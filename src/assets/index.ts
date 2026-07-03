@@ -6,6 +6,8 @@ import sacredTextScreen from "./images/sacred-text-screen.webp";
 import appFeatureGradient from "./images/app-feature-gradient.png";
 import aiFeatures from "./images/ai-features.webp";
 import horizontalLine from "./images/horizontal-line.webp";
+import aiGuide from "./images/ai-guide.webp";
+import sacredLibrary from "./images/sacred-library.webp";
 
 // ICONS
 import arrowRight from "./icons/arrow-right.svg";
@@ -21,6 +23,8 @@ import yogaWellness from "./icons/yoga-wellness.svg";
 import playStore from "./icons/play-store.svg";
 import appStore from "./icons/app-store.svg";
 import polygon from "./icons/polygon.svg";
+import om from "./icons/om.svg";
+import chatbot from "./icons/chatbot.svg";
 
 export const IMAGES = {
     logo,
@@ -29,7 +33,9 @@ export const IMAGES = {
     sacredTextScreen,
     appFeatureGradient,
     aiFeatures,
-    horizontalLine
+    horizontalLine,
+    aiGuide,
+    sacredLibrary,
 };
 
 export const ICONS = {
@@ -46,4 +52,6 @@ export const ICONS = {
     playStore,
     appStore,
     polygon,
+    om,
+    chatbot,
 };
