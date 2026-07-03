@@ -4,6 +4,8 @@ import heroImg from "./images/hero-img.webp";
 import userCommunity from "./images/user-community.webp";
 import sacredTextScreen from "./images/sacred-text-screen.webp";
 import appFeatureGradient from "./images/app-feature-gradient.png";
+import aiFeatures from "./images/ai-features.webp";
+import horizontalLine from "./images/horizontal-line.webp";
 
 // ICONS
 import arrowRight from "./icons/arrow-right.svg";
@@ -26,6 +28,8 @@ export const IMAGES = {
     userCommunity,
     sacredTextScreen,
     appFeatureGradient,
+    aiFeatures,
+    horizontalLine
 };
 
 export const ICONS = {

@@ -43,6 +43,7 @@
   --bg-gradient-primary-button: radial-gradient(50% 50% at 50% 0%, rgba(255, 202, 97, 0.60) 0%, rgba(238, 191, 99, 0.00) 100%), linear-gradient(180deg, #EEBF63 0%, #EEBA08 100%);
   --bg-gradient-hero: linear-gradient(180deg, #FEFDF8 20%, #FFF0D4 100%);
   --bg-gradient-app-features: linear-gradient(180deg, #FFF 0%, #FFF9F1 50%, #FFF 100%);
+  --bg-gradient-ai-features: linear-gradient(180deg, #FFFCF8 20%, #FFFCF8 60%, #FFF3DB 100%);
 }
 
 .bg-gradient-primary-button {
@@ -53,6 +54,9 @@
 }
 .bg-gradient-app-features {
   background: var(--bg-gradient-app-features);
+}
+.bg-gradient-ai-features {
+  background: var(--bg-gradient-ai-features);
 }
 
 button {
