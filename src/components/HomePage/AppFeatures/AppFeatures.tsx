@@ -67,12 +67,42 @@ const AppFeatures = () => {
     },
   ];
   const [selectedFeature, setSelectedFeature] = useState<any>(appFeatures[0]);
+  const appDownloadLinks = [
+    {
+      image: ICONS.playStore,
+      link: "",
+    },
+    {
+      image: ICONS.appStore,
+      link: "",
+    },
+  ];
   return (
-    <div className="py-23 bg-gradient-app-features">
+    <div className="py-23 bg-gradient-app-features font-Manrope">
       <Container>
         <div className="flex justify-center gap-10">
-          <div className="w-[45%]">
-            <img src={selectedFeature?.image} alt="" className="w-[60%] mx-auto" />
+          <div className="w-[45%] flex flex-col justify-between gap-26 sticky top-10 h-full">
+            <img
+              src={selectedFeature?.image}
+              alt=""
+              className="w-[60%] mx-auto"
+            />
+
+            <div>
+              <p className="text-neutral-50">Download the app</p>
+              <div className="flex items-center gap-5 mt-5">
+                {appDownloadLinks?.map((link, index) => (
+                  <a
+                    key={index}
+                    href={link?.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img src={link?.image} alt="" />
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
 
           <div className="w-[55%] flex flex-col gap-5">
@@ -94,12 +124,16 @@ const AppFeatures = () => {
                   onClick={() => setSelectedFeature(feature)}
                   className="bg-neutral-45 border-primary-50 p-6 shadow-hero-user-community-box flex flex-col justify-between rounded-4xl h-64 relative group text-left"
                 >
-                  <div className={`group-hover:bg-primary-10 border p-4 rounded-2xl flex items-center justify-center w-fit transition duration-300 ${selectedFeature?.id === feature?.id ? 'bg-primary-10 border-primary-10' : 'bg-white border-neutral-20'}`}>
+                  <div
+                    className={`group-hover:bg-primary-10 border p-4 rounded-2xl flex items-center justify-center w-fit transition duration-300 ${selectedFeature?.id === feature?.id ? "bg-primary-10 border-primary-10" : "bg-white border-neutral-20"}`}
+                  >
                     <img src={feature?.icon} alt="" className="size-10" />
                   </div>
 
                   <div>
-                    <h2 className={`group-hover:text-primary-10 transition duration-300 text-2xl font-semibold ${selectedFeature?.id === feature?.id ? 'text-primary-10' : 'text-neutral-40'}`}>
+                    <h2
+                      className={`group-hover:text-primary-10 transition duration-300 text-2xl font-semibold ${selectedFeature?.id === feature?.id ? "text-primary-10" : "text-neutral-40"}`}
+                    >
                       {feature?.title}
                     </h2>
                     <p className="description mt-2">{feature?.description}</p>
@@ -107,7 +141,7 @@ const AppFeatures = () => {
                   <img
                     src={IMAGES.appFeatureGradient}
                     alt=""
-                    className={`absolute bottom-0 rounded-b-4xl left-0 right-0  group-hover:opacity-100 transition duration-300 ${selectedFeature?.id === feature?.id ? 'opacity-100' : 'opacity-0'}`}
+                    className={`absolute bottom-0 rounded-b-4xl left-0 right-0  group-hover:opacity-100 transition duration-300 ${selectedFeature?.id === feature?.id ? "opacity-100" : "opacity-0"}`}
                   />
                 </button>
               ))}
