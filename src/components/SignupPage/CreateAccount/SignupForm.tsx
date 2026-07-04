@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/incompatible-library */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from "react-hook-form";
 import TextInput from "../../Reusable/TextInput/TextInput";
@@ -49,7 +50,6 @@ const SignupForm = () => {
     }
   };
 
-  // const password = watch("password");
   const role = watch("role");
 
   const handleSignup = (data: TFormData) => {
@@ -60,6 +60,7 @@ const SignupForm = () => {
       }));
     }
     try {
+      console.log(data);
     } catch (error: any) {
       console.log(error);
     }
@@ -129,7 +130,7 @@ const SignupForm = () => {
             defaultCountry="BD"
             value={phone}
             onChange={handlePhoneChange}
-            className={`w-full px-4 py-[14px] rounded-lg border leading-[18px] focus:outline-none focus:border-primary-10 transition duration-300 bg-white ${
+            className={`w-full px-4 py-3.5 rounded-lg border leading-4.5 focus:outline-none focus:border-primary-10 transition duration-300 bg-white ${
               errors.phone ? "border-red-500" : "border-neutral-55"
             }`}
             placeholder="Enter phone number"
@@ -237,10 +238,10 @@ const SignupForm = () => {
       <p className="text-sm md:text-base text-neutral-80 mt-10 text-center">
         Already have an account?{" "}
         <a
-          href="/signin"
+          href="/login"
           className="font-semibold text-primary-10 cursor-pointer"
         >
-          Sign In
+          Login
         </a>
       </p>
     </div>
