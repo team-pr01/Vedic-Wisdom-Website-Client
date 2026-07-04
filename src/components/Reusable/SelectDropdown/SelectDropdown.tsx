@@ -60,7 +60,7 @@ const SelectDropdown = forwardRef<HTMLSelectElement, DropdownProps>(
       ? "cursor-not-allowed bg-neutral-50/20"
       : "bg-white cursor-pointer"
   }
-  ${error ? "border-red-500" : "border-neutral-45/20"}
+  ${error ? "border-red-500" : "border-neutral-55"}
 `}
           {...rest}
         >

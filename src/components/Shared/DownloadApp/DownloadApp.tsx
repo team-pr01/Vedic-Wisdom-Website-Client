@@ -5,9 +5,10 @@ import Container from "../../Reusable/Container/Container";
 
 const DownloadApp = () => {
   return (
-    <div className="py-23  font-Manrope">
+    <div className="py-23 font-Manrope bg-gradient-app-features">
+      <img src={IMAGES.horizontalLine} alt="" className="mx-auto" />
       <Container>
-        <div className="flex flex-col items-center gap-5 text-center">
+        <div className="flex flex-col items-center gap-5 text-center mt-20">
           <Badge label="Begin Today" />
           <h1 className="heading">
             Your Sacred <span className="text-primary-10">Journey</span> <br />

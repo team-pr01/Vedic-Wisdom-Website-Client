@@ -31,18 +31,18 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
       setIsPasswordVisible,
       ...rest
     },
-    ref
+    ref,
   ) => {
-
     return (
       <div className="flex flex-col gap-2 font-Nunito w-full">
-          {label && (
+        {label && (
           <label
             htmlFor={name}
             className="flex flex-row items-center w-full justify-between text-neutral-65"
           >
-            <span className="text-neutral-10 leading-[18px] text-[15px] font-medium tracking-[-0.16] ">
-              {label} <span className="text-primary-10">{isRequired ? "*" : ""}</span>
+            <span className="text-neutral-10 leading-4.5 text-[15px] font-medium tracking-[-0.16] ">
+              {label}{" "}
+              <span className="text-primary-10">{isRequired ? "*" : ""}</span>
             </span>
           </label>
         )}
@@ -57,30 +57,32 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             defaultValue={defaultValue}
             ref={ref}
             disabled={isDisabled}
-             className={`w-full px-4 py-[14px] rounded-lg bg-white border leading-[18px] focus:outline-none focus:border-primary-10 transition duration-300 ${
-            error ? "border-red-500" : "border-neutral-45/20"
-          }`}
+            className={`w-full px-4 py-3.5 rounded-lg bg-white border leading-4.5 focus:outline-none focus:border-primary-10 transition duration-300 ${
+              error ? "border-red-500" : "border-neutral-55"
+            }`}
             {...rest}
           />
           {isPasswordVisible ? (
             <IoEyeOffOutline
               onClick={() => setIsPasswordVisible(false)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-70 cursor-pointer text-primary-10"
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-neutral-50 font-bold"
             />
           ) : (
             <IoEyeOutline
               onClick={() => setIsPasswordVisible(true)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-70 cursor-pointer text-primary-10"
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-neutral-50 font-bold"
             />
           )}
         </div>
 
         {error?.message && (
-          <span className="text-red-500 text-sm mt-1">{String(error.message)}</span>
+          <span className="text-red-500 text-sm mt-1">
+            {String(error.message)}
+          </span>
         )}
       </div>
     );
-  }
+  },
 );
 
 PasswordInput.displayName = "PasswordInput";

@@ -14,6 +14,8 @@ import referBonusGradient from "./images/refer-bonus-gradient.webp";
 import dummyProject from "./images/dummy-project.png"; // This is a placeholder image for projects, replace it with actual project images when available
 import appMockup from "./images/app-mockup.webp";
 import footerBg from "./images/footer-bg.webp";
+import signinImg from "./images/signin-img.webp";
+import signupImg from "./images/signup-img.webp";
 
 // ICONS
 import arrowRight from "./icons/arrow-right.svg";
@@ -39,6 +41,8 @@ import facebook from "./icons/facebook.svg";
 import instagram from "./icons/instagram.svg";
 import linkedin from "./icons/linkedin.svg";
 import twitter from "./icons/twitter.svg";
+import google from "./icons/google.svg";
+import apple from "./icons/apple.svg";
 
 export const IMAGES = {
     logo,
@@ -56,6 +60,8 @@ export const IMAGES = {
     dummyProject,
     appMockup,
     footerBg,
+    signinImg,
+    signupImg,
 };
 
 export const ICONS = {
@@ -82,4 +88,6 @@ export const ICONS = {
     instagram,
     linkedin,
     twitter,
+    google,
+    apple,
 };

@@ -9,13 +9,14 @@
 
   /* Primary */
 
-  --color-primary-10: #DB940D;
-  --color-primary-20: #FFD482;
-  --color-primary-30: #FFB72F;
+  --color-primary-10: #db940d;
+  --color-primary-20: #ffd482;
+  --color-primary-30: #ffb72f;
   --color-primary-40: #ffb72f1a;
-  --color-primary-50: #FFF0D4;
-  --color-primary-60: #FFCF72;
-  --color-primary-70: #A37D30;
+  --color-primary-50: #fff0d4;
+  --color-primary-60: #ffcf72;
+  --color-primary-70: #a37d30;
+  --color-primary-75: #ffbc3c;
 
   /* secondary */
   --color-secondary-10: #1a1f2c;
@@ -24,15 +25,17 @@
 
   --color-neutral-5: #000;
   --color-neutral-10: #221907;
-  --color-neutral-20: #F3F3F3;
-  --color-neutral-30: #FAFAFA;
+  --color-neutral-20: #f3f3f3;
+  --color-neutral-30: #fafafa;
   --color-neutral-40: #281240;
-  --color-neutral-45: #FEFDF8;
+  --color-neutral-45: #fefdf8;
   --color-neutral-50: #535353;
-  --color-neutral-55: #E4E4E4;
+  --color-neutral-55: #e4e4e4;
   --color-neutral-60: #989897;
-  --color-neutral-65: #FEFDF8;
+  --color-neutral-65: #fefdf8;
   --color-neutral-70: #fbf6ee;
+  --color-neutral-75: #DEDEDE;
+  --color-neutral-80: #8F8F8F;
 
   /* accent */
   --color-accent-10: #f17556;
@@ -41,14 +44,32 @@
   --color-accent-30: #ae0000;
 
   /* Shadows */
-  --shadow-button: 0 4px 8px 1px rgba(238, 189, 64, 0.40);
-  --shadow-hero-user-community-box: 0 0 16px 3px rgba(255, 255, 255, 0.60) inset, 0 4px 8px 1px rgba(238, 189, 64, 0.24);
+  --shadow-button: 0 4px 8px 1px rgba(238, 189, 64, 0.4);
+  --shadow-hero-user-community-box:
+    0 0 16px 3px rgba(255, 255, 255, 0.6) inset,
+    0 4px 8px 1px rgba(238, 189, 64, 0.24);
 
   /* Gradients */
-  --bg-gradient-primary-button: radial-gradient(50% 50% at 50% 0%, rgba(255, 202, 97, 0.60) 0%, rgba(238, 191, 99, 0.00) 100%), linear-gradient(180deg, #EEBF63 0%, #EEBA08 100%);
-  --bg-gradient-hero: linear-gradient(180deg, #FEFDF8 20%, #FFF0D4 100%);
-  --bg-gradient-app-features: linear-gradient(180deg, #FFF 0%, #FFF9F1 50%, #FFF 100%);
-  --bg-gradient-ai-features: linear-gradient(180deg, #FFFCF8 20%, #FFFCF8 60%, #FFF3DB 100%);
+  --bg-gradient-primary-button:
+    radial-gradient(
+      50% 50% at 50% 0%,
+      rgba(255, 202, 97, 0.6) 0%,
+      rgba(238, 191, 99, 0) 100%
+    ),
+    linear-gradient(180deg, #eebf63 0%, #eeba08 100%);
+  --bg-gradient-hero: linear-gradient(180deg, #fefdf8 20%, #fff0d4 100%);
+  --bg-gradient-app-features: linear-gradient(
+    180deg,
+    #fff 0%,
+    #fff9f1 50%,
+    #fff 100%
+  );
+  --bg-gradient-ai-features: linear-gradient(
+    180deg,
+    #fffcf8 20%,
+    #fffcf8 60%,
+    #fff3db 100%
+  );
 }
 
 .bg-gradient-primary-button {
@@ -68,10 +89,38 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  cursor: not-allowed;
+}
+
 .heading {
-    @apply text-neutral-40 text-[66px] font-medium leading-17 font-Manrope;
-  }
+  @apply text-neutral-40 text-[66px] font-medium leading-17 font-Manrope;
+}
 
 .description {
-    @apply text-neutral-10 text-sm max-w-175 font-Manrope;
-  }
+  @apply text-neutral-10 text-sm max-w-175 font-Manrope;
+}
+
+/* Override PhoneInput default focus styles */
+.PhoneInputInput:focus {
+  border-color: #c9753e !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.PhoneInput--focus .PhoneInputInput {
+  border-color: #c9753e !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove black border on focus */
+.PhoneInputInput {
+  border-color: #e5e7eb !important;
+  outline: none !important;
+}
+
+.PhoneInputInput:focus-visible {
+  outline: none !important;
+  border-color: #c9753e !important;
+}
