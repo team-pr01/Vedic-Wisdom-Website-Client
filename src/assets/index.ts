@@ -1,5 +1,6 @@
 // IMAGES
 import logo from "./images/logo.png";
+import logoFooter from "./images/logo-footer.webp";
 import heroImg from "./images/hero-img.webp";
 import userCommunity from "./images/user-community.webp";
 import sacredTextScreen from "./images/sacred-text-screen.webp";
@@ -12,6 +13,7 @@ import gift from "./images/gift.webp";
 import referBonusGradient from "./images/refer-bonus-gradient.webp";
 import dummyProject from "./images/dummy-project.png"; // This is a placeholder image for projects, replace it with actual project images when available
 import appMockup from "./images/app-mockup.webp";
+import footerBg from "./images/footer-bg.webp";
 
 // ICONS
 import arrowRight from "./icons/arrow-right.svg";
@@ -33,9 +35,14 @@ import checkMark from "./icons/checkmark.svg";
 import basicPlan from "./icons/basic-plan.svg";
 import proPlan from "./icons/pro-plan.svg";
 import cross from "./icons/cross.svg";
+import facebook from "./icons/facebook.svg";
+import instagram from "./icons/instagram.svg";
+import linkedin from "./icons/linkedin.svg";
+import twitter from "./icons/twitter.svg";
 
 export const IMAGES = {
     logo,
+    logoFooter,
     heroImg,
     userCommunity,
     sacredTextScreen,
@@ -48,6 +55,7 @@ export const IMAGES = {
     referBonusGradient,
     dummyProject,
     appMockup,
+    footerBg,
 };
 
 export const ICONS = {
@@ -69,5 +77,9 @@ export const ICONS = {
     checkMark,
     basicPlan,
     proPlan,
-    cross
+    cross,
+    facebook,
+    instagram,
+    linkedin,
+    twitter,
 };
