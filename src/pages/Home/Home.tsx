@@ -4,6 +4,7 @@ import Hero from "../../components/HomePage/Hero/Hero";
 import OurProjects from "../../components/HomePage/OurProjects/OurProjects";
 import SubscriptionPricing from "../../components/HomePage/SubscriptionPricing/SubscriptionPricing";
 import WhyChooseVedicWisdom from "../../components/HomePage/WhyChooseVedicWisdom/WhyChooseVedicWisdom";
+import DownloadApp from "../../components/Shared/DownloadApp/DownloadApp";
 import FAQ from "../../components/Shared/FAQ/FAQ";
 
 const Home = () => {
@@ -14,8 +15,9 @@ const Home = () => {
       <AIFeatures />
       <WhyChooseVedicWisdom />
       <SubscriptionPricing />
-      <OurProjects/>
-      <FAQ/>
+      <OurProjects />
+      <FAQ />
+      <DownloadApp />
     </div>
   );
 };

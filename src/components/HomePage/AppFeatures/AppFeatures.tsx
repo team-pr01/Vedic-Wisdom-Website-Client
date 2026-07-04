@@ -132,7 +132,7 @@ const AppFeatures = () => {
                   <img
                     src={IMAGES.appFeatureGradient}
                     alt=""
-                    className={`absolute bottom-0 rounded-b-4xl left-0 right-0  group-hover:opacity-100 transition duration-300 ${selectedFeature?.id === feature?.id ? "opacity-100" : "opacity-0"}`}
+                    className={`absolute bottom-0 rounded-b-4xl left-0 right-0  group-hover:opacity-100 transition duration-300 w-full ${selectedFeature?.id === feature?.id ? "opacity-100" : "opacity-0"}`}
                   />
                 </button>
               ))}
