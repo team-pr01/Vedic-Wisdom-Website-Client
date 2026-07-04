@@ -8,6 +8,8 @@ import aiFeatures from "./images/ai-features.webp";
 import horizontalLine from "./images/horizontal-line.webp";
 import aiGuide from "./images/ai-guide.webp";
 import sacredLibrary from "./images/sacred-library.webp";
+import gift from "./images/gift.webp";
+import referBonusGradient from "./images/refer-bonus-gradient.webp";
 
 // ICONS
 import arrowRight from "./icons/arrow-right.svg";
@@ -25,6 +27,9 @@ import appStore from "./icons/app-store.svg";
 import polygon from "./icons/polygon.svg";
 import om from "./icons/om.svg";
 import chatbot from "./icons/chatbot.svg";
+import checkMark from "./icons/checkmark.svg";
+import basicPlan from "./icons/basic-plan.svg";
+import proPlan from "./icons/pro-plan.svg";
 
 export const IMAGES = {
     logo,
@@ -36,6 +41,8 @@ export const IMAGES = {
     horizontalLine,
     aiGuide,
     sacredLibrary,
+    gift,
+    referBonusGradient,
 };
 
 export const ICONS = {
@@ -54,4 +61,7 @@ export const ICONS = {
     polygon,
     om,
     chatbot,
+    checkMark,
+    basicPlan,
+    proPlan,
 };

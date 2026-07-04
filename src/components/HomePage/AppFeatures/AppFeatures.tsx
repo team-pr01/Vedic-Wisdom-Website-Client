@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ICONS, IMAGES } from "../../../assets";
 import Badge from "../../Reusable/Badge/Badge";
 import Container from "../../Reusable/Container/Container";
+import { appDownloadLinks } from "../../../data/appDownloadLinks";
 
 const AppFeatures = () => {
   const appFeatures = [
@@ -67,16 +68,6 @@ const AppFeatures = () => {
     },
   ];
   const [selectedFeature, setSelectedFeature] = useState<any>(appFeatures[0]);
-  const appDownloadLinks = [
-    {
-      image: ICONS.playStore,
-      link: "",
-    },
-    {
-      image: ICONS.appStore,
-      link: "",
-    },
-  ];
   return (
     <div className="py-23 bg-gradient-app-features font-Manrope">
       <Container>
