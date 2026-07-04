@@ -10,6 +10,7 @@ import aiGuide from "./images/ai-guide.webp";
 import sacredLibrary from "./images/sacred-library.webp";
 import gift from "./images/gift.webp";
 import referBonusGradient from "./images/refer-bonus-gradient.webp";
+import dummyProject from "./images/dummy-project.png"; // This is a placeholder image for projects, replace it with actual project images when available
 
 // ICONS
 import arrowRight from "./icons/arrow-right.svg";
@@ -43,6 +44,7 @@ export const IMAGES = {
     sacredLibrary,
     gift,
     referBonusGradient,
+    dummyProject,
 };
 
 export const ICONS = {
