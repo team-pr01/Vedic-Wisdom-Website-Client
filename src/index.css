@@ -73,5 +73,5 @@ button {
   }
 
 .description {
-    @apply text-neutral-10 text-sm max-w-175 mx-auto font-Manrope;
+    @apply text-neutral-10 text-sm max-w-175 font-Manrope;
   }

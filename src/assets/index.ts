@@ -31,6 +31,7 @@ import chatbot from "./icons/chatbot.svg";
 import checkMark from "./icons/checkmark.svg";
 import basicPlan from "./icons/basic-plan.svg";
 import proPlan from "./icons/pro-plan.svg";
+import cross from "./icons/cross.svg";
 
 export const IMAGES = {
     logo,
@@ -66,4 +67,5 @@ export const ICONS = {
     checkMark,
     basicPlan,
     proPlan,
+    cross
 };

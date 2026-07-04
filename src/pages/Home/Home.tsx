@@ -4,6 +4,7 @@ import Hero from "../../components/HomePage/Hero/Hero";
 import OurProjects from "../../components/HomePage/OurProjects/OurProjects";
 import SubscriptionPricing from "../../components/HomePage/SubscriptionPricing/SubscriptionPricing";
 import WhyChooseVedicWisdom from "../../components/HomePage/WhyChooseVedicWisdom/WhyChooseVedicWisdom";
+import FAQ from "../../components/Shared/FAQ/FAQ";
 
 const Home = () => {
   return (
@@ -14,6 +15,7 @@ const Home = () => {
       <WhyChooseVedicWisdom />
       <SubscriptionPricing />
       <OurProjects/>
+      <FAQ/>
     </div>
   );
 };
