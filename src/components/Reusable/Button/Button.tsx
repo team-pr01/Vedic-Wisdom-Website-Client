@@ -27,7 +27,7 @@ const Button = ({
   loadingText = "Loading...",
 }: TButtonProps) => {
   const baseStyles =
-    "inline-flex items-center justify-center gap-2 px-5 py-3 rounded-[9px] font-Manrope text-sm xl:text-base 2xl:text-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed";
+    "inline-flex items-center justify-center gap-2 px-5 py-3 rounded-[9px] font-Manrope text-sm 2xl:text-base font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed";
 
   const variants = {
     primary:

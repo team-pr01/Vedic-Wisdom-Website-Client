@@ -18,7 +18,7 @@ const DashboardHeader = () => {
         </div>
         <Button
           label="Search"
-          className="rounded-[14px] py-2.75 border-none text-sm xl:text-sm 2xl:text-sm"
+          className="rounded-[14px] py-2.75 border-none "
         />
       </div>
 

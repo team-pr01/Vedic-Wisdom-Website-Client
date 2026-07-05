@@ -4,7 +4,7 @@ import SendEmergencyMessageForm from "../../../components/Dashboard/HelpPage/Sen
 const Help = () => {
   return (
     <div className="font-Manrope">
-      <h2 className="text-neutral-40 text-[28px] font-semibold">My Profile</h2>
+      <h2 className="heading-dashboard">My Profile</h2>
 
       <div className="flex gap-10 mt-6">
         <div className="w-[50%]">

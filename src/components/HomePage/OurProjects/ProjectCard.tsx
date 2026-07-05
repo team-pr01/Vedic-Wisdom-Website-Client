@@ -11,7 +11,7 @@ const ProjectCard = ({ project }) => {
       </div>
       <Button
         label="Donate Now"
-        className="text-sm xl:text-sm 2xl:text-sm py-2"
+        className=" py-2"
         rightIcon={ICONS.arrowRight}
       />
 

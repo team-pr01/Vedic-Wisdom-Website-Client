@@ -64,7 +64,7 @@ const MyProfile = () => {
   ];
   return (
     <div className="font-Manrope">
-      <h2 className="text-neutral-40 text-[28px] font-semibold">My Profile</h2>
+      <h2 className="heading-dashboard">My Profile</h2>
 
       <div className="border border-neutral-50/10 bg-neutral-30 rounded-4xl p-6 flex items-center justify-between mt-6">
         <div className="flex items-center gap-5">

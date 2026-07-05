@@ -68,7 +68,7 @@ export const sidebarLinks: DashboardLink[] = [
     icon: <LuBriefcase className="w-5 h-5" />,
   },
   {
-    label: "Food",
+    label: "Vedic Food & Recipes",
     path: "/dashboard/food",
     icon: <LuUtensils className="w-5 h-5" />,
   },

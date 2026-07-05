@@ -99,7 +99,7 @@ const Sidebar = () => {
 
             <Button
               label="Get Started"
-              className="w-full text-sm xl:text-sm 2xl:text-sm py-2 mt-4"
+              className="w-full  py-2 mt-4"
             />
           </div>
           <img

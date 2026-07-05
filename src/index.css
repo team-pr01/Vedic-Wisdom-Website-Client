@@ -18,6 +18,7 @@
   --color-primary-70: #a37d30;
   --color-primary-75: #ffbc3c;
   --color-primary-80: #F2E4C9;
+  --color-neutral-81: #785A00;
 
   /* secondary */
   --color-secondary-10: #1a1f2c;
@@ -39,6 +40,7 @@
   --color-neutral-80: #8F8F8F;
   --color-neutral-85: #FFFEFA;
   --color-neutral-90: #1C2542;
+  
 
   /* accent */
   --color-accent-10: #f17556;
@@ -54,6 +56,7 @@
     0 4px 8px 1px rgba(238, 189, 64, 0.24);
   --shadow-sidebar: 0 -4px 45.5px 0 rgba(154, 154, 154, 0.22);
   --shadow-dashboard-header-button: 0 4px 6px 0 rgba(163, 163, 163, 0.11);
+  --shadow-food-card: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 
   /* Gradients */
   --bg-gradient-primary-button:
@@ -78,6 +81,7 @@
   );
   --bg-gradient-sidebar-selected-link: radial-gradient(331.73% 103.92% at -3.92% 50%, rgba(255, 207, 114, 0.50) 0%, rgba(255, 255, 255, 0.00) 100%), #FFF;
   --bg-gradient-round: linear-gradient(180deg, #EEBF65 0%, #EEBA08 100%);
+  --bg-ai-food-generator-card: linear-gradient(160deg, #FCF9F4 0%, #F0EDE9 100%);
 }
 
 .bg-gradient-primary-button {
@@ -98,6 +102,9 @@
 .bg-gradient-round {
   background: var(--bg-gradient-round);
 }
+.bg-ai-food-generator-card {
+  background: var(--bg-ai-food-generator-card);
+}
 
 button {
   cursor: pointer;
@@ -105,6 +112,10 @@ button {
 
 button:disabled {
   cursor: not-allowed;
+}
+
+.heading-dashboard {
+  @apply text-neutral-40 text-[28px] font-semibold font-Manrope;
 }
 
 .heading {

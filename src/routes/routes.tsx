@@ -8,6 +8,7 @@ import DashboardLayout from "../layouts/DashboardLayout/DashboardLayout";
 import DashboardHome from "../pages/DashboardPages/DashboardHome/DashboardHome";
 import MyProfile from "../pages/DashboardPages/MyProfile/MyProfile";
 import Help from "../pages/DashboardPages/Help/Help";
+import Food from "../pages/DashboardPages/Food/Food";
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
       {
         path: "help",
         element: <Help />,
+      },
+      {
+        path: "food",
+        element: <Food />,
       },
     ],
   },

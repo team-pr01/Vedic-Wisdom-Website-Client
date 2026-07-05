@@ -13,6 +13,7 @@ import gift from "./images/gift.webp";
 import referBonusGradient from "./images/refer-bonus-gradient.webp";
 import dummyProject from "./images/dummy-project.png"; // This is a placeholder image for projects, replace it with actual project images when available
 import dummyAvatar from "./images/dummy-avatar.png"; // This is a placeholder image for projects, replace it with actual project images when available
+import dummyPrasad from "./images/dummy-prasad.png"; // This is a placeholder image for projects, replace it with actual project images when available
 import appMockup from "./images/app-mockup.webp";
 import footerBg from "./images/footer-bg.webp";
 import signinImg from "./images/signin-img.webp";
@@ -69,6 +70,8 @@ import email from "./icons/email.svg";
 import call from "./icons/call.svg";
 import whatsapp from "./icons/whatsapp.svg";
 import time from "./icons/time.svg";
+import ai from "./icons/ai.svg";
+import aiBot from "./icons/ai-bot.svg";
 
 export const IMAGES = {
     logo,
@@ -85,6 +88,7 @@ export const IMAGES = {
     referBonusGradient,
     dummyProject,
     dummyAvatar,
+    dummyPrasad,
     appMockup,
     footerBg,
     signinImg,
@@ -142,5 +146,7 @@ export const ICONS = {
     call,
     whatsapp,
     time,
+    ai,
+    aiBot
 
 };
