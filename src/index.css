@@ -48,6 +48,7 @@
   --shadow-hero-user-community-box:
     0 0 16px 3px rgba(255, 255, 255, 0.6) inset,
     0 4px 8px 1px rgba(238, 189, 64, 0.24);
+  --shadow-sidebar: 0 -4px 45.5px 0 rgba(154, 154, 154, 0.22);
 
   /* Gradients */
   --bg-gradient-primary-button:
@@ -70,6 +71,7 @@
     #fffcf8 60%,
     #fff3db 100%
   );
+  --bg-gradient-sidebar-selected-link: radial-gradient(331.73% 103.92% at -3.92% 50%, rgba(255, 207, 114, 0.50) 0%, rgba(255, 255, 255, 0.00) 100%), #FFF;
 }
 
 .bg-gradient-primary-button {
@@ -83,6 +85,9 @@
 }
 .bg-gradient-ai-features {
   background: var(--bg-gradient-ai-features);
+}
+.bg-gradient-sidebar-selected-link {
+  background: var(--bg-gradient-sidebar-selected-link);
 }
 
 button {
@@ -123,4 +128,47 @@ button:disabled {
 .PhoneInputInput:focus-visible {
   outline: none !important;
   border-color: #c9753e !important;
+}
+
+
+/* Add to your global CSS or component CSS */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #9CA3AF transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  transition: width 0.3s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #F3F4F6;
+  border-radius: 20px;
+  margin: 4px 0;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #9CA3AF;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #6B7280;
+}
+
+/* Hide scrollbar when not hovering */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 3px;
+}
+
+.custom-scrollbar:hover::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #1a52b3 #F3F4F6;
 }

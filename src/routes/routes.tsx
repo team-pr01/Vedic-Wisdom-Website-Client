@@ -4,6 +4,8 @@ import NotFound from "../pages/NotFound/NotFound";
 import Home from "../pages/Home/Home";
 import Signup from "../pages/Signup/Signup";
 import Login from "../pages/Login/Login";
+import DashboardLayout from "../layouts/DashboardLayout/DashboardLayout";
+import DashboardHome from "../pages/DashboardPages/DashboardHome/DashboardHome";
 
 export const router = createBrowserRouter([
   {
@@ -25,15 +27,15 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  // {
-  //   path: "dashboard/user",
-  //   element: <MainLayout />,
-  //   errorElement: <NotFound />,
-  //   children: [
-  //     {
-  //       path: "",
-  //       element: <UserDashboardHome />,
-  //     },
-  //   ],
-  // },
+  {
+    path: "dashboard",
+    element: <DashboardLayout />,
+    errorElement: <NotFound />,
+    children: [
+      {
+        path: "",
+        element: <DashboardHome />,
+      },
+    ],
+  },
 ]);
