@@ -5,6 +5,7 @@ import { Navigation, Pagination } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 import { ICONS } from "../../../assets";
 import VastuShastraVideoCard from "../../../components/Dashboard/DashboardHeader/VastuShastraPage/VastuShastraVideoCard/VastuShastraVideoCard";
+import VastuTipsCard from "../../../components/Dashboard/DashboardHeader/VastuShastraPage/VastuTipsCard/VastuTipsCard";
 
 const VastuShastra = () => {
   const swiperRef = useRef<SwiperType | null>(null);
@@ -98,6 +99,17 @@ const VastuShastra = () => {
             </SwiperSlide>
           ))}
         </Swiper>
+      </div>
+
+      <h4 className="text-neutral-90 font-bold text-xl mt-8">
+        Popular Vastu Tips
+      </h4>
+
+      <div className="grid grid-cols-3 gap-5 mt-6">
+        <VastuTipsCard />
+        <VastuTipsCard />
+        <VastuTipsCard />
+        <VastuTipsCard />
       </div>
     </div>
   );
