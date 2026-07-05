@@ -3,6 +3,7 @@ import { ICONS } from "../../../assets";
 import AiRecipeGeneratorBanner from "../../../components/Dashboard/FoodPage/AiRecipeGeneratorBanner/AiRecipeGeneratorBanner";
 import FoodCard from "../../../components/Dashboard/FoodPage/FoodCard/FoodCard";
 import Button from "../../../components/Reusable/Button/Button";
+import DashboardHeading from "../../../components/Reusable/DashboardHeading/DashboardHeading";
 
 const Food = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -10,13 +11,11 @@ const Food = () => {
   return (
     <div className="font-Manrope">
       <div className="flex items-center justify-between">
-        <div>
-          <h2 className="heading-dashboard">Vedic Food & Recipes</h2>
-          <p className="description mt-1">
-            Discover the art of Sattvic cooking and nourishing prasad recipes to
-            balance your mind, body and soul.
-          </p>
-        </div>
+        <DashboardHeading
+          title="Vedic Food & Recipes"
+          description="Discover the art of Sattvic cooking and nourishing prasad recipes to
+            balance your mind, body and soul."
+        />
         <Button leftIcon={ICONS.ai} label="Cook With AI" />
       </div>
 

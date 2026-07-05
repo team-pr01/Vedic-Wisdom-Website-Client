@@ -9,6 +9,7 @@ import DashboardHome from "../pages/DashboardPages/DashboardHome/DashboardHome";
 import MyProfile from "../pages/DashboardPages/MyProfile/MyProfile";
 import Help from "../pages/DashboardPages/Help/Help";
 import Food from "../pages/DashboardPages/Food/Food";
+import VastuShastra from "../pages/DashboardPages/VastuShastra/VastuShastra";
 
 export const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ export const router = createBrowserRouter([
       {
         path: "food",
         element: <Food />,
+      },
+      {
+        path: "vastu-shastra",
+        element: <VastuShastra />,
       },
     ],
   },

@@ -53,8 +53,8 @@ export const sidebarLinks: DashboardLink[] = [
     icon: <LuLeaf className="w-5 h-5" />,
   },
   {
-    label: "Vastu",
-    path: "/dashboard/vastu",
+    label: "Vastu Shastra",
+    path: "/dashboard/vastu-shastra",
     icon: <MdOutlineHome className="w-5 h-5" />,
   },
   {
