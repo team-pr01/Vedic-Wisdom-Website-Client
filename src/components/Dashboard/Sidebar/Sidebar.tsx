@@ -60,11 +60,11 @@ const Sidebar = () => {
             </div>
           </div>
           <hr className="border border-neutral-75/60 h-px mt-4" />
-          <div>
+          <div className="mt-2">
             <Link
-              to={"/help"}
+              to={"/dashboard/help"}
               className={`flex items-center gap-2 rounded-lg p-3.5 transform transition-transform duration-500 hover:-translate-y-1 ${
-                location?.pathname === "/help"
+                location?.pathname === "/dashboard/help"
                   ? "bg-gradient-sidebar-selected-link text-primary-10 font-semibold"
                   : "font-medium text-neutral-40 bg-none"
               }`}
@@ -76,11 +76,7 @@ const Sidebar = () => {
             </Link>
             <button
               onCanPlay={handleLogout}
-              className={`flex items-center gap-2 rounded-lg p-3.5 transform transition-transform duration-500 hover:-translate-y-1 ${
-                location?.pathname === "/help"
-                  ? "bg-gradient-sidebar-selected-link text-primary-10 font-semibold"
-                  : "font-medium text-neutral-40 bg-none"
-              }`}
+              className={`flex items-center gap-2 rounded-lg p-3.5 transform transition-transform duration-500 hover:-translate-y-1 text-neutral-40 font-medium`}
             >
               <div className="size-6 flex items-center justify-center shrink-0 text-xl">
                 <FiLogOut />

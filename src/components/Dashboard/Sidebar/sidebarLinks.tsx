@@ -16,6 +16,7 @@ import {
   MdOutlineHome,
   MdOutlineAudioFile,
   MdOutlineWorkOutline,
+  MdOutlinePerson,
 } from "react-icons/md";
 
 interface DashboardLink {
@@ -30,6 +31,11 @@ export const sidebarLinks: DashboardLink[] = [
     label: "Overview",
     path: "/dashboard",
     icon: <LuLayoutDashboard className="w-5 h-5" />,
+  },
+  {
+    label: "My Profile",
+    path: "/dashboard/my-profile",
+    icon: <MdOutlinePerson className="w-5 h-5" />,
   },
   {
     label: "Yoga",

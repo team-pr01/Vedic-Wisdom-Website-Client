@@ -3,11 +3,11 @@ import { forwardRef } from "react";
 import type { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
 
 interface TextareaProps {
-  label: string;
+  label?: string;
   name: string;
   placeholder?: string;
   rows?: number;
-  error?:FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
+  error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   isRequired?: boolean;
@@ -26,16 +26,18 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       isDisabled = false,
       ...rest
     },
-    ref
+    ref,
   ) => {
     return (
       <div className="flex flex-col gap-2 font-Nunito w-full">
-        <label className="flex flex-row items-center w-full justify-between text-neutral-65">
-          <span className="text-neutral-10 leading-[18px] text-[15px] font-medium tracking-[-0.16] ">
-            {label}{" "}
-            <span className="text-primary-10">{isRequired ? "*" : ""}</span>
-          </span>
-        </label>
+        {label && (
+          <label className="flex flex-row items-center w-full justify-between text-neutral-65">
+            <span className="text-neutral-10 leading-[18px] text-[15px] font-medium tracking-[-0.16] ">
+              {label}{" "}
+              <span className="text-primary-10">{isRequired ? "*" : ""}</span>
+            </span>
+          </label>
+        )}
         <textarea
           id={name}
           name={name}
@@ -49,10 +51,12 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           } ${error ? "border-red-500" : "border-neutral-55"}`}
           {...rest}
         ></textarea>
-        {error && <span className="text-red-500 text-sm">{String(error.message)}</span>}
+        {error && (
+          <span className="text-red-500 text-sm">{String(error.message)}</span>
+        )}
       </div>
     );
-  }
+  },
 );
 
 Textarea.displayName = "Textarea";

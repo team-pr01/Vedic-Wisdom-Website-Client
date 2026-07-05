@@ -12,10 +12,13 @@ import sacredLibrary from "./images/sacred-library.webp";
 import gift from "./images/gift.webp";
 import referBonusGradient from "./images/refer-bonus-gradient.webp";
 import dummyProject from "./images/dummy-project.png"; // This is a placeholder image for projects, replace it with actual project images when available
+import dummyAvatar from "./images/dummy-avatar.png"; // This is a placeholder image for projects, replace it with actual project images when available
 import appMockup from "./images/app-mockup.webp";
 import footerBg from "./images/footer-bg.webp";
 import signinImg from "./images/signin-img.webp";
 import signupImg from "./images/signup-img.webp";
+import gradientProfileCard from "./images/gradient-profile-card.png";
+import getPremiumBanner from "./images/get-premium-banner.webp";
 
 // ICONS
 import arrowRight from "./icons/arrow-right.svg";
@@ -46,6 +49,26 @@ import apple from "./icons/apple.svg";
 import search from "./icons/search.svg";
 import notification from "./icons/notification.svg";
 import user from "./icons/user.svg";
+import editProfile from "./icons/edit-profile.svg";
+import lifetimePremiumMembership from "./icons/lifetime-premium-membership.svg";
+import aryaCoin from "./icons/arya-coin.svg";
+import savedAudioBook from "./icons/saved-audio-book.svg";
+import savedBooks from "./icons/saved-books.svg";
+import quizTaken from "./icons/quiz-taken.svg";
+import membershipPlan from "./icons/membership-plan.svg";
+import referralList from "./icons/referral-list.svg";
+import language from "./icons/language.svg";
+import privacyPolicy from "./icons/privacy-policy.svg";
+import termsAndConditions from "./icons/terms-and-conditions.svg";
+import addMoney from "./icons/add-money.svg";
+import howToUseCoin from "./icons/how-to-use-coin.svg";
+import arrowRightGray from "./icons/arrow-right-gray.svg";
+import accountSettings from "./icons/account-settings.svg";
+import alert from "./icons/alert.svg";
+import email from "./icons/email.svg";
+import call from "./icons/call.svg";
+import whatsapp from "./icons/whatsapp.svg";
+import time from "./icons/time.svg";
 
 export const IMAGES = {
     logo,
@@ -61,10 +84,13 @@ export const IMAGES = {
     gift,
     referBonusGradient,
     dummyProject,
+    dummyAvatar,
     appMockup,
     footerBg,
     signinImg,
     signupImg,
+    gradientProfileCard,
+    getPremiumBanner
 };
 
 export const ICONS = {
@@ -96,4 +122,25 @@ export const ICONS = {
     search,
     notification,
     user,
+    editProfile,
+    lifetimePremiumMembership,
+    aryaCoin,
+    savedAudioBook,
+    savedBooks,
+    quizTaken,
+    membershipPlan,
+    referralList,
+    language,
+    privacyPolicy,
+    termsAndConditions,
+    addMoney,
+    howToUseCoin,
+    arrowRightGray,
+    accountSettings,
+    alert,
+    email,
+    call,
+    whatsapp,
+    time,
+
 };
