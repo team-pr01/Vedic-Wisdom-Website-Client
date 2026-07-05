@@ -43,6 +43,9 @@ import linkedin from "./icons/linkedin.svg";
 import twitter from "./icons/twitter.svg";
 import google from "./icons/google.svg";
 import apple from "./icons/apple.svg";
+import search from "./icons/search.svg";
+import notification from "./icons/notification.svg";
+import user from "./icons/user.svg";
 
 export const IMAGES = {
     logo,
@@ -90,4 +93,7 @@ export const ICONS = {
     twitter,
     google,
     apple,
+    search,
+    notification,
+    user,
 };

@@ -17,6 +17,7 @@
   --color-primary-60: #ffcf72;
   --color-primary-70: #a37d30;
   --color-primary-75: #ffbc3c;
+  --color-primary-80: #F2E4C9;
 
   /* secondary */
   --color-secondary-10: #1a1f2c;
@@ -36,6 +37,7 @@
   --color-neutral-70: #fbf6ee;
   --color-neutral-75: #DEDEDE;
   --color-neutral-80: #8F8F8F;
+  --color-neutral-85: #FFFEFA;
 
   /* accent */
   --color-accent-10: #f17556;
@@ -49,6 +51,7 @@
     0 0 16px 3px rgba(255, 255, 255, 0.6) inset,
     0 4px 8px 1px rgba(238, 189, 64, 0.24);
   --shadow-sidebar: 0 -4px 45.5px 0 rgba(154, 154, 154, 0.22);
+  --shadow-dashboard-header-button: 0 4px 6px 0 rgba(163, 163, 163, 0.11);
 
   /* Gradients */
   --bg-gradient-primary-button:
@@ -170,5 +173,5 @@ button:disabled {
 /* Firefox */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #1a52b3 #F3F4F6;
+  scrollbar-color: #ccced1 #F3F4F6;
 }
