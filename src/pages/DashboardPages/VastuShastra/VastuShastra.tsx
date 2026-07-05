@@ -5,7 +5,8 @@ import { Navigation, Pagination } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 import { ICONS } from "../../../assets";
 import VastuShastraVideoCard from "../../../components/Dashboard/DashboardHeader/VastuShastraPage/VastuShastraVideoCard/VastuShastraVideoCard";
-import VastuTipsCard from "../../../components/Dashboard/DashboardHeader/VastuShastraPage/VastuTipsCard/VastuTipsCard";
+import PopularVastuTips from "../../../components/Dashboard/DashboardHeader/VastuShastraPage/PopularVastuTips/PopularVastuTips";
+import AvailableExperts from "../../../components/Reusable/AvailableExperts/AvailableExperts";
 
 const VastuShastra = () => {
   const swiperRef = useRef<SwiperType | null>(null);
@@ -20,13 +21,13 @@ const VastuShastra = () => {
     "Living Room",
   ];
   return (
-    <div className="font-Manrope">
+    <div className="font-Manrope space-y-8">
       <DashboardHeading
         title="Vastu Shastra"
         description="Create cosmic harmony in your physical environment."
       />
 
-      <div className="flex items-center justify-between mt-10">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           {vastuCategories?.map((category) => (
             <button
@@ -101,16 +102,8 @@ const VastuShastra = () => {
         </Swiper>
       </div>
 
-      <h4 className="text-neutral-90 font-bold text-xl mt-8">
-        Popular Vastu Tips
-      </h4>
-
-      <div className="grid grid-cols-3 gap-5 mt-6">
-        <VastuTipsCard />
-        <VastuTipsCard />
-        <VastuTipsCard />
-        <VastuTipsCard />
-      </div>
+      <PopularVastuTips />
+      <AvailableExperts areaOfExpertise="Vastu" />
     </div>
   );
 };
