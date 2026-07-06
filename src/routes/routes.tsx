@@ -14,6 +14,7 @@ import OurProjects from "../pages/DashboardPages/OurProjects/OurProjects";
 import ProjectDetails from "../pages/DashboardPages/OurProjects/ProjectDetails";
 import SanatanSthal from "../pages/DashboardPages/SanatanSthal/SanatanSthal";
 import SanatanSthalDetails from "../pages/DashboardPages/SanatanSthal/SanatanSthalDetails";
+import Ayurveda from "../pages/DashboardPages/Ayurveda/Ayurveda";
 
 export const router = createBrowserRouter([
   {
@@ -75,6 +76,10 @@ export const router = createBrowserRouter([
       {
         path: "sanatan-sthal/:id",
         element: <SanatanSthalDetails />,
+      },
+      {
+        path: "ayurveda",
+        element: <Ayurveda />,
       },
     ],
   },

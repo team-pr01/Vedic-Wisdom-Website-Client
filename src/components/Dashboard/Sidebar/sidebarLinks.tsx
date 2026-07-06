@@ -58,19 +58,16 @@ export const sidebarLinks: DashboardLink[] = [
     path: "/dashboard/sanatan-sthal",
     icon: <GiGreekTemple className="w-5 h-5" />,
   },
-
-  {
-    label: "Yoga",
-    path: "/dashboard/yoga",
-    icon: <MdOutlineWorkOutline className="w-5 h-5" />,
-  },
-
   {
     label: "Ayurveda",
     path: "/dashboard/ayurveda",
     icon: <LuLeaf className="w-5 h-5" />,
   },
-
+  {
+    label: "Yoga",
+    path: "/dashboard/yoga",
+    icon: <MdOutlineWorkOutline className="w-5 h-5" />,
+  },
   {
     label: "Jyotish",
     path: "/dashboard/jyotish",
