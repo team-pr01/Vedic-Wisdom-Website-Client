@@ -12,7 +12,7 @@ const ProjectCard = ({ project }) => {
       </div>
       <div className="flex items-center gap-3 relative z-10">
         <Link
-          to={"/dashboard/experts"}
+          to={"/dashboard/project/1"}
           className="text-neutral-5 text-sm hover:underline"
         >
           View Details

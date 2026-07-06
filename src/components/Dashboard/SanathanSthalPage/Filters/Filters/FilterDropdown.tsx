@@ -5,6 +5,8 @@ import { FiChevronDown } from "react-icons/fi";
 interface Option {
   label: string;
   value: string;
+  isoCode?: string; // Add isoCode as optional
+  [key: string]: any; // Allow additional properties
 }
 
 interface SingleSelectDropdownProps {
@@ -13,14 +15,14 @@ interface SingleSelectDropdownProps {
   options: Option[];
   placeholder?: string;
   error?: string;
-  value?: string | string[] | any;
-  onChange?: (selected: string) => void;
-  onChangeEvent?: (selected: string) => void; // Alias for onChange
+  value?: Option | string | string[] | any;
+  onChange?: (selected: Option) => void;
+  onChangeEvent?: (selected: Option) => void;
   isRequired?: boolean;
   dropdownDirection?: string;
 }
 
-const SelectDropdownWithSearch = forwardRef<
+const FilterDropdown = forwardRef<
   HTMLDivElement,
   SingleSelectDropdownProps
 >(
@@ -37,20 +39,21 @@ const SelectDropdownWithSearch = forwardRef<
     dropdownDirection = "top-full",
   }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState<string>("");
+    const [selectedOption, setSelectedOption] = useState<Option | null>(null);
     const [searchTerm, setSearchTerm] = useState("");
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    // Normalize incoming `value` (string | string[]) into a single string
+    // Normalize incoming `value`
     useEffect(() => {
-      if (Array.isArray(value)) {
-        setSelectedValue(value.length > 0 ? value[0] : "");
+      if (typeof value === "object" && value !== null) {
+        setSelectedOption(value);
       } else if (typeof value === "string") {
-        setSelectedValue(value);
+        const found = options.find((opt) => opt.value === value);
+        setSelectedOption(found || null);
       } else {
-        setSelectedValue("");
+        setSelectedOption(null);
       }
-    }, [value]);
+    }, [value, options]);
 
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
@@ -67,20 +70,20 @@ const SelectDropdownWithSearch = forwardRef<
       };
     }, []);
 
-    const handleSelect = (optionValue: string) => {
-      setSelectedValue(optionValue);
+    const handleSelect = (option: Option) => {
+      setSelectedOption(option);
       if (onChange) {
-        onChange(optionValue);
+        onChange(option);
       }
       if (onChangeEvent) {
-        onChangeEvent(optionValue);
+        onChangeEvent(option);
       }
       setIsOpen(false);
+      setSearchTerm("");
     };
 
     // Get display label for selected value
     const getSelectedLabel = () => {
-      const selectedOption = options.find((opt) => opt.value === selectedValue);
       return selectedOption ? selectedOption.label : "";
     };
 
@@ -108,7 +111,7 @@ const SelectDropdownWithSearch = forwardRef<
             type="button"
             className={`w-full px-4 py-3.5 rounded-lg bg-white border leading-4.5 focus:outline-none focus:border-primary-10 transition duration-300 text-left flex items-center justify-between cursor-pointer ${
               error ? "border-red-500" : "border-neutral-55"
-            } ${!selectedValue ? "text-neutral-10/50" : "text-neutral-10"}`}
+            } ${!selectedOption ? "text-neutral-10/50" : "text-neutral-10"}`}
             onClick={() => setIsOpen((prev) => !prev)}
           >
             <span className="truncate capitalize">
@@ -138,18 +141,23 @@ const SelectDropdownWithSearch = forwardRef<
                 />
               </div>
 
-              {filteredOptions.length > 0 ? (
-                filteredOptions.map((option) => (
+              {filteredOptions?.length > 0 ? (
+                filteredOptions?.map((option) => (
                   <div
                     key={option.value}
                     className={`px-4 py-2 cursor-pointer hover:bg-neutral-98 capitalize ${
-                      selectedValue === option.value
+                      selectedOption?.value === option.value
                         ? "bg-neutral-98 font-medium"
                         : ""
                     }`}
-                    onClick={() => handleSelect(option.value)}
+                    onClick={() => handleSelect(option)}
                   >
                     {option.label}
+                    {option.isoCode && (
+                      <span className="text-xs text-neutral-40 ml-2">
+                        ({option.isoCode})
+                      </span>
+                    )}
                   </div>
                 ))
               ) : (
@@ -167,6 +175,6 @@ const SelectDropdownWithSearch = forwardRef<
   }
 );
 
-SelectDropdownWithSearch.displayName = "SelectDropdownWithSearch";
+FilterDropdown.displayName = "FilterDropdown";
 
-export default SelectDropdownWithSearch;
+export default FilterDropdown;

@@ -4,7 +4,10 @@ import type { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
 
 interface DropdownProps {
   label: string;
-  options: string[];
+  options: {
+    label: string;
+    value: string;
+  }[];
   error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
   isRequired?: boolean;
   selected?: boolean;
@@ -38,7 +41,7 @@ const SelectDropdown = forwardRef<HTMLSelectElement, DropdownProps>(
       <div className="flex flex-col gap-2 font-Nunito w-full">
         {label && (
           <label className="flex flex-row items-center w-full justify-between text-neutral-65">
-            <span className="text-neutral-10 leading-[18px] text-[15px] font-medium tracking-[-0.16] ">
+            <span className="text-neutral-10 leading-4.5 text-[15px] font-medium tracking-[-0.16] ">
               {label}{" "}
               <span className="text-primary-10">{isRequired ? "*" : ""}</span>
             </span>
@@ -50,11 +53,11 @@ const SelectDropdown = forwardRef<HTMLSelectElement, DropdownProps>(
           value={value}
           required={isRequired}
           onChange={handleChange}
-          className={`w-full px-4 py-[11px] rounded-lg border 
-  leading-[18px] focus:outline-none focus:border-primary-10 
+          className={`w-full px-4 py-2.75 rounded-lg border 
+  leading-4.5 focus:outline-none focus:border-primary-10 
   transition duration-300 capitalize 
   disabled:cursor-not-allowed
-  whitespace-normal break-words
+  whitespace-normal wrap-break-word
   ${
     isDisabled
       ? "cursor-not-allowed bg-neutral-50/20"
@@ -68,8 +71,8 @@ const SelectDropdown = forwardRef<HTMLSelectElement, DropdownProps>(
             Select {label}
           </option>
           {options.map((option, index) => (
-            <option key={index} value={option} className="capitalize">
-              {option}
+            <option key={index} value={option?.value} className="capitalize">
+              {option?.label}
             </option>
           ))}
         </select>

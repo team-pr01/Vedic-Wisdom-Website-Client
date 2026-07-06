@@ -12,6 +12,7 @@ import Food from "../pages/DashboardPages/Food/Food";
 import VastuShastra from "../pages/DashboardPages/VastuShastra/VastuShastra";
 import OurProjects from "../pages/DashboardPages/OurProjects/OurProjects";
 import ProjectDetails from "../pages/DashboardPages/OurProjects/ProjectDetails";
+import SanatanSthal from "../pages/DashboardPages/SanatanSthal/SanatanSthal";
 
 export const router = createBrowserRouter([
   {
@@ -65,6 +66,10 @@ export const router = createBrowserRouter([
       {
         path: "project/:id",
         element: <ProjectDetails />,
+      },
+      {
+        path: "sanatan-sthal",
+        element: <SanatanSthal />,
       },
     ],
   },

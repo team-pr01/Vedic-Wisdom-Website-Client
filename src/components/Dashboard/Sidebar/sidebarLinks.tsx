@@ -44,25 +44,33 @@ export const sidebarLinks: DashboardLink[] = [
     icon: <LuFolderOpen className="w-5 h-5" />,
   },
   {
-    label: "Yoga",
-    path: "/dashboard/yoga",
-    icon: <MdOutlineWorkOutline className="w-5 h-5" />,
+    label: "Vastu Shastra",
+    path: "/dashboard/vastu-shastra",
+    icon: <MdOutlineHome className="w-5 h-5" />,
+  },
+  {
+    label: "Vedic Food & Recipes",
+    path: "/dashboard/food",
+    icon: <LuUtensils className="w-5 h-5" />,
   },
   {
     label: "Sanatan Sthal",
     path: "/dashboard/sanatan-sthal",
     icon: <GiGreekTemple className="w-5 h-5" />,
   },
+
+  {
+    label: "Yoga",
+    path: "/dashboard/yoga",
+    icon: <MdOutlineWorkOutline className="w-5 h-5" />,
+  },
+
   {
     label: "Ayurveda",
     path: "/dashboard/ayurveda",
     icon: <LuLeaf className="w-5 h-5" />,
   },
-  {
-    label: "Vastu Shastra",
-    path: "/dashboard/vastu-shastra",
-    icon: <MdOutlineHome className="w-5 h-5" />,
-  },
+
   {
     label: "Jyotish",
     path: "/dashboard/jyotish",
@@ -73,11 +81,7 @@ export const sidebarLinks: DashboardLink[] = [
     path: "/dashboard/consultancy",
     icon: <LuBriefcase className="w-5 h-5" />,
   },
-  {
-    label: "Vedic Food & Recipes",
-    path: "/dashboard/food",
-    icon: <LuUtensils className="w-5 h-5" />,
-  },
+
   {
     label: "Shop",
     path: "/dashboard/shop",
