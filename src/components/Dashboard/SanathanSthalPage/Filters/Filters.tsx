@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { ICONS } from "../../../../../assets";
+import { ICONS } from "../../../../assets";
 import { Country, State, City } from "country-state-city";
 import FilterDropdown from "./FilterDropdown";
 import { useState } from "react";

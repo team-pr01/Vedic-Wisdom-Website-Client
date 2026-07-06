@@ -13,6 +13,7 @@ import VastuShastra from "../pages/DashboardPages/VastuShastra/VastuShastra";
 import OurProjects from "../pages/DashboardPages/OurProjects/OurProjects";
 import ProjectDetails from "../pages/DashboardPages/OurProjects/ProjectDetails";
 import SanatanSthal from "../pages/DashboardPages/SanatanSthal/SanatanSthal";
+import SanatanSthalDetails from "../pages/DashboardPages/SanatanSthal/SanatanSthalDetails";
 
 export const router = createBrowserRouter([
   {
@@ -70,6 +71,10 @@ export const router = createBrowserRouter([
       {
         path: "sanatan-sthal",
         element: <SanatanSthal />,
+      },
+      {
+        path: "sanatan-sthal/:id",
+        element: <SanatanSthalDetails />,
       },
     ],
   },

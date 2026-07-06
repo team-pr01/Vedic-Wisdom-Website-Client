@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import Filters from "../../../components/Dashboard/SanathanSthalPage/Filters/Filters/Filters";
+import Filters from "../../../components/Dashboard/SanathanSthalPage/Filters/Filters";
 import DashboardHeading from "../../../components/Reusable/DashboardHeading/DashboardHeading";
 import { IoSearchOutline } from "react-icons/io5";
 import TempleCard from "../../../components/Dashboard/SanathanSthalPage/TempleCard/TempleCard";
