@@ -11,6 +11,7 @@ import Help from "../pages/DashboardPages/Help/Help";
 import Food from "../pages/DashboardPages/Food/Food";
 import VastuShastra from "../pages/DashboardPages/VastuShastra/VastuShastra";
 import OurProjects from "../pages/DashboardPages/OurProjects/OurProjects";
+import ProjectDetails from "../pages/DashboardPages/OurProjects/ProjectDetails";
 
 export const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
       {
         path: "our-projects",
         element: <OurProjects />,
+      },
+      {
+        path: "project/:id",
+        element: <ProjectDetails />,
       },
     ],
   },

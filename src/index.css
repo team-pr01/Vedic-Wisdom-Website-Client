@@ -126,7 +126,9 @@ button:disabled {
 .description {
   @apply text-neutral-10 text-sm max-w-175 font-Manrope;
 }
-
+ .body{
+  @apply font-Manrope;
+ }
 /* Override PhoneInput default focus styles */
 .PhoneInputInput:focus {
   border-color: #c9753e !important;

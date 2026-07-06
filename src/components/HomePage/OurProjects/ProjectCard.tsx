@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 
 const ProjectCard = ({ project }) => {
   return (
-    <div className="p-6 border border-primary-10/20 bg-neutral-65 space-y-4 text-left rounded-4xl group relative">
+    <div className="p-5 border border-primary-10/20 bg-neutral-65 space-y-4 text-left rounded-4xl group relative">
       <img src={project?.image} alt="" className="rounded-2xl" />
       <div className="relative z-10">
         <h2 className="text-neutral-10 text-xl font-bold">{project?.title}</h2>
         <p className="text-neutral-60 text-sm mt-2">{project?.description}</p>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3 relative z-10">
         <Link
           to={"/dashboard/experts"}
           className="text-neutral-5 text-sm hover:underline"
@@ -19,7 +19,7 @@ const ProjectCard = ({ project }) => {
         </Link>
         <Button
           label="Donate Now"
-          className="relative text-xs 2xl:text-[13px] z-10 py-2"
+          className="text-xs 2xl:text-[13px] py-2"
           rightIcon={ICONS.arrowRight}
         />
       </div>
