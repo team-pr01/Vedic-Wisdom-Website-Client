@@ -7,21 +7,20 @@ import AvailableExperts from "../../../components/Reusable/AvailableExperts/Avai
 
 const Astrology = () => {
   const [selectedZodiac, setSelectedZodiac] = useState<string>("All");
-  const zodiacSigns = [
-    "All",
-    "Aries",
-    "Taurus",
-    "Gemini",
-    "Cancer",
-    "Leo",
-    "Virgo",
-    "Libra",
-    "Scorpio",
-    "Sagittarius",
-    "Capricorn",
-    "Aquarius",
-    "Pisces",
-  ];
+ const zodiacSigns = [
+  { label: "♈ Aries", value: "Aries" },
+  { label: "♉ Taurus", value: "Taurus" },
+  { label: "♊ Gemini", value: "Gemini" },
+  { label: "♋ Cancer", value: "Cancer" },
+  { label: "♌ Leo", value: "Leo" },
+  { label: "♍ Virgo", value: "Virgo" },
+  { label: "♎ Libra", value: "Libra" },
+  { label: "♏ Scorpio", value: "Scorpio" },
+  { label: "♐ Sagittarius", value: "Sagittarius" },
+  { label: "♑ Capricorn", value: "Capricorn" },
+  { label: "♒ Aquarius", value: "Aquarius" },
+  { label: "♓ Pisces", value: "Pisces" }
+];
   return (
     <div className="font-Manrope">
       <div className="flex items-center justify-between">
@@ -35,15 +34,15 @@ const Astrology = () => {
       <div className="flex items-center gap-3 mt-10">
         {zodiacSigns?.map((sign) => (
           <button
-            key={sign}
-            onClick={() => setSelectedZodiac(sign)}
+            key={sign.label}
+            onClick={() => setSelectedZodiac(sign.value)}
             className={`px-4 py-2 rounded-3xl border border-primary-80  hover:bg-primary-10 hover:text-white transition duration-300 text-sm ${
-              selectedZodiac === sign
+              selectedZodiac === sign.value
                 ? "bg-primary-10 text-white"
                 : "bg-white text-neutral-40"
             }`}
           >
-            {sign}
+            {sign.label}
           </button>
         ))}
       </div>

@@ -69,16 +69,17 @@ export const sidebarLinks: DashboardLink[] = [
     icon: <LuMoon className="w-5 h-5" />,
   },
   {
+    label: "Consultancy",
+    path: "/dashboard/consultancy",
+    icon: <LuBriefcase className="w-5 h-5" />,
+  },
+  {
     label: "Yoga",
     path: "/dashboard/yoga",
     icon: <MdOutlineWorkOutline className="w-5 h-5" />,
   },
 
-  {
-    label: "Consultancy",
-    path: "/dashboard/consultancy",
-    icon: <LuBriefcase className="w-5 h-5" />,
-  },
+  
 
   {
     label: "Shop",
