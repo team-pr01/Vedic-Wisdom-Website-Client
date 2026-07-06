@@ -20,7 +20,13 @@ interface Expert {
   isVerified?: boolean;
 }
 
-const AvailableExperts = ({ areaOfExpertise }: { areaOfExpertise: string }) => {
+const AvailableExperts = ({
+  areaOfExpertise,
+  gridDirection = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+}: {
+  areaOfExpertise: string;
+  gridDirection?: string;
+}) => {
   // Sample dataa
   const experts: Expert[] = [
     {
@@ -97,7 +103,7 @@ const AvailableExperts = ({ areaOfExpertise }: { areaOfExpertise: string }) => {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className={`${gridDirection} gap-6`}>
         {experts.map((expert) => (
           <div
             key={expert.id}
@@ -172,7 +178,10 @@ const AvailableExperts = ({ areaOfExpertise }: { areaOfExpertise: string }) => {
                     <span className="text-sm text-neutral-60">/hour</span>
                   </div>
                 </div>
-                <Button label="Book Consultation" />
+                <Button
+                  label="Book Consultation"
+                  className="text-sm 2xl:text-sm py-2.5"
+                />
               </div>
             </div>
           </div>

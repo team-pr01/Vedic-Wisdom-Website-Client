@@ -15,6 +15,7 @@ import ProjectDetails from "../pages/DashboardPages/OurProjects/ProjectDetails";
 import SanatanSthal from "../pages/DashboardPages/SanatanSthal/SanatanSthal";
 import SanatanSthalDetails from "../pages/DashboardPages/SanatanSthal/SanatanSthalDetails";
 import Ayurveda from "../pages/DashboardPages/Ayurveda/Ayurveda";
+import Astrology from "../pages/DashboardPages/Astrology/Astrology";
 
 export const router = createBrowserRouter([
   {
@@ -80,6 +81,10 @@ export const router = createBrowserRouter([
       {
         path: "ayurveda",
         element: <Ayurveda />,
+      },
+      {
+        path: "astrology",
+        element: <Astrology />,
       },
     ],
   },

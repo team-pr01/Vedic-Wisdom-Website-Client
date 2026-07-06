@@ -21,6 +21,7 @@ import signinImg from "./images/signin-img.webp";
 import signupImg from "./images/signup-img.webp";
 import gradientProfileCard from "./images/gradient-profile-card.png";
 import getPremiumBanner from "./images/get-premium-banner.webp";
+import horoscopeBanner from "./images/horoscope-banner.webp";
 
 // ICONS
 import arrowRight from "./icons/arrow-right.svg";
@@ -101,7 +102,8 @@ export const IMAGES = {
     signinImg,
     signupImg,
     gradientProfileCard,
-    getPremiumBanner
+    getPremiumBanner,
+    horoscopeBanner
 };
 
 export const ICONS = {
