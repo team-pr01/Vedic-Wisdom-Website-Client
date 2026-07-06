@@ -75,6 +75,7 @@ import ai from "./icons/ai.svg";
 import aiBot from "./icons/ai-bot.svg";
 import category from "./icons/category.svg";
 import bedroomVastu from "./icons/bedroom-vastu.svg";
+import raiseFund from "./icons/raise-fund.svg";
 
 export const IMAGES = {
     logo,
@@ -153,6 +154,7 @@ export const ICONS = {
     ai,
     aiBot,
     category,
-    bedroomVastu
+    bedroomVastu,
+    raiseFund,
 
 };

@@ -10,6 +10,7 @@ import {
   LuBookOpen,
   LuBrain,
   LuGraduationCap,
+  LuFolderOpen,
 } from "react-icons/lu";
 
 import {
@@ -36,6 +37,11 @@ export const sidebarLinks: DashboardLink[] = [
     label: "My Profile",
     path: "/dashboard/my-profile",
     icon: <MdOutlinePerson className="w-5 h-5" />,
+  },
+  {
+    label: "Our Projects",
+    path: "/dashboard/our-projects",
+    icon: <LuFolderOpen className="w-5 h-5" />,
   },
   {
     label: "Yoga",
