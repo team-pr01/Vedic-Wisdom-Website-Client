@@ -84,6 +84,7 @@ import reset from "./icons/reset.svg";
 import location from "./icons/location.svg";
 import star from "./icons/star.svg";
 import heart from "./icons/heart.svg";
+import upload from "./icons/upload.svg";
 
 export const IMAGES = {
     logo,
@@ -172,5 +173,6 @@ export const ICONS = {
     location,
     star,
     heart,
+    upload,
 
 };

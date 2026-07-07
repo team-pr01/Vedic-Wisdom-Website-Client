@@ -58,7 +58,7 @@ const Sidebar = () => {
 
   return (
     <div className="top-0 left-0 hidden xl:block font-Manrope">
-      <div className="w-57 2xl:w-75 h-full bg-neutral-30 rounded-r-4xl border-r border-neutral-55 shadow-sidebar p-5 font-Nunito flex flex-col gap-5 justify-between">
+      <div className="w-65 2xl:w-75 h-full bg-neutral-30 rounded-r-4xl border-r border-neutral-55 shadow-sidebar p-5 font-Nunito flex flex-col gap-5 justify-between">
         <div>
           <div>
             <Link to="/">

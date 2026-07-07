@@ -20,6 +20,7 @@ import Consultancy from "../pages/DashboardPages/Consultancy/Consultancy";
 import Course from "../pages/DashboardPages/LearnAndExplore/Course/Course";
 import VedicShop from "../pages/DashboardPages/VedicShop/VedicShop";
 import ProductDetails from "../pages/DashboardPages/VedicShop/ProductDetails";
+import BecomeAVendor from "../pages/DashboardPages/VedicShop/BecomeAVendor/BecomeAVendor";
 
 export const router = createBrowserRouter([
   {
@@ -101,6 +102,10 @@ export const router = createBrowserRouter([
       {
         path: "vedic-shop/:id",
         element: <ProductDetails />,
+      },
+      {
+        path: "vedic-shop/become-a-vendor",
+        element: <BecomeAVendor />,
       },
       {
         path: "learn-and-explore/course",

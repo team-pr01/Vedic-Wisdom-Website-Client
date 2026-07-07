@@ -1,8 +1,9 @@
-import {IMAGES } from "../../../assets";
+import { IMAGES } from "../../../assets";
 import Button from "../../../components/Reusable/Button/Button";
 import DashboardHeading from "../../../components/Reusable/DashboardHeading/DashboardHeading";
 import ProductCard from "../../../components/Dashboard/VedicShopPage/ProductCard/ProductCard";
 import ProductImageCarousel from "../../../components/Reusable/ProductImageCarousel/ProductImageCarousel";
+import { Link } from "react-router-dom";
 
 const VedicShop = () => {
   const banners = [
@@ -13,25 +14,25 @@ const VedicShop = () => {
   ];
 
   return (
-    <div className="font-Manrope px-4 py-6">
+    <div className="font-Manrope">
       {/* Header Section */}
       <div className="flex items-center justify-between mb-8">
         <DashboardHeading
-          title="Shop"
+          title="Vedic Products"
           description="Discover Products That Inspire Your Spiritual Journey"
         />
-        <Button
-          label="Become a vendor"
-          className="bg-[#f2c94c] hover:bg-[#e0b83d] text-black border-none shadow-md px-6 py-3 font-semibold rounded-lg text-sm"
-        />
+        <Link to={"/dashboard/vedic-shop/become-a-vendor"}>
+          <Button
+            label="Become a vendor"
+            className="bg-[#f2c94c] hover:bg-[#e0b83d] text-black border-none shadow-md px-6 py-3 font-semibold rounded-lg text-sm"
+          />
+        </Link>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Banner Section (70%) */}
         <div className="w-full lg:w-[70%]">
-          <div className="w-full lg:w-[40%]">
           <ProductImageCarousel images={banners} />
-        </div>
         </div>
 
         {/* CTA Card Section (30%) */}
