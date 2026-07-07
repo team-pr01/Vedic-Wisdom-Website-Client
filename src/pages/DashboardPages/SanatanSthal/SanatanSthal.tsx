@@ -51,7 +51,7 @@ const SanatanSthal = () => {
             <input
               onChange={(e) => setKeyword(e.target.value)}
               type="text"
-              className="w-full pl-10 pr-4 py-3.5 rounded-lg border leading-4.5 focus:outline-none focus:border-primary-10 transition duration-300 bg-white border-neutral-40/30"
+              className="w-full pl-10 pr-4 py-3.5 rounded-lg border leading-4.5 focus:outline-none focus:border-primary-10 transition duration-300 bg-white border-neutral-55"
               placeholder="Search temples by name or location..."
             />
           </div>

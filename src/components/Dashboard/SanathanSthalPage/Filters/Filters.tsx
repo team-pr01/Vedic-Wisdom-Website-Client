@@ -165,7 +165,7 @@ const Filters: React.FC<TFilters> = ({
           onChange={handleCategorySelect}
           isRequired={false}
           placeholder="Select category"
-          dropdownDirection="bottom-full"
+          dropdownDirection="top-full"
         />
 
         {/* Country Dropdown */}
