@@ -16,7 +16,7 @@ const SanatanSthal = () => {
   const isLoading = false;
 
   return (
-    <div className="">
+    <div className="font-Manrope">
       <div className="flex items-center justify-between">
         <DashboardHeading
           title="Explore Sanatan Sthals Worldwide"
@@ -24,7 +24,7 @@ const SanatanSthal = () => {
         />
         <Button
           label="Add a Temple You Know"
-          className="text-sm 2xl:text-base"
+          className="text-sm 2xl:text-sm"
         />
       </div>
 

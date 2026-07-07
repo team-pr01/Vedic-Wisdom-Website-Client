@@ -15,6 +15,8 @@ import dummyProject from "./images/dummy-project.png"; // This is a placeholder 
 import dummyAvatar from "./images/dummy-avatar.png"; // This is a placeholder image for projects, replace it with actual project images when available
 import dummyPrasad from "./images/dummy-prasad.png"; // This is a placeholder image for projects, replace it with actual project images when available
 import dummyVastu from "./images/dummy-vastu.png"; // This is a placeholder image for projects, replace it with actual project images when available
+import dummyShopBanner from "./images/dummy-banner.png"; // This is a placeholder image for projects, replace it with actual project images when available
+import dummyProduct from "./images/dummy-product.png"; // This is a placeholder image for projects, replace it with actual project images when available
 import appMockup from "./images/app-mockup.webp";
 import footerBg from "./images/footer-bg.webp";
 import signinImg from "./images/signin-img.webp";
@@ -22,6 +24,7 @@ import signupImg from "./images/signup-img.webp";
 import gradientProfileCard from "./images/gradient-profile-card.png";
 import getPremiumBanner from "./images/get-premium-banner.webp";
 import horoscopeBanner from "./images/horoscope-banner.webp";
+import becomeVendorCta from "./images/become-vendor-cta.webp";
 
 // ICONS
 import arrowRight from "./icons/arrow-right.svg";
@@ -79,6 +82,8 @@ import bedroomVastu from "./icons/bedroom-vastu.svg";
 import raiseFund from "./icons/raise-fund.svg";
 import reset from "./icons/reset.svg";
 import location from "./icons/location.svg";
+import star from "./icons/star.svg";
+import heart from "./icons/heart.svg";
 
 export const IMAGES = {
     logo,
@@ -97,13 +102,16 @@ export const IMAGES = {
     dummyAvatar,
     dummyPrasad,
     dummyVastu,
+    dummyShopBanner,
+    dummyProduct,
     appMockup,
     footerBg,
     signinImg,
     signupImg,
     gradientProfileCard,
     getPremiumBanner,
-    horoscopeBanner
+    horoscopeBanner,
+    becomeVendorCta
 };
 
 export const ICONS = {
@@ -162,5 +170,7 @@ export const ICONS = {
     raiseFund,
     reset,
     location,
+    star,
+    heart,
 
 };

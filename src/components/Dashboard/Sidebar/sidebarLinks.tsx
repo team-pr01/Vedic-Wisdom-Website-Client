@@ -73,18 +73,16 @@ export const sidebarLinks: DashboardLink[] = [
     path: "/dashboard/consultancy",
     icon: <LuBriefcase className="w-5 h-5" />,
   },
+   {
+    label: "Vedic Shop",
+    path: "/dashboard/vedic-shop",
+    icon: <LuShoppingBag className="w-5 h-5" />,
+  },
+
   {
     label: "Yoga",
     path: "/dashboard/yoga",
     icon: <MdOutlineWorkOutline className="w-5 h-5" />,
-  },
-
-  
-
-  {
-    label: "Shop",
-    path: "/dashboard/shop",
-    icon: <LuShoppingBag className="w-5 h-5" />,
   },
   {
     label: "Job Board",
@@ -93,28 +91,23 @@ export const sidebarLinks: DashboardLink[] = [
   },
   {
     label: "Learn & Explore",
-    path: "/dashboard/learn-explore",
+    path: "/dashboard/learn-and-explore",
     icon: <LuBookOpen className="w-5 h-5" />,
     subLinks: [
       {
         label: "Course",
-        path: "/dashboard/learn-explore/course",
+        path: "/dashboard/learn-and-explore/course",
         icon: <LuGraduationCap className="w-5 h-5" />,
       },
       {
         label: "Quiz",
-        path: "/dashboard/learn-explore/quiz",
+        path: "/dashboard/learn-and-explore/quiz",
         icon: <LuBrain className="w-5 h-5" />,
       },
       {
         label: "Audio Book",
-        path: "/dashboard/learn-explore/audio-book",
+        path: "/dashboard/learn-and-explore/audio-book",
         icon: <MdOutlineAudioFile className="w-5 h-5" />,
-      },
-      {
-        label: "Food",
-        path: "/dashboard/learn-explore/food",
-        icon: <LuUtensils className="w-5 h-5" />,
       },
     ],
   },

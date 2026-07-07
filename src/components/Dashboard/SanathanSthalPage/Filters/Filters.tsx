@@ -154,7 +154,7 @@ const Filters: React.FC<TFilters> = ({
       <div className="space-y-4 mt-4">
         <p className="text-neutral-10/90 text-[15px]">
           View temples{" "}
-          <span className="font-medium text-primary-10 underline">Near Me</span>
+          <button className="font-medium text-primary-10 underline">Near Me</button>
         </p>
 
         {/* Category Dropdown */}

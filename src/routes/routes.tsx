@@ -17,6 +17,9 @@ import SanatanSthalDetails from "../pages/DashboardPages/SanatanSthal/SanatanSth
 import Ayurveda from "../pages/DashboardPages/Ayurveda/Ayurveda";
 import Astrology from "../pages/DashboardPages/Astrology/Astrology";
 import Consultancy from "../pages/DashboardPages/Consultancy/Consultancy";
+import Course from "../pages/DashboardPages/LearnAndExplore/Course/Course";
+import VedicShop from "../pages/DashboardPages/VedicShop/VedicShop";
+import ProductDetails from "../pages/DashboardPages/VedicShop/ProductDetails";
 
 export const router = createBrowserRouter([
   {
@@ -90,6 +93,18 @@ export const router = createBrowserRouter([
       {
         path: "consultancy",
         element: <Consultancy />,
+      },
+      {
+        path: "vedic-shop",
+        element: <VedicShop />,
+      },
+      {
+        path: "vedic-shop/:id",
+        element: <ProductDetails />,
+      },
+      {
+        path: "learn-and-explore/course",
+        element: <Course />,
       },
     ],
   },
