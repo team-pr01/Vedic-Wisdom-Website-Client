@@ -5,8 +5,9 @@ import { Link } from "react-router-dom";
 import Button from "../../../../components/Reusable/Button/Button";
 import { useState } from "react";
 import { FaTimes } from "react-icons/fa";
-import { ICONS } from "../../../../assets";
+import { ICONS, IMAGES } from "../../../../assets";
 import SellerInstructions from "../../../../components/Dashboard/VedicShopPage/BecomeAVendorPage/SellerInstructions/SellerInstructions";
+import Modal from "../../../../components/Reusable/Modal/Modal";
 
 type TFormData = {
   name: string;
@@ -22,6 +23,7 @@ const BecomeAVendor = () => {
   const [agreeToTerms, setAgreeToTerms] = useState<boolean>(false);
   const [documents, setDocuments] = useState<File[]>([]);
   const [documentError, setDocumentError] = useState<string>("");
+  const [isSuccess, setIsSuccess] = useState<boolean>(true);
   const {
     register,
     formState: { errors },
@@ -276,6 +278,19 @@ const BecomeAVendor = () => {
       <div className="w-[40%]">
         <SellerInstructions />
       </div>
+
+      <Modal isModalOpen={isSuccess} setIsModalOpen={setIsSuccess}>
+        <div className="flex flex-col items-center text-center py-10">
+          <img src={IMAGES.successTick} alt="" />
+          <h2 className="text-neutral-90 text-2xl font-bold mt-6">
+            Vendor Request Submitted
+          </h2>
+          <p className="text-sm text-neutral-50 font-medium mt-2">
+            Your application is under admin review.You will be notified once
+            approved.
+          </p>
+        </div>
+      </Modal>
     </div>
   );
 };

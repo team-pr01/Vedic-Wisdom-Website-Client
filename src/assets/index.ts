@@ -25,6 +25,7 @@ import gradientProfileCard from "./images/gradient-profile-card.png";
 import getPremiumBanner from "./images/get-premium-banner.webp";
 import horoscopeBanner from "./images/horoscope-banner.webp";
 import becomeVendorCta from "./images/become-vendor-cta.webp";
+import successTick from "./images/success-tick.webp";
 
 // ICONS
 import arrowRight from "./icons/arrow-right.svg";
@@ -112,7 +113,8 @@ export const IMAGES = {
     gradientProfileCard,
     getPremiumBanner,
     horoscopeBanner,
-    becomeVendorCta
+    becomeVendorCta,
+    successTick
 };
 
 export const ICONS = {
@@ -174,5 +176,4 @@ export const ICONS = {
     star,
     heart,
     upload,
-
 };
