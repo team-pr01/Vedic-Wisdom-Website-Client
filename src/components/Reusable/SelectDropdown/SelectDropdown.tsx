@@ -53,7 +53,7 @@ const SelectDropdown = forwardRef<HTMLSelectElement, DropdownProps>(
           value={value}
           required={isRequired}
           onChange={handleChange}
-          className={`w-full px-4 py-2.75 rounded-lg border 
+          className={`w-full px-4 py-2.75 rounded-lg border placeholder:text-sm
   leading-4.5 focus:outline-none focus:border-primary-10 
   transition duration-300 capitalize 
   disabled:cursor-not-allowed

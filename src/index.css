@@ -85,6 +85,7 @@
   --bg-gradient-round: linear-gradient(180deg, #EEBF65 0%, #EEBA08 100%);
   --bg-ai-food-generator-card: linear-gradient(160deg, #FCF9F4 0%, #F0EDE9 100%);
   --bg-gradient-rounded-radial: linear-gradient(180deg, #D6A850 0%, #F0C166 47.57%, #FFF 100%);
+  --bg-gradient-book-consultation-modal: linear-gradient(88deg, #FFD482 1.7%, #FFF 146.75%);
 }
 
 .bg-gradient-primary-button {
@@ -110,6 +111,9 @@
 }
 .bg-gradient-rounded-radial {
   background: var(--bg-gradient-rounded-radial);
+}
+.bg-gradient-book-consultation-modal {
+  background: var(--bg-gradient-book-consultation-modal);
 }
 
 button {

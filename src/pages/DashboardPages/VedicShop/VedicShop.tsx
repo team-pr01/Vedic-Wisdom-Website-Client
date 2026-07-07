@@ -74,7 +74,7 @@ const VedicShop = () => {
         {/* CTA Card Section (30%) */}
         <div className="w-full lg:w-[30%] bg-[#fffbf2] border border-[#fef3d1] p-8 flex flex-col items-center justify-between rounded-2xl text-center min-h-[450px] shadow-sm">
           <div>
-            <h4 className="text-[#1a1a3d] font-bold text-3xl mb-4">
+            <h4 className="text-[#1a1a3d] font-bold text-2xl mb-3">
               Sell with us
             </h4>
             <p className="text-gray-500 leading-relaxed text-sm lg:text-base">

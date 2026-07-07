@@ -23,7 +23,7 @@ const BecomeAVendor = () => {
   const [agreeToTerms, setAgreeToTerms] = useState<boolean>(false);
   const [documents, setDocuments] = useState<File[]>([]);
   const [documentError, setDocumentError] = useState<string>("");
-  const [isSuccess, setIsSuccess] = useState<boolean>(true);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const {
     register,
     formState: { errors },
