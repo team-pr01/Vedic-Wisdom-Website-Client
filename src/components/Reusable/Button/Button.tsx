@@ -27,14 +27,14 @@ const Button = ({
   loadingText = "Loading...",
 }: TButtonProps) => {
   const baseStyles =
-    "inline-flex items-center justify-center gap-2 px-5 py-3 rounded-[9px] font-Manrope text-sm 2xl:text-base font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed";
+    "inline-flex items-center justify-center gap-2 px-5 py-3 rounded-[9px] font-Manrope text-sm font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed";
 
   const variants = {
     primary:
       "bg-gradient-primary-button border border-primary-20 text-neutral-5 hover:opacity-90 shadow-button",
 
     secondary:
-      "bg-neutral-30 border border-neutral-20 hover:bg-neutral-20",
+      "bg-neutral-30 border border-neutral-55 hover:bg-neutral-20",
   };
 
   return (

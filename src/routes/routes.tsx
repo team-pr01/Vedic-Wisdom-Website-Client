@@ -13,7 +13,7 @@ import VastuShastra from "../pages/DashboardPages/VastuShastra/VastuShastra";
 import OurProjects from "../pages/DashboardPages/OurProjects/OurProjects";
 import ProjectDetails from "../pages/DashboardPages/OurProjects/ProjectDetails";
 import SanatanSthal from "../pages/DashboardPages/SanatanSthal/SanatanSthal";
-import SanatanSthalDetails from "../pages/DashboardPages/SanatanSthal/SanatanSthalDetails";
+import SanatanSthalDetails from "../pages/DashboardPages/SanatanSthal/SanatanSthalDetails/SanatanSthalDetails";
 import Ayurveda from "../pages/DashboardPages/Ayurveda/Ayurveda";
 import Astrology from "../pages/DashboardPages/Astrology/Astrology";
 import Consultancy from "../pages/DashboardPages/Consultancy/Consultancy";
@@ -21,6 +21,7 @@ import Course from "../pages/DashboardPages/LearnAndExplore/Course/Course";
 import VedicShop from "../pages/DashboardPages/VedicShop/VedicShop";
 import ProductDetails from "../pages/DashboardPages/VedicShop/ProductDetails";
 import BecomeAVendor from "../pages/DashboardPages/VedicShop/BecomeAVendor/BecomeAVendor";
+import AddTemple from "../pages/DashboardPages/SanatanSthal/AddTemple/AddTemple";
 
 export const router = createBrowserRouter([
   {
@@ -82,6 +83,10 @@ export const router = createBrowserRouter([
       {
         path: "sanatan-sthal/:id",
         element: <SanatanSthalDetails />,
+      },
+      {
+        path: "add-temple",
+        element: <AddTemple />,
       },
       {
         path: "ayurveda",

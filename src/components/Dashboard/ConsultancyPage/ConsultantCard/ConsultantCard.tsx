@@ -105,7 +105,7 @@ const ConsultantCard = ({ consultant }) => {
             </div>
             <Button
               label="Book Consultation"
-              className="text-sm 2xl:text-sm py-2.5"
+              className="py-2.5"
               onClick={() => setIsBookConsultationModalOpen(true)}
             />
           </div>

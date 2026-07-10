@@ -1,7 +1,7 @@
-import TempleImages from "../../../components/Dashboard/SanathanSthalDetailsPage/TempleImages/TempleImages";
-import TempleInformation from "../../../components/Dashboard/SanathanSthalDetailsPage/TempleInformation/TempleInformation";
-import TempleVideos from "../../../components/Dashboard/SanathanSthalDetailsPage/TempleVideos/TempleVideos";
-import Breadcrumb from "../../../components/Reusable/Breadcrumb/Breadcrumb";
+import TempleImages from "../../../../components/Dashboard/SanathanSthalDetailsPage/TempleImages/TempleImages";
+import TempleInformation from "../../../../components/Dashboard/SanathanSthalDetailsPage/TempleInformation/TempleInformation";
+import TempleVideos from "../../../../components/Dashboard/SanathanSthalDetailsPage/TempleVideos/TempleVideos";
+import Breadcrumb from "../../../../components/Reusable/Breadcrumb/Breadcrumb";
 
 const SanatanSthalDetails = () => {
   return (

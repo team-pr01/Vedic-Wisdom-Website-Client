@@ -5,6 +5,7 @@ import DashboardHeading from "../../../components/Reusable/DashboardHeading/Dash
 import { IoSearchOutline } from "react-icons/io5";
 import TempleCard from "../../../components/Dashboard/SanathanSthalPage/TempleCard/TempleCard";
 import Button from "../../../components/Reusable/Button/Button";
+import { Link } from "react-router-dom";
 
 const SanatanSthal = () => {
   const [keyword, setKeyword] = useState<string>("");
@@ -22,10 +23,11 @@ const SanatanSthal = () => {
           title="Explore Sanatan Sthals Worldwide"
           description="Discover the timeless wisdom of Sanatan traditions from around the world. Explore the sacred texts, rituals, and traditions that have shaped our spiritual journey."
         />
-        <Button
-          label="Add a Temple You Know"
-          className="text-sm 2xl:text-sm"
-        />
+        <Link to={"/dashboard/add-temple"}>
+          <Button
+            label="Add a Temple You Know"
+          />
+        </Link>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8 font-GeneralSans mt-10">

@@ -4,23 +4,26 @@ import Button from "../../../components/Reusable/Button/Button";
 import DashboardHeading from "../../../components/Reusable/DashboardHeading/DashboardHeading";
 import HoroscopeCard from "../../../components/Dashboard/AstrologyPage/HoroscopeCard/HoroscopeCard";
 import AvailableExperts from "../../../components/Reusable/AvailableExperts/AvailableExperts";
+import AIReading from "../../../components/Dashboard/AstrologyPage/AIReading/AIReading";
 
 const Astrology = () => {
+  const [isAiReadingModalOpen, setIsAiReadingModalOpen] =
+    useState<boolean>(false);
   const [selectedZodiac, setSelectedZodiac] = useState<string>("All");
- const zodiacSigns = [
-  { label: "♈ Aries", value: "Aries" },
-  { label: "♉ Taurus", value: "Taurus" },
-  { label: "♊ Gemini", value: "Gemini" },
-  { label: "♋ Cancer", value: "Cancer" },
-  { label: "♌ Leo", value: "Leo" },
-  { label: "♍ Virgo", value: "Virgo" },
-  { label: "♎ Libra", value: "Libra" },
-  { label: "♏ Scorpio", value: "Scorpio" },
-  { label: "♐ Sagittarius", value: "Sagittarius" },
-  { label: "♑ Capricorn", value: "Capricorn" },
-  { label: "♒ Aquarius", value: "Aquarius" },
-  { label: "♓ Pisces", value: "Pisces" }
-];
+  const zodiacSigns = [
+    { label: "♈ Aries", value: "Aries" },
+    { label: "♉ Taurus", value: "Taurus" },
+    { label: "♊ Gemini", value: "Gemini" },
+    { label: "♋ Cancer", value: "Cancer" },
+    { label: "♌ Leo", value: "Leo" },
+    { label: "♍ Virgo", value: "Virgo" },
+    { label: "♎ Libra", value: "Libra" },
+    { label: "♏ Scorpio", value: "Scorpio" },
+    { label: "♐ Sagittarius", value: "Sagittarius" },
+    { label: "♑ Capricorn", value: "Capricorn" },
+    { label: "♒ Aquarius", value: "Aquarius" },
+    { label: "♓ Pisces", value: "Pisces" },
+  ];
   return (
     <div className="font-Manrope">
       <div className="flex items-center justify-between">
@@ -28,7 +31,12 @@ const Astrology = () => {
           title="Jyotish And Astrology"
           description="Discover the art of Jyotish and astrology to balance your mind, body and soul."
         />
-        <Button leftIcon={ICONS.ai} label="AI Reading" />
+        <Button
+          onClick={() => setIsAiReadingModalOpen(true)}
+          leftIcon={ICONS.ai}
+          label="AI Reading"
+          className="py-2.5"
+        />
       </div>
 
       <div className="flex items-center gap-3 mt-10">
@@ -59,6 +67,11 @@ const Astrology = () => {
           />
         </div>
       </div>
+
+      <AIReading
+        isModalOpen={isAiReadingModalOpen}
+        setIsModalOpen={setIsAiReadingModalOpen}
+      />
     </div>
   );
 };
