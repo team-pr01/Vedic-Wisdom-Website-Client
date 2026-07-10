@@ -17,6 +17,7 @@ import dummyPrasad from "./images/dummy-prasad.png"; // This is a placeholder im
 import dummyVastu from "./images/dummy-vastu.png"; // This is a placeholder image for projects, replace it with actual project images when available
 import dummyShopBanner from "./images/dummy-banner.png"; // This is a placeholder image for projects, replace it with actual project images when available
 import dummyProduct from "./images/dummy-product.png"; // This is a placeholder image for projects, replace it with actual project images when available
+import dummyCourse from "./images/dummy-course.png"; // This is a placeholder image for projects, replace it with actual project images when available
 import appMockup from "./images/app-mockup.webp";
 import footerBg from "./images/footer-bg.webp";
 import signinImg from "./images/signin-img.webp";
@@ -106,6 +107,7 @@ export const IMAGES = {
     dummyVastu,
     dummyShopBanner,
     dummyProduct,
+    dummyCourse,
     appMockup,
     footerBg,
     signinImg,
