@@ -6,12 +6,22 @@ import { emailValidator } from "../../../utils/emailValidator";
 import TextInput from "../../Reusable/TextInput/TextInput";
 import { useForm } from "react-hook-form";
 import Button from "../../Reusable/Button/Button";
+import ForgotPassword from "../ForgotPassword/ForgotPassword";
+import Modal from "../../Reusable/Modal/Modal";
+import VerifyOtp from "../VerifyOtp/VerifyOtp";
+import ResetPassword from "../ResetPassword/ResetPassword";
 
 type TFormData = {
   email: string;
   password: string;
 };
+
+type TModalType = "forgotPassword" | "verifyOtp" | "resetPassword";
+
 const LoginForm = () => {
+  const [modalType, setModalType] = useState<TModalType>("forgotPassword");
+  const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] =
+    useState<boolean>(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
   const {
@@ -20,13 +30,49 @@ const LoginForm = () => {
     handleSubmit,
   } = useForm<TFormData>();
 
-  const handleSignup = (data: TFormData) => {
+  const handleLogin = (data: TFormData) => {
     try {
       console.log(data);
     } catch (error: any) {
       console.log(error);
     }
   };
+
+  // Modal content based on modalType
+  const getModalContent = () => {
+    switch (modalType) {
+      case "forgotPassword":
+        return {
+          title: "Forgot Password?",
+          description:
+            "Enter your email address and we will send you a link to reset your password",
+          component: <ForgotPassword setModalType={setModalType} />,
+        };
+      case "verifyOtp":
+        return {
+          title: "Verify OTP",
+          description:
+            "Enter the 6-digit verification code sent to your registered email",
+          component: <VerifyOtp setModalType={setModalType} />,
+        };
+      case "resetPassword":
+        return {
+          title: "Reset Password",
+          description:
+            "Create a new password for your account. Make sure it's strong and secure.",
+          component: <ResetPassword setModalType={setModalType} />,
+        };
+      default:
+        return {
+          title: "",
+          description: "",
+          component: null,
+        };
+    }
+  };
+
+  const modalContent = getModalContent();
+
   return (
     <div className="p-8 border border-primary-50 bg-neutral-45 shadow-hero-user-community-box font-Manrope rounded-4xl">
       <h1 className="text-neutral-40 text-3xl font-semibold text-center">
@@ -36,7 +82,7 @@ const LoginForm = () => {
         Login to continue your spiritual journey
       </p>
 
-      <form className="space-y-4 mt-10" onSubmit={handleSubmit(handleSignup)}>
+      <form className="space-y-4 mt-10" onSubmit={handleSubmit(handleLogin)}>
         <TextInput
           label="Email Address"
           placeholder="Enter your email"
@@ -64,22 +110,36 @@ const LoginForm = () => {
           })}
         />
 
-        <PasswordInput
-          label="Password"
-          placeholder="Must be at least 8 Characters"
-          error={errors.password}
-          {...register("password", {
-            required: "Password is required",
-            minLength: {
-              value: 8,
-              message: "Password must be at least 8 characters",
-            },
-          })}
-          isPasswordVisible={isPasswordVisible}
-          setIsPasswordVisible={setIsPasswordVisible}
-        />
+        <div className="w-full">
+          <PasswordInput
+            label="Password"
+            placeholder="Must be at least 8 Characters"
+            error={errors.password}
+            {...register("password", {
+              required: "Password is required",
+              minLength: {
+                value: 8,
+                message: "Password must be at least 8 characters",
+              },
+            })}
+            isPasswordVisible={isPasswordVisible}
+            setIsPasswordVisible={setIsPasswordVisible}
+          />
+          <div className="flex justify-end mt-2">
+            <button
+              onClick={() => {
+                setModalType("forgotPassword");
+                setIsForgotPasswordModalOpen(true);
+              }}
+              type="button"
+              className="text-primary-10 underline font-semibold text-sm"
+            >
+              Forgot Password?
+            </button>
+          </div>
+        </div>
 
-        <Button label="Login" className="w-full mt-3" type="submit" />
+        <Button label="Login" className="w-full" type="submit" />
       </form>
 
       <div className="space-y-4 mt-6">
@@ -107,6 +167,21 @@ const LoginForm = () => {
           Sign Up
         </a>
       </p>
+
+      <Modal
+        isModalOpen={isForgotPasswordModalOpen}
+        setIsModalOpen={setIsForgotPasswordModalOpen}
+      >
+        <div className="flex flex-col items-center text-center p-4">
+          <h2 className="text-neutral-90 text-2xl font-bold">
+            {modalContent.title}
+          </h2>
+          <p className="text-sm text-neutral-50 font-medium mt-2 max-w-sm">
+            {modalContent.description}
+          </p>
+          <div className="w-full mt-6">{modalContent.component}</div>
+        </div>
+      </Modal>
     </div>
   );
 };

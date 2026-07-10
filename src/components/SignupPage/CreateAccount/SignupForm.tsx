@@ -66,6 +66,21 @@ const SignupForm = () => {
     }
   };
 
+  const roles = [
+    {
+      label : "User",
+      value : "user",
+    },
+    {
+      label : "Temple",
+      value : "temple",
+    },
+    {
+      label : "Organization",
+      value : "organization",
+    },
+  ]
+
   return (
     <div className="p-8 border border-primary-50 bg-neutral-45 shadow-hero-user-community-box font-Manrope rounded-4xl">
       <h1 className="text-neutral-40 text-3xl font-semibold text-center">
@@ -79,7 +94,7 @@ const SignupForm = () => {
         <SelectDropdownWithSearch
           label="Choose Registration Type"
           name="role"
-          options={["User", "Temple", "Organization"]}
+          options={roles}
           onChange={(value) => setValue("role", value.toLocaleLowerCase())}
           isRequired={true}
           error={fieldErrors.role}

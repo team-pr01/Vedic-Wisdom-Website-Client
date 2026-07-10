@@ -2,7 +2,7 @@
 const DashboardHome = () => {
     return (
         <div>
-            sdf sdf
+          Dashboard
         </div>
     );
 };
