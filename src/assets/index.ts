@@ -29,6 +29,7 @@ import horoscopeBanner from "./images/horoscope-banner.webp";
 import becomeVendorCta from "./images/become-vendor-cta.webp";
 import successTick from "./images/success-tick.webp";
 import bookHeroImg from "./images/book-hero-img.webp";
+import startSelling from "./images/start-selling.webp";
 
 // ICONS
 import arrowRight from "./icons/arrow-right.svg";
@@ -92,6 +93,7 @@ import upload from "./icons/upload.svg";
 import bookmark from "./icons/bookmark.svg";
 import translate from "./icons/translate.svg";
 import reportIssue from "./icons/report-issue.svg";
+import plus from "./icons/plus.svg";
 
 export const IMAGES = {
     logo,
@@ -123,7 +125,8 @@ export const IMAGES = {
     horoscopeBanner,
     becomeVendorCta,
     successTick,
-    bookHeroImg
+    bookHeroImg,
+    startSelling
 };
 
 export const ICONS = {
@@ -188,4 +191,5 @@ export const ICONS = {
     bookmark,
     translate,
     reportIssue,
+    plus,
 };

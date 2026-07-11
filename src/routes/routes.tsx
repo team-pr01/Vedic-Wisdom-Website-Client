@@ -19,11 +19,12 @@ import Astrology from "../pages/DashboardPages/Astrology/Astrology";
 import Consultancy from "../pages/DashboardPages/Consultancy/Consultancy";
 import Course from "../pages/DashboardPages/LearnAndExplore/Course/Course";
 import VedicShop from "../pages/DashboardPages/VedicShop/VedicShop";
-import ProductDetails from "../pages/DashboardPages/VedicShop/ProductDetails";
+import ProductDetails from "../pages/DashboardPages/VedicShop/ProductDetails/ProductDetails";
 import BecomeAVendor from "../pages/DashboardPages/VedicShop/BecomeAVendor/BecomeAVendor";
 import AddTemple from "../pages/DashboardPages/SanatanSthal/AddTemple/AddTemple";
 import Book from "../pages/DashboardPages/LearnAndExplore/Book/Book";
 import BookDetails from "../pages/DashboardPages/LearnAndExplore/Book/BookDetails/BookDetails";
+import VendorDashboard from "../pages/DashboardPages/VedicShop/VendorDashboard/VendorDashboard";
 
 export const router = createBrowserRouter([
   {
@@ -113,6 +114,10 @@ export const router = createBrowserRouter([
       {
         path: "vedic-shop/become-a-vendor",
         element: <BecomeAVendor />,
+      },
+      {
+        path: "vedic-shop/vendor/dashboard",
+        element: <VendorDashboard />,
       },
       {
         path: "learn-and-explore/course",

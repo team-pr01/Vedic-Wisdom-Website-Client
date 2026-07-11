@@ -1,8 +1,8 @@
-import { ICONS, IMAGES } from "../../../assets";
-import Button from "../../../components/Reusable/Button/Button";
-import Breadcrumb from "../../../components/Reusable/Breadcrumb/Breadcrumb";
-import ProductCard from "../../../components/Dashboard/VedicShopPage/ProductCard/ProductCard";
-import ProductImageCarousel from "../../../components/Reusable/ProductImageCarousel/ProductImageCarousel";
+import { ICONS, IMAGES } from "../../../../assets";
+import Button from "../../../../components/Reusable/Button/Button";
+import Breadcrumb from "../../../../components/Reusable/Breadcrumb/Breadcrumb";
+import ProductCard from "../../../../components/Dashboard/VedicShopPage/ProductCard/ProductCard";
+import ProductImageCarousel from "../../../../components/Reusable/ProductImageCarousel/ProductImageCarousel";
 
 const ProductDetails = () => {
   const banners = [

@@ -2,12 +2,12 @@ import AllBooks from "../../../../components/Dashboard/LearnAndExplorePages/Book
 import BookHero from "../../../../components/Dashboard/LearnAndExplorePages/BookPage/BookHero/BookHero";
 
 const Book = () => {
-    return (
-        <div>
-            <BookHero/>
-            <AllBooks/>
-        </div>
-    );
+  return (
+    <div>
+      <BookHero />
+      <AllBooks />
+    </div>
+  );
 };
 
 export default Book;
