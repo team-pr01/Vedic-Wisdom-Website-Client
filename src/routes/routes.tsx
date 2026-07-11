@@ -22,6 +22,8 @@ import VedicShop from "../pages/DashboardPages/VedicShop/VedicShop";
 import ProductDetails from "../pages/DashboardPages/VedicShop/ProductDetails";
 import BecomeAVendor from "../pages/DashboardPages/VedicShop/BecomeAVendor/BecomeAVendor";
 import AddTemple from "../pages/DashboardPages/SanatanSthal/AddTemple/AddTemple";
+import Book from "../pages/DashboardPages/LearnAndExplore/Book/Book";
+import BookDetails from "../pages/DashboardPages/LearnAndExplore/Book/BookDetails/BookDetails";
 
 export const router = createBrowserRouter([
   {
@@ -115,6 +117,14 @@ export const router = createBrowserRouter([
       {
         path: "learn-and-explore/course",
         element: <Course />,
+      },
+      {
+        path: "learn-and-explore/book",
+        element: <Book />,
+      },
+      {
+        path: "learn-and-explore/book/:id",
+        element: <BookDetails />,
       },
     ],
   },

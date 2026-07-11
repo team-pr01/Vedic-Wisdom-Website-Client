@@ -1,3 +1,4 @@
+import { FiBookOpen } from "react-icons/fi";
 import { GiGreekTemple } from "react-icons/gi";
 import {
   LuLayoutDashboard,
@@ -103,6 +104,11 @@ export const sidebarLinks: DashboardLink[] = [
         label: "Quiz",
         path: "/dashboard/learn-and-explore/quiz",
         icon: <LuBrain className="w-5 h-5" />,
+      },
+      {
+        label: "Book",
+        path: "/dashboard/learn-and-explore/book",
+        icon: <FiBookOpen className="w-5 h-5" />,
       },
       {
         label: "Audio Book",

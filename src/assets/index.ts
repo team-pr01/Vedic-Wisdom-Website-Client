@@ -18,6 +18,7 @@ import dummyVastu from "./images/dummy-vastu.png"; // This is a placeholder imag
 import dummyShopBanner from "./images/dummy-banner.png"; // This is a placeholder image for projects, replace it with actual project images when available
 import dummyProduct from "./images/dummy-product.png"; // This is a placeholder image for projects, replace it with actual project images when available
 import dummyCourse from "./images/dummy-course.png"; // This is a placeholder image for projects, replace it with actual project images when available
+import dummyBook from "./images/dummy-book.png"; // This is a placeholder image for projects, replace it with actual project images when available
 import appMockup from "./images/app-mockup.webp";
 import footerBg from "./images/footer-bg.webp";
 import signinImg from "./images/signin-img.webp";
@@ -27,6 +28,7 @@ import getPremiumBanner from "./images/get-premium-banner.webp";
 import horoscopeBanner from "./images/horoscope-banner.webp";
 import becomeVendorCta from "./images/become-vendor-cta.webp";
 import successTick from "./images/success-tick.webp";
+import bookHeroImg from "./images/book-hero-img.webp";
 
 // ICONS
 import arrowRight from "./icons/arrow-right.svg";
@@ -87,6 +89,9 @@ import location from "./icons/location.svg";
 import star from "./icons/star.svg";
 import heart from "./icons/heart.svg";
 import upload from "./icons/upload.svg";
+import bookmark from "./icons/bookmark.svg";
+import translate from "./icons/translate.svg";
+import reportIssue from "./icons/report-issue.svg";
 
 export const IMAGES = {
     logo,
@@ -108,6 +113,7 @@ export const IMAGES = {
     dummyShopBanner,
     dummyProduct,
     dummyCourse,
+    dummyBook,
     appMockup,
     footerBg,
     signinImg,
@@ -116,7 +122,8 @@ export const IMAGES = {
     getPremiumBanner,
     horoscopeBanner,
     becomeVendorCta,
-    successTick
+    successTick,
+    bookHeroImg
 };
 
 export const ICONS = {
@@ -178,4 +185,7 @@ export const ICONS = {
     star,
     heart,
     upload,
+    bookmark,
+    translate,
+    reportIssue,
 };
