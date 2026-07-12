@@ -20,6 +20,7 @@ import {
   MdOutlineWorkOutline,
   MdOutlinePerson,
 } from "react-icons/md";
+import { RiChatAi2Line } from "react-icons/ri";
 
 interface DashboardLink {
   label: string;
@@ -33,6 +34,11 @@ export const sidebarLinks: DashboardLink[] = [
     label: "Overview",
     path: "/dashboard",
     icon: <LuLayoutDashboard className="w-5 h-5" />,
+  },
+  {
+    label: "AI Chatbot",
+    path: "/dashboard/ai-chatbot",
+    icon: <RiChatAi2Line className="w-5 h-5" />,
   },
   {
     label: "My Profile",

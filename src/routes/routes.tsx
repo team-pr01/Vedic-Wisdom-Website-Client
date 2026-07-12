@@ -25,6 +25,8 @@ import AddTemple from "../pages/DashboardPages/SanatanSthal/AddTemple/AddTemple"
 import Book from "../pages/DashboardPages/LearnAndExplore/Book/Book";
 import BookDetails from "../pages/DashboardPages/LearnAndExplore/Book/BookDetails/BookDetails";
 import VendorDashboard from "../pages/DashboardPages/VedicShop/VendorDashboard/VendorDashboard";
+import AddProduct from "../pages/DashboardPages/VedicShop/AddProduct/AddProduct";
+import AiChatbot from "../pages/DashboardPages/AiChatbot/AiChatbot";
 
 export const router = createBrowserRouter([
   {
@@ -118,6 +120,14 @@ export const router = createBrowserRouter([
       {
         path: "vedic-shop/vendor/dashboard",
         element: <VendorDashboard />,
+      },
+      {
+        path: "vedic-shop/vendor/add-product",
+        element: <AddProduct />,
+      },
+      {
+        path: "ai-chatbot",
+        element: <AiChatbot />,
       },
       {
         path: "learn-and-explore/course",

@@ -1,6 +1,7 @@
 import { FaBox, FaCheckCircle, FaClock, FaEye } from "react-icons/fa";
 import { ICONS, IMAGES } from "../../../../../assets";
 import Button from "../../../../Reusable/Button/Button";
+import { Link } from "react-router-dom";
 
 const DashboardStatistics = () => {
   const stats = [
@@ -110,11 +111,13 @@ const DashboardStatistics = () => {
 
         {/* Add New Product Button */}
         <div className="flex justify-end">
+          <Link to={`/dashboard/vedic-shop/vendor/add-product`} className="w-full">
           <Button
             label="Add New Product"
             className="w-full"
             rightIcon={ICONS.plus}
           />
+          </Link>
         </div>
       </div>
     </div>
