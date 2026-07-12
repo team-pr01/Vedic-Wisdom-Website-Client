@@ -170,7 +170,7 @@ const Notification = () => {
               animate="visible"
               exit="exit"
               variants={dropdownVariants}
-              className="absolute top-full -right-10 md:right-0 mt-2 w-[300px] md:w-[350px] bg-white rounded-lg shadow-lg z-20 border border-gray-200"
+              className="absolute top-full -right-10 md:right-0 mt-2 w-[300px] md:w-[350px] bg-white rounded-lg shadow-lg z-20 border border-neutral-55"
             >
               <div className="p-4">
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">

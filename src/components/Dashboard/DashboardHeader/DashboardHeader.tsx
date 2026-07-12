@@ -1,6 +1,7 @@
 import { ICONS } from "../../../assets";
 import Button from "../../Reusable/Button/Button";
 import Notification from "./Notification/Notification";
+import UserMenu from "./UserMenu/UserMenu";
 
 const DashboardHeader = () => {
   return (
@@ -24,10 +25,8 @@ const DashboardHeader = () => {
       </div>
 
       <div className="flex items-center gap-3">
-       <Notification/>
-        <button className="size-8 rounded-full border border-primary-80 bg-neutral-70 hover:bg-primary-10/20 transition duration-300 shadow-dashboard-header-button flex items-center justify-center">
-          <img src={ICONS.user} alt="" className="size-5" />
-        </button>
+        <Notification />
+        <UserMenu />
       </div>
     </div>
   );

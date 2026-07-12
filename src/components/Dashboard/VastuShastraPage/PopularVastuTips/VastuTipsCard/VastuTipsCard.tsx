@@ -1,4 +1,4 @@
-import { ICONS } from "../../../../../../assets";
+import { ICONS } from "../../../../../assets";
 
 const VastuTipsCard = () => {
   return (

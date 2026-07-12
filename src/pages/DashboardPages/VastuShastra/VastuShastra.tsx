@@ -4,9 +4,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 import { ICONS } from "../../../assets";
-import VastuShastraVideoCard from "../../../components/Dashboard/DashboardHeader/VastuShastraPage/VastuShastraVideoCard/VastuShastraVideoCard";
-import PopularVastuTips from "../../../components/Dashboard/DashboardHeader/VastuShastraPage/PopularVastuTips/PopularVastuTips";
 import AvailableExperts from "../../../components/Reusable/AvailableExperts/AvailableExperts";
+import VastuShastraVideoCard from "../../../components/Dashboard/VastuShastraPage/VastuShastraVideoCard/VastuShastraVideoCard";
+import PopularVastuTips from "../../../components/Dashboard/VastuShastraPage/PopularVastuTips/PopularVastuTips";
 
 const VastuShastra = () => {
   const swiperRef = useRef<SwiperType | null>(null);

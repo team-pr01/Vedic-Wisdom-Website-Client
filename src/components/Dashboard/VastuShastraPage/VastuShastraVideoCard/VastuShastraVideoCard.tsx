@@ -1,5 +1,5 @@
-import { ICONS, IMAGES } from "../../../../../assets";
-import Button from "../../../../Reusable/Button/Button";
+import { ICONS, IMAGES } from "../../../../assets";
+import Button from "../../../Reusable/Button/Button";
 
 const VastuShastraVideoCard = () => {
   return (
