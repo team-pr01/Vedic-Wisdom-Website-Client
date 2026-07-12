@@ -50,37 +50,35 @@ const News = () => {
         </button>
       </div>
 
-      <div>
-        <div className="flex gap-8">
-          <div className="w-[60%]">
-            <h4 className="text-neutral-90 font-bold text-xl">Latest News</h4>
-            <div className="space-y-5 mt-4">
-              <NewsCard />
-              <NewsCard />
-              <NewsCard />
-            </div>
+      <div className="flex gap-8">
+        <div className="w-[60%]">
+          <h4 className="text-neutral-90 font-bold text-xl">Latest News</h4>
+          <div className="space-y-5 mt-4">
+            <NewsCard />
+            <NewsCard />
+            <NewsCard />
           </div>
+        </div>
 
-          <div className="w-[40%] sticky top-5 h-fit">
-            <h4 className="text-neutral-90 font-bold text-xl">Trending News</h4>
-            <div className="flex flex-col gap-4 mt-4">
-              <TrendingNewsCard />
-              <TrendingNewsCard />
-              <TrendingNewsCard />
-              <TrendingNewsCard />
-              <TrendingNewsCard />
-              <TrendingNewsCard />
-              <TrendingNewsCard />
-              <TrendingNewsCard />
-              <TrendingNewsCard />
-              <TrendingNewsCard />
-              <TrendingNewsCard />
-              <TrendingNewsCard />
-              <TrendingNewsCard />
-              <TrendingNewsCard />
-              <TrendingNewsCard />
-              <TrendingNewsCard />
-            </div>
+        <div className="w-[40%] sticky top-5 h-fit">
+          <h4 className="text-neutral-90 font-bold text-xl">Trending News</h4>
+          <div className="flex flex-col gap-4 mt-4">
+            <TrendingNewsCard />
+            <TrendingNewsCard />
+            <TrendingNewsCard />
+            <TrendingNewsCard />
+            <TrendingNewsCard />
+            <TrendingNewsCard />
+            <TrendingNewsCard />
+            <TrendingNewsCard />
+            <TrendingNewsCard />
+            <TrendingNewsCard />
+            <TrendingNewsCard />
+            <TrendingNewsCard />
+            <TrendingNewsCard />
+            <TrendingNewsCard />
+            <TrendingNewsCard />
+            <TrendingNewsCard />
           </div>
         </div>
       </div>

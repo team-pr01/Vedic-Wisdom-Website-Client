@@ -96,6 +96,7 @@ import reportIssue from "./icons/report-issue.svg";
 import plus from "./icons/plus.svg";
 import aiChatbot from "./icons/ai-chatbot.svg";
 import calendar from "./icons/calendar.svg";
+import share from "./icons/share.svg";
 
 export const IMAGES = {
     logo,
@@ -196,4 +197,5 @@ export const ICONS = {
     plus,
     aiChatbot,
     calendar,
+    share,
 };

@@ -28,6 +28,7 @@ import VendorDashboard from "../pages/DashboardPages/VedicShop/VendorDashboard/V
 import AddProduct from "../pages/DashboardPages/VedicShop/AddProduct/AddProduct";
 import AiChatbot from "../pages/DashboardPages/AiChatbot/AiChatbot";
 import News from "../pages/DashboardPages/News/News";
+import NewsDetails from "../pages/DashboardPages/NewsDetails/NewsDetails";
 
 export const router = createBrowserRouter([
   {
@@ -133,6 +134,10 @@ export const router = createBrowserRouter([
       {
         path: "news",
         element: <News />,
+      },
+      {
+        path: "news/:id",
+        element: <NewsDetails />,
       },
       {
         path: "learn-and-explore/course",

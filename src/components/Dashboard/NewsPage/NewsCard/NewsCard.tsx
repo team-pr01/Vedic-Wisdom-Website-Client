@@ -37,7 +37,7 @@ const NewsCard = () => {
               <IoHeartOutline className="text-xl text-primary-10" />
               <p className="text-neutral-90 text-sm">20</p>
             </button>
-            <Link to="" className="flex items-center gap-1.5">
+            <Link to="/dashboard/news/1" className="flex items-center gap-1.5">
               <p className="text-neutral-5 text-sm font-semibold">Read More</p>
               <img src={ICONS.arrowRight} alt="" className="w-4" />
             </Link>
