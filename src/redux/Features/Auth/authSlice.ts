@@ -1,9 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../../store";
 
 type TAuthUser = {
      user : null | object;
      token : null | string;
+}
+
+export type TLoggedInUser = {
+    _id: string;
+    name: string;
+    email: string;
+    phoneNumber: string;
+    role: any;
+    isProfileCompleted: boolean;
+
 }
 
 const initialState: TAuthUser = {

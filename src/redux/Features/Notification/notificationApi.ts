@@ -1,61 +1,30 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { baseApi } from "../../API/baseApi";
 
 const notificationApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllNotifications: builder.query<any, { keyword?: string }>({
-      query: () => {
-        return {
-          url: `/notification`,
-          method: "GET",
-          credentials: "include",
-        };
-      },
-      providesTags: ["notification"],
-    }),
-
-    getSingleNotification: builder.query({
-      query: (id) => ({
-        url: `/notification/${id}`,
+    getMyNotifications: builder.query({
+      query: () => ({
+        url: `/notification/my`,
         method: "GET",
         credentials: "include",
       }),
       providesTags: ["notification"],
     }),
 
-    sendNotification: builder.mutation<any, any>({
-      query: (data) => ({
-        url: `/notification/send-notification`,
-        method: "POST",
-        body: data,
-        credentials: "include",
-      }),
-      invalidatesTags: ["notification"],
-    }),
-
-    deleteNotification: builder.mutation<any, string>({
+    markAsRead: builder.mutation<any, any>({
       query: (id) => ({
-        url: `/notification/${id}`,
-        method: "DELETE",
+        url: `/notification/read/${id}`,
+        method: "PATCH",
         credentials: "include",
       }),
       invalidatesTags: ["notification"],
     }),
-
-    // updateNews: builder.mutation<any, any>({
-    //   query: ({ id, data }) => ({
-    //     url: `/news/${id}`,
-    //     method: "PUT",
-    //     body: data,
-    //     credentials: "include",
-    //   }),
-    //   invalidatesTags: ["news"],
-    // }),
   }),
 });
 
 export const {
-  useGetAllNotificationsQuery,
-  useGetSingleNotificationQuery,
-  useSendNotificationMutation,
-  useDeleteNotificationMutation,
+  useGetMyNotificationsQuery,
+  useMarkAsReadMutation,
 } = notificationApi;

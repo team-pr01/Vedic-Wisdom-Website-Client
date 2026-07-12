@@ -1,5 +1,5 @@
 import { io, Socket } from "socket.io-client";
-import { backendBaseUrl } from "../redux/Api/baseApi";
+import { backendBaseUrl } from "../redux/API/baseApi";
 
 let socket: Socket | null = null;
 
