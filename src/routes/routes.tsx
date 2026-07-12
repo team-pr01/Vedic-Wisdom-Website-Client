@@ -27,6 +27,7 @@ import BookDetails from "../pages/DashboardPages/LearnAndExplore/Book/BookDetail
 import VendorDashboard from "../pages/DashboardPages/VedicShop/VendorDashboard/VendorDashboard";
 import AddProduct from "../pages/DashboardPages/VedicShop/AddProduct/AddProduct";
 import AiChatbot from "../pages/DashboardPages/AiChatbot/AiChatbot";
+import News from "../pages/DashboardPages/News/News";
 
 export const router = createBrowserRouter([
   {
@@ -128,6 +129,10 @@ export const router = createBrowserRouter([
       {
         path: "ai-chatbot",
         element: <AiChatbot />,
+      },
+      {
+        path: "news",
+        element: <News />,
       },
       {
         path: "learn-and-explore/course",

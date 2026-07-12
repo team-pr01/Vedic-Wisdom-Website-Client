@@ -1,5 +1,6 @@
 import { FiBookOpen } from "react-icons/fi";
 import { GiGreekTemple } from "react-icons/gi";
+import { HiOutlineNewspaper } from "react-icons/hi";
 import {
   LuLayoutDashboard,
   LuClipboardList,
@@ -49,6 +50,11 @@ export const sidebarLinks: DashboardLink[] = [
     label: "Our Projects",
     path: "/dashboard/our-projects",
     icon: <LuFolderOpen className="w-5 h-5" />,
+  },
+  {
+    label: "News Articles",
+    path: "/dashboard/news",
+    icon: <HiOutlineNewspaper className="w-5 h-5" />,
   },
   {
     label: "Vastu Shastra",

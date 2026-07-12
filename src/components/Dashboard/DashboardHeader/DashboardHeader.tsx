@@ -12,7 +12,7 @@ const DashboardHeader = () => {
             className="size-6 absolute left-3 top-3"
           />
           <input
-            className="rounded-[14px] bg-neutral-85 pl-10 pr-3 py-2.5 w-full"
+            className="rounded-[14px] bg-neutral-85 pl-11 pr-3 py-2.5 w-full focus:outline-none"
             placeholder="Search scriptures, mantras or ask the AI guide"
           />
         </div>
