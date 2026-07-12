@@ -1,7 +1,16 @@
+import { useState } from "react";
 import { ICONS, IMAGES } from "../../../assets";
 import Button from "../../../components/Reusable/Button/Button";
+import SelectSystemLanguage from "../../../components/Shared/SelectSystemLanguage/SelectSystemLanguage";
+import CoinUsages from "../../../components/Dashboard/MyProfilePage/CoinUsages/CoinUsages";
 
 const MyProfile = () => {
+  const [isTranslateNewsModalOpen, setIsTranslateNewsModalOpen] =
+    useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("");
+
+  const [isCoinUsageModalOpen, setIsCoinUsageModalOpen] =
+    useState<boolean>(false);
   const statics = [
     {
       title: "Saved Audio Books",
@@ -33,7 +42,9 @@ const MyProfile = () => {
     },
     {
       label: "Language",
-      onClick: () => {},
+      onClick: () => {
+        setIsTranslateNewsModalOpen(true);
+      },
       icon: ICONS.language,
     },
     {
@@ -43,7 +54,9 @@ const MyProfile = () => {
     },
     {
       label: "Coin Usage",
-      onClick: () => {},
+      onClick: () => {
+        setIsCoinUsageModalOpen(true);
+      },
       icon: ICONS.howToUseCoin,
     },
     {
@@ -162,7 +175,11 @@ const MyProfile = () => {
         <div className="w-[50%] space-y-4">
           <h3 className="text-neutral-90 font-bold">General</h3>
           {generalLinks?.map((item) => (
-            <div key={item?.label} className="border border-neutral-55 bg-white p-4 rounded-lg flex items-center justify-between">
+            <button
+              key={item?.label}
+              onClick={item.onClick}
+              className="border border-neutral-55 bg-white p-4 rounded-lg flex items-center justify-between w-full"
+            >
               <div className="flex items-center gap-2.5">
                 <img src={item?.icon} alt="" className="size-6" />
                 <p className="text-sm font-bold text-neutral-90">
@@ -170,10 +187,21 @@ const MyProfile = () => {
                 </p>
               </div>
               <img src={ICONS.arrowRightGray} alt="" className="size-6" />
-            </div>
+            </button>
           ))}
         </div>
       </div>
+
+      <SelectSystemLanguage
+        isModalOpen={isTranslateNewsModalOpen}
+        setIsModalOpen={setIsTranslateNewsModalOpen}
+        setSelectedLanguage={setSelectedLanguage}
+      />
+
+      <CoinUsages
+        isModalOpen={isCoinUsageModalOpen}
+        setIsModalOpen={setIsCoinUsageModalOpen}
+      />
     </div>
   );
 };
