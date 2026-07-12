@@ -29,6 +29,7 @@ import AddProduct from "../pages/DashboardPages/VedicShop/AddProduct/AddProduct"
 import AiChatbot from "../pages/DashboardPages/AiChatbot/AiChatbot";
 import News from "../pages/DashboardPages/News/News";
 import NewsDetails from "../pages/DashboardPages/NewsDetails/NewsDetails";
+import MyReferrals from "../pages/DashboardPages/MyProfile/MyReferrals/MyReferrals";
 
 export const router = createBrowserRouter([
   {
@@ -62,6 +63,10 @@ export const router = createBrowserRouter([
       {
         path: "my-profile",
         element: <MyProfile />,
+      },
+      {
+        path: "my-referrals",
+        element: <MyReferrals />,
       },
       {
         path: "help",
