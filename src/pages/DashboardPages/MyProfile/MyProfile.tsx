@@ -3,6 +3,7 @@ import { ICONS, IMAGES } from "../../../assets";
 import Button from "../../../components/Reusable/Button/Button";
 import SelectSystemLanguage from "../../../components/Shared/SelectSystemLanguage/SelectSystemLanguage";
 import CoinUsages from "../../../components/Dashboard/MyProfilePage/CoinUsages/CoinUsages";
+import LifetimePremiumMembershipModal from "../../../components/Shared/LifetimePremiumMembershipModal/LifetimePremiumMembershipModal";
 
 const MyProfile = () => {
   const [isTranslateNewsModalOpen, setIsTranslateNewsModalOpen] =
@@ -202,6 +203,8 @@ const MyProfile = () => {
         isModalOpen={isCoinUsageModalOpen}
         setIsModalOpen={setIsCoinUsageModalOpen}
       />
+
+      <LifetimePremiumMembershipModal/>
     </div>
   );
 };

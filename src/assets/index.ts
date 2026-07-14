@@ -30,6 +30,7 @@ import becomeVendorCta from "./images/become-vendor-cta.webp";
 import successTick from "./images/success-tick.webp";
 import bookHeroImg from "./images/book-hero-img.webp";
 import startSelling from "./images/start-selling.webp";
+import discountBox from "./images/discount-box.gif";
 
 // ICONS
 import arrowRight from "./icons/arrow-right.svg";
@@ -97,6 +98,7 @@ import plus from "./icons/plus.svg";
 import aiChatbot from "./icons/ai-chatbot.svg";
 import calendar from "./icons/calendar.svg";
 import share from "./icons/share.svg";
+import unlock from "./icons/unlock.svg";
 
 export const IMAGES = {
     logo,
@@ -129,7 +131,8 @@ export const IMAGES = {
     becomeVendorCta,
     successTick,
     bookHeroImg,
-    startSelling
+    startSelling,
+    discountBox,
 };
 
 export const ICONS = {
@@ -198,4 +201,5 @@ export const ICONS = {
     aiChatbot,
     calendar,
     share,
+    unlock,
 };
