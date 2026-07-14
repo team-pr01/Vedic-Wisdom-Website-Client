@@ -99,6 +99,12 @@ import aiChatbot from "./icons/ai-chatbot.svg";
 import calendar from "./icons/calendar.svg";
 import share from "./icons/share.svg";
 import unlock from "./icons/unlock.svg";
+import quiz from "./icons/quiz.svg";
+import reward from "./icons/reward.svg";
+import videoSummary from "./icons/video-summary.svg";
+import referralCode from "./icons/referral-code.svg";
+import shareLink from "./icons/share-link.svg";
+import userSignup from "./icons/user-signup.svg";
 
 export const IMAGES = {
     logo,
@@ -202,4 +208,10 @@ export const ICONS = {
     calendar,
     share,
     unlock,
+    quiz,
+    reward,
+    videoSummary,
+    referralCode,
+    shareLink,
+    userSignup,
 };
