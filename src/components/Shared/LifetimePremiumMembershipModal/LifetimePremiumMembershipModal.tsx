@@ -1,17 +1,23 @@
 import { useState } from "react";
 import Modal from "../../Reusable/Modal/Modal";
-import { ICONS, IMAGES } from "../../../assets";
-import Button from "../../Reusable/Button/Button";
 import UnlockCTA from "./UnlockCTA";
 import HowToGetLifetimePremiumMembership from "./HowToGetLifetimePremiumMembership";
+import ReferralOnboarding from "./ReferralOnboarding/ReferralOnboarding";
 
 const LifetimePremiumMembershipModal = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
-  const [step, setStep] = useState<number>(1);
+  const [contentType, setContentType] = useState<
+    "unlockCta" | "howToGet" | "referralOnboarding"
+  >("unlockCta");
   return (
     <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
-      {/* <UnlockCTA/> */}
-      <HowToGetLifetimePremiumMembership/>
+      {contentType === "unlockCta" && (
+        <UnlockCTA setContentType={setContentType} />
+      )}
+      {contentType === "howToGet" && (
+        <HowToGetLifetimePremiumMembership setContentType={setContentType} />
+      )}
+      {contentType === "referralOnboarding" && <ReferralOnboarding setIsModalOpen={setIsModalOpen} />}
     </Modal>
   );
 };

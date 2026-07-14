@@ -1,7 +1,13 @@
 import Button from "../../../components/Reusable/Button/Button";
 import { ICONS } from "../../../assets";
 
-const HowToGetLifetimePremiumMembership = () => {
+const HowToGetLifetimePremiumMembership = ({
+  setContentType,
+}: {
+  setContentType: React.Dispatch<
+    React.SetStateAction<"unlockCta" | "howToGet" | "referralOnboarding">
+  >;
+}) => {
   const steps = [
     {
       id: 1,
@@ -57,11 +63,11 @@ const HowToGetLifetimePremiumMembership = () => {
       </div>
 
       {/* Steps Grid - 2 Columns */}
-      <div className="gap-3">
+      <div className="flex flex-col gap-3">
         {steps.map((step) => (
           <div
             key={step.id}
-            className="bg-white border border-neutral-20 rounded-xl p-3.5 flex items-center justify-between hover:shadow-md transition-shadow"
+            className="bg-white border border-neutral-20 rounded-xl p-3.5 flex items-center justify-between shadow hover:shadow-md transition-shadow"
           >
             <div className="flex items-center gap-3">
               <div>
@@ -91,7 +97,7 @@ const HowToGetLifetimePremiumMembership = () => {
           className=""
           rightIcon={ICONS.arrowRight}
           onClick={() => {
-            // Handle start now action
+            setContentType("referralOnboarding");
           }}
         />
         <p className="text-xs text-neutral-40">

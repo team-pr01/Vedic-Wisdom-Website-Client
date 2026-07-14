@@ -1,7 +1,13 @@
 import { ICONS, IMAGES } from "../../../assets";
 import Button from "../../Reusable/Button/Button";
 
-const UnlockCTA = () => {
+const UnlockCTA = ({
+  setContentType,
+}: {
+  setContentType: React.Dispatch<
+    React.SetStateAction<"unlockCta" | "howToGet" | "referralOnboarding">
+  >;
+}) => {
   return (
     <div>
       <img src={IMAGES.discountBox} alt="" className="w-1/2 mx-auto" />
@@ -17,6 +23,7 @@ const UnlockCTA = () => {
         leftIcon={ICONS.unlock}
         label="Unlock Now"
         className="w-full mt-6"
+        onClick={() => setContentType("howToGet")}
       />
     </div>
   );

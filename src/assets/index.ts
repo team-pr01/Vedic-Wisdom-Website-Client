@@ -34,6 +34,7 @@ import discountBox from "./images/discount-box.gif";
 
 // ICONS
 import arrowRight from "./icons/arrow-right.svg";
+import arrowLeft from "./icons/arrow-left.svg";
 import explore from "./icons/explore.svg";
 import astrology from "./icons/astrology.svg";
 import consultations from "./icons/consultations.svg";
@@ -105,6 +106,7 @@ import videoSummary from "./icons/video-summary.svg";
 import referralCode from "./icons/referral-code.svg";
 import shareLink from "./icons/share-link.svg";
 import userSignup from "./icons/user-signup.svg";
+import giftIcon from "./icons/gift.svg";
 
 export const IMAGES = {
     logo,
@@ -143,6 +145,7 @@ export const IMAGES = {
 
 export const ICONS = {
     arrowRight,
+    arrowLeft,
     explore,
     astrology,
     consultations,
@@ -214,4 +217,5 @@ export const ICONS = {
     referralCode,
     shareLink,
     userSignup,
+    giftIcon,
 };
