@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 
 type TButtonProps = {
   label: string;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "danger";
   className?: string;
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
@@ -33,8 +33,9 @@ const Button = ({
     primary:
       "bg-gradient-primary-button border border-primary-20 text-neutral-5 hover:opacity-90 shadow-button",
 
-    secondary:
-      "bg-neutral-30 border border-neutral-55 hover:bg-neutral-20",
+    secondary: "bg-neutral-30 border border-neutral-55 hover:bg-neutral-20",
+
+    danger: "bg-accent-40 border border-accent-40 hover:bg-accent-40/90 text-white",
   };
 
   return (

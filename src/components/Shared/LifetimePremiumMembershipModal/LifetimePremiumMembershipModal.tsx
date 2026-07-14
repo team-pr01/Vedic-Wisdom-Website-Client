@@ -5,7 +5,7 @@ import HowToGetLifetimePremiumMembership from "./HowToGetLifetimePremiumMembersh
 import ReferralOnboarding from "./ReferralOnboarding/ReferralOnboarding";
 
 const LifetimePremiumMembershipModal = () => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [contentType, setContentType] = useState<
     "unlockCta" | "howToGet" | "referralOnboarding"
   >("unlockCta");
@@ -17,7 +17,9 @@ const LifetimePremiumMembershipModal = () => {
       {contentType === "howToGet" && (
         <HowToGetLifetimePremiumMembership setContentType={setContentType} />
       )}
-      {contentType === "referralOnboarding" && <ReferralOnboarding setIsModalOpen={setIsModalOpen} />}
+      {contentType === "referralOnboarding" && (
+        <ReferralOnboarding setIsModalOpen={setIsModalOpen} />
+      )}
     </Modal>
   );
 };

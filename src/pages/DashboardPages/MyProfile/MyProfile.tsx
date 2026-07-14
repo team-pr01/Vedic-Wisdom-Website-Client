@@ -4,10 +4,15 @@ import Button from "../../../components/Reusable/Button/Button";
 import SelectSystemLanguage from "../../../components/Shared/SelectSystemLanguage/SelectSystemLanguage";
 import CoinUsages from "../../../components/Dashboard/MyProfilePage/CoinUsages/CoinUsages";
 import LifetimePremiumMembershipModal from "../../../components/Shared/LifetimePremiumMembershipModal/LifetimePremiumMembershipModal";
+import DeleteAccountConfirmation from "../../../components/Dashboard/MyProfilePage/DeleteAccountConfirmation/DeleteAccountConfirmation";
 
 const MyProfile = () => {
   const [isTranslateNewsModalOpen, setIsTranslateNewsModalOpen] =
     useState(false);
+  const [
+    isDeleteAccountConfirmationModalOpen,
+    setIsDeleteAccountConfirmationModalOpen,
+  ] = useState(true);
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
 
   const [isCoinUsageModalOpen, setIsCoinUsageModalOpen] =
@@ -204,7 +209,11 @@ const MyProfile = () => {
         setIsModalOpen={setIsCoinUsageModalOpen}
       />
 
-      <LifetimePremiumMembershipModal/>
+      <LifetimePremiumMembershipModal />
+      <DeleteAccountConfirmation
+        isModalOpen={isDeleteAccountConfirmationModalOpen}
+        setIsModalOpen={setIsDeleteAccountConfirmationModalOpen}
+      />
     </div>
   );
 };

@@ -28,6 +28,7 @@ import getPremiumBanner from "./images/get-premium-banner.webp";
 import horoscopeBanner from "./images/horoscope-banner.webp";
 import becomeVendorCta from "./images/become-vendor-cta.webp";
 import successTick from "./images/success-tick.webp";
+import dangerSign from "./images/danger-sign.webp";
 import bookHeroImg from "./images/book-hero-img.webp";
 import startSelling from "./images/start-selling.webp";
 import discountBox from "./images/discount-box.gif";
@@ -138,6 +139,7 @@ export const IMAGES = {
     horoscopeBanner,
     becomeVendorCta,
     successTick,
+    dangerSign,
     bookHeroImg,
     startSelling,
     discountBox,
