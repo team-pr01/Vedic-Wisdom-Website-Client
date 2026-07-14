@@ -30,6 +30,7 @@ import AiChatbot from "../pages/DashboardPages/AiChatbot/AiChatbot";
 import News from "../pages/DashboardPages/News/News";
 import NewsDetails from "../pages/DashboardPages/NewsDetails/NewsDetails";
 import MyReferrals from "../pages/DashboardPages/MyProfile/MyReferrals/MyReferrals";
+import SubscriptionPricing from "../components/HomePage/SubscriptionPricing/SubscriptionPricing";
 
 export const router = createBrowserRouter([
   {
@@ -67,6 +68,10 @@ export const router = createBrowserRouter([
       {
         path: "my-referrals",
         element: <MyReferrals />,
+      },
+      {
+        path: "subscription-plans",
+        element: <SubscriptionPricing />,
       },
       {
         path: "help",

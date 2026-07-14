@@ -108,6 +108,7 @@ import referralCode from "./icons/referral-code.svg";
 import shareLink from "./icons/share-link.svg";
 import userSignup from "./icons/user-signup.svg";
 import giftIcon from "./icons/gift.svg";
+import subscriptionPlans from "./icons/subscription-plans.svg";
 
 export const IMAGES = {
     logo,
@@ -220,4 +221,5 @@ export const ICONS = {
     shareLink,
     userSignup,
     giftIcon,
+    subscriptionPlans,
 };

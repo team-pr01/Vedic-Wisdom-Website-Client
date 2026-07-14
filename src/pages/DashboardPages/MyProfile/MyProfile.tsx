@@ -5,14 +5,17 @@ import SelectSystemLanguage from "../../../components/Shared/SelectSystemLanguag
 import CoinUsages from "../../../components/Dashboard/MyProfilePage/CoinUsages/CoinUsages";
 import LifetimePremiumMembershipModal from "../../../components/Shared/LifetimePremiumMembershipModal/LifetimePremiumMembershipModal";
 import DeleteAccountConfirmation from "../../../components/Dashboard/MyProfilePage/DeleteAccountConfirmation/DeleteAccountConfirmation";
+import DepositCoin from "../../../components/Dashboard/MyProfilePage/DepositCoin/DepositCoin";
+import { Link } from "react-router-dom";
 
 const MyProfile = () => {
+  const [isDepositCoinModalOpen, setIsDepositCoinModalOpen] = useState(false);
   const [isTranslateNewsModalOpen, setIsTranslateNewsModalOpen] =
     useState(false);
   const [
     isDeleteAccountConfirmationModalOpen,
     setIsDeleteAccountConfirmationModalOpen,
-  ] = useState(true);
+  ] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
 
   const [isCoinUsageModalOpen, setIsCoinUsageModalOpen] =
@@ -55,7 +58,9 @@ const MyProfile = () => {
     },
     {
       label: "Add Coin",
-      onClick: () => {},
+      onClick: () => {
+        setIsDepositCoinModalOpen(true);
+      },
       icon: ICONS.addMoney,
     },
     {
@@ -64,6 +69,11 @@ const MyProfile = () => {
         setIsCoinUsageModalOpen(true);
       },
       icon: ICONS.howToUseCoin,
+    },
+    {
+      label: "Subscription Plans",
+      link: "/dashboard/subscription-plans",
+      icon: ICONS.subscriptionPlans,
     },
     {
       label: "Privacy Policy",
@@ -180,21 +190,37 @@ const MyProfile = () => {
 
         <div className="w-[50%] space-y-4">
           <h3 className="text-neutral-90 font-bold">General</h3>
-          {generalLinks?.map((item) => (
-            <button
-              key={item?.label}
-              onClick={item.onClick}
-              className="border border-neutral-55 bg-white p-4 rounded-lg flex items-center justify-between w-full"
-            >
-              <div className="flex items-center gap-2.5">
-                <img src={item?.icon} alt="" className="size-6" />
-                <p className="text-sm font-bold text-neutral-90">
-                  {item?.label}
-                </p>
-              </div>
-              <img src={ICONS.arrowRightGray} alt="" className="size-6" />
-            </button>
-          ))}
+          {generalLinks?.map((item) =>
+            item?.onClick ? (
+              <button
+                key={item?.label}
+                onClick={item.onClick}
+                className="border border-neutral-55 bg-white p-4 rounded-lg flex items-center justify-between w-full"
+              >
+                <div className="flex items-center gap-2.5">
+                  <img src={item?.icon} alt="" className="size-6" />
+                  <p className="text-sm font-bold text-neutral-90">
+                    {item?.label}
+                  </p>
+                </div>
+                <img src={ICONS.arrowRightGray} alt="" className="size-6" />
+              </button>
+            ) : (
+              <Link
+                key={item?.label}
+                to={item?.link as string}
+                className="border border-neutral-55 bg-white p-4 rounded-lg flex items-center justify-between w-full"
+              >
+                <div className="flex items-center gap-2.5">
+                  <img src={item?.icon} alt="" className="size-6" />
+                  <p className="text-sm font-bold text-neutral-90">
+                    {item?.label}
+                  </p>
+                </div>
+                <img src={ICONS.arrowRightGray} alt="" className="size-6" />
+              </Link>
+            ),
+          )}
         </div>
       </div>
 
@@ -213,6 +239,11 @@ const MyProfile = () => {
       <DeleteAccountConfirmation
         isModalOpen={isDeleteAccountConfirmationModalOpen}
         setIsModalOpen={setIsDeleteAccountConfirmationModalOpen}
+      />
+
+      <DepositCoin
+        isModalOpen={isDepositCoinModalOpen}
+        setIsModalOpen={setIsDepositCoinModalOpen}
       />
     </div>
   );
