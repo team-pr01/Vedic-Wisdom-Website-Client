@@ -10,6 +10,7 @@ import JobResponsibilities from "../../../../components/Dashboard/JobDetailsPage
 import CompanyInformation from "../../../../components/Dashboard/JobDetailsPage/CompanyInformation/CompanyInformation";
 import ApplyJobModal from "../../../../components/Dashboard/JobPortalPage/ApplyJobModal/ApplyJobModal";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const JobDetails = () => {
   const [isApplyJobModalOpen, setIsApplyJobModalOpen] =
@@ -75,9 +76,9 @@ const JobDetails = () => {
       {/* Header with Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-4">
         <div className="flex items-center gap-3">
-          <button className="p-2 rounded-full hover:bg-neutral-10/5 transition-colors">
-            <FaArrowLeft className="text-neutral-60" />
-          </button>
+          <Link to={"/dashboard/job-portal"}>
+            <img src={ICONS.arrowLeft} alt="" className="size-5" />
+          </Link>
           <h1 className="text-2xl font-bold text-neutral-90">
             {jobData.title}
           </h1>

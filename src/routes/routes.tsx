@@ -34,6 +34,7 @@ import SubscriptionPricing from "../components/HomePage/SubscriptionPricing/Subs
 import SpiritualVideos from "../pages/DashboardPages/SpiritualVideos/SpiritualVideos";
 import JobPortal from "../pages/DashboardPages/JobPortal/JobPortal";
 import JobDetails from "../pages/DashboardPages/JobPortal/JobDetails/JobDetails";
+import EmployerDashboard from "../pages/DashboardPages/JobPortal/Employer/EmployerDashboard/EmployerDashboard";
 
 export const router = createBrowserRouter([
   {
@@ -175,6 +176,10 @@ export const router = createBrowserRouter([
       {
         path: "job/:id",
         element: <JobDetails />,
+      },
+      {
+        path: "job-portal/employer",
+        element: <EmployerDashboard />,
       },
     ],
   },
