@@ -189,7 +189,7 @@ const EmployerDashboard = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-neutral-90">
-            Welcome Back, Mr. Aksah
+            Welcome Back, Mr. Akash
           </h1>
           <p className="text-sm text-neutral-60 mt-1">
             Here's what's happening with your job posts

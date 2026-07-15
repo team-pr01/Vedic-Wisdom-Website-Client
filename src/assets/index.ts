@@ -110,6 +110,7 @@ import userSignup from "./icons/user-signup.svg";
 import giftIcon from "./icons/gift.svg";
 import subscriptionPlans from "./icons/subscription-plans.svg";
 import experience from "./icons/experience.svg";
+import company from "./icons/company.svg";
 
 export const IMAGES = {
     logo,
@@ -224,4 +225,5 @@ export const ICONS = {
     giftIcon,
     subscriptionPlans,
     experience,
+    company,
 };

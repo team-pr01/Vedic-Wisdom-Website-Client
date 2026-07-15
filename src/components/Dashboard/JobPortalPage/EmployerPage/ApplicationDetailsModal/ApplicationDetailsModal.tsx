@@ -82,7 +82,7 @@ const ApplicationDetailsModal = ({
 
   return (
     <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
-      <div className="p-2 max-h-[85vh] overflow-y-auto custom-scrollbar">
+      <div className="">
         {/* Header */}
         <div>
           <h2 className="text-xl font-bold text-neutral-90">

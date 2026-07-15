@@ -6,6 +6,7 @@ import Button from "../../../components/Reusable/Button/Button";
 import DashboardHeading from "../../../components/Reusable/DashboardHeading/DashboardHeading";
 import { useState } from "react";
 import JobCard from "../../../components/Dashboard/JobPortalPage/JobCard/JobCard";
+import PostJobModal from "../../../components/Dashboard/JobPortalPage/EmployerPage/PostJobModal/PostJobModal";
 
 const JobPortal = () => {
   const [keyword, setKeyword] = useState<string>("");
@@ -16,6 +17,7 @@ const JobPortal = () => {
   const [mode, setMode] = useState<string>("all");
   const [experienceLevel, setExperienceLevel] = useState<string[]>([]);
   const [jobCategory, setJobCategory] = useState<string[]>([]);
+  const [isPostJobModalOpen, setIsPostJobModalOpen] = useState<boolean>(false);
 
   const isLoading = false;
   return (
@@ -25,7 +27,11 @@ const JobPortal = () => {
           title="Find Your Dream Job"
           description="Explore our various spiritual courses."
         />
-        <Button leftIcon={ICONS.plus} label="Post a Job" />
+        <Button
+          onClick={() => setIsPostJobModalOpen(true)}
+          leftIcon={ICONS.plus}
+          label="Post a Job"
+        />
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8 font-GeneralSans mt-10">
@@ -37,7 +43,7 @@ const JobPortal = () => {
             <input
               onChange={(e) => setKeyword(e.target.value)}
               type="text"
-              className="w-full pl-10 pr-4 py-3.5 rounded-lg border leading-4.5 focus:outline-none focus:border-primary-10 transition duration-300 bg-white border-neutral-55"
+              className="w-full pl-10 pr-4 py-3.5 rounded-lg border leading-4.5 focus:outline-none focus:border-primary-10 transition duration-300 bg-white border-neutral-55 placeholder:text-sm"
               placeholder="e.g. Software Engineer, Sales Representative, etc."
             />
           </div>
@@ -99,6 +105,11 @@ const JobPortal = () => {
           />
         </div>
       </div>
+
+      <PostJobModal
+        isModalOpen={isPostJobModalOpen}
+        setIsModakOpen={setIsPostJobModalOpen}
+      />
     </div>
   );
 };
