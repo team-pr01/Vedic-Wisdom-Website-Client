@@ -35,6 +35,7 @@ import SpiritualVideos from "../pages/DashboardPages/SpiritualVideos/SpiritualVi
 import JobPortal from "../pages/DashboardPages/JobPortal/JobPortal";
 import JobDetails from "../pages/DashboardPages/JobPortal/JobDetails/JobDetails";
 import EmployerDashboard from "../pages/DashboardPages/JobPortal/Employer/EmployerDashboard/EmployerDashboard";
+import AllApplications from "../pages/DashboardPages/JobPortal/Employer/AllApplications/AllApplications";
 
 export const router = createBrowserRouter([
   {
@@ -180,6 +181,10 @@ export const router = createBrowserRouter([
       {
         path: "job-portal/employer",
         element: <EmployerDashboard />,
+      },
+      {
+        path: "job-portal/employer/applications/:id",
+        element: <AllApplications />,
       },
     ],
   },

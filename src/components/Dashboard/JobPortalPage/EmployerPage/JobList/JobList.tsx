@@ -1,5 +1,6 @@
 import { FaBuilding } from "react-icons/fa";
 import { ICONS } from "../../../../../assets";
+import { Link } from "react-router-dom";
 
 interface Job {
   id: number;
@@ -21,13 +22,12 @@ interface JobListProps {
 const JobList: React.FC<JobListProps> = ({
   jobs,
   getStatusColor,
-  onViewApplications,
   onDelete,
 }) => {
   return (
     <div className="space-y-3">
       {jobs.map((job) => (
-        <div
+        <div    
           key={job.id}
           className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-neutral-45 rounded-xl border border-neutral-55 hover:shadow-md transition-shadow gap-3"
         >
@@ -65,12 +65,12 @@ const JobList: React.FC<JobListProps> = ({
             >
               Delete Job
             </button>
-            <button
-              onClick={() => onViewApplications(job.id)}
+            <Link
+              to={`/dashboard/job-portal/employer/applications/${job.id}`}
               className="px-3 py-1.5 text-xs font-medium text-primary-10 bg-primary-50 hover:bg-primary-10 hover:text-white rounded-lg transition-colors"
             >
               View Applications
-            </button>
+            </Link>
           </div>
         </div>
       ))}
