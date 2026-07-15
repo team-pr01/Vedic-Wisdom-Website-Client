@@ -2,7 +2,7 @@
 import { twMerge } from "tailwind-merge";
 
 type TButtonProps = {
-  label: string;
+  label?: string;
   variant?: "primary" | "secondary" | "danger";
   className?: string;
   onClick?: () => void;
@@ -35,7 +35,8 @@ const Button = ({
 
     secondary: "bg-neutral-30 border border-neutral-55 hover:bg-neutral-20",
 
-    danger: "bg-accent-40 border border-accent-40 hover:bg-accent-40/90 text-white",
+    danger:
+      "bg-accent-40 border border-accent-40 hover:bg-accent-40/90 text-white",
   };
 
   return (
@@ -74,7 +75,7 @@ const Button = ({
           {leftIcon && (
             <img src={leftIcon} alt="" className="size-5.25 mt-0.5" />
           )}
-          <span>{label}</span>
+          {label && <span>{label}</span>}
           {rightIcon && (
             <img src={rightIcon} alt="" className="size-5.25 mt-0.5" />
           )}

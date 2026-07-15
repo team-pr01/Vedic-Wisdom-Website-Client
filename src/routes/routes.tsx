@@ -31,6 +31,8 @@ import News from "../pages/DashboardPages/News/News";
 import NewsDetails from "../pages/DashboardPages/NewsDetails/NewsDetails";
 import MyReferrals from "../pages/DashboardPages/MyProfile/MyReferrals/MyReferrals";
 import SubscriptionPricing from "../components/HomePage/SubscriptionPricing/SubscriptionPricing";
+import SpiritualVideos from "../pages/DashboardPages/SpiritualVideos/SpiritualVideos";
+import JobPortal from "../pages/DashboardPages/JobPortal/JobPortal";
 
 export const router = createBrowserRouter([
   {
@@ -72,6 +74,10 @@ export const router = createBrowserRouter([
       {
         path: "subscription-plans",
         element: <SubscriptionPricing />,
+      },
+      {
+        path: "spiritual-videos",
+        element: <SpiritualVideos />,
       },
       {
         path: "help",
@@ -160,6 +166,10 @@ export const router = createBrowserRouter([
       {
         path: "learn-and-explore/book/:id",
         element: <BookDetails />,
+      },
+      {
+        path: "job-portal",
+        element: <JobPortal />,
       },
     ],
   },

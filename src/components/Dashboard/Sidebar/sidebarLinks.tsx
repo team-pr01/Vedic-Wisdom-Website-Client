@@ -3,7 +3,6 @@ import { GiGreekTemple } from "react-icons/gi";
 import { HiOutlineNewspaper } from "react-icons/hi";
 import {
   LuLayoutDashboard,
-  LuClipboardList,
   LuLeaf,
   LuMoon,
   LuBriefcase,
@@ -45,6 +44,11 @@ export const sidebarLinks: DashboardLink[] = [
     label: "My Profile",
     path: "/dashboard/my-profile",
     icon: <MdOutlinePerson className="w-5 h-5" />,
+  },
+  {
+    label: "Job Portal",
+    path: "/dashboard/job-portal",
+    icon: <LuBriefcase className="w-5 h-5" />,
   },
   {
     label: "Our Projects",
@@ -96,11 +100,6 @@ export const sidebarLinks: DashboardLink[] = [
     label: "Yoga",
     path: "/dashboard/yoga",
     icon: <MdOutlineWorkOutline className="w-5 h-5" />,
-  },
-  {
-    label: "Job Board",
-    path: "/dashboard/job-board",
-    icon: <LuClipboardList className="w-5 h-5" />,
   },
   {
     label: "Learn & Explore",
