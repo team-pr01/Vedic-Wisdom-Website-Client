@@ -12,7 +12,10 @@ const JobPortal = () => {
   const [country, setCountry] = useState<any>(null);
   const [state, setState] = useState<any>(null);
   const [city, setCity] = useState<any>(null);
-  const [category, setCategory] = useState<any>(null);
+  const [jobType, setJobType] = useState<string>("all");
+  const [mode, setMode] = useState<string>("all");
+  const [experienceLevel, setExperienceLevel] = useState<string[]>([]);
+  const [jobCategory, setJobCategory] = useState<string[]>([]);
 
   const isLoading = false;
   return (
@@ -35,7 +38,7 @@ const JobPortal = () => {
               onChange={(e) => setKeyword(e.target.value)}
               type="text"
               className="w-full pl-10 pr-4 py-3.5 rounded-lg border leading-4.5 focus:outline-none focus:border-primary-10 transition duration-300 bg-white border-neutral-55"
-              placeholder="Search temples by name or location..."
+              placeholder="e.g. Software Engineer, Sales Representative, etc."
             />
           </div>
 
@@ -76,18 +79,23 @@ const JobPortal = () => {
           )}
         </div>
 
-
         {/* Filters Sidebar - Sticky */}
         <div className="w-full lg:w-[25%] lg:sticky top-0 h-fit max-h-[calc(100vh-100px)] overflow-y-auto">
           <JobFilters
-            country={country}
             setCountry={setCountry}
-            state={state}
             setState={setState}
-            city={city}
             setCity={setCity}
-            category={category}
-            setCategory={setCategory}
+            setJobType={setJobType}
+            setMode={setMode}
+            setExperienceLevel={setExperienceLevel}
+            setJobCategory={setJobCategory}
+            country={country}
+            state={state}
+            city={city}
+            jobType={jobType}
+            mode={mode}
+            experienceLevel={experienceLevel}
+            jobCategory={jobCategory}
           />
         </div>
       </div>
