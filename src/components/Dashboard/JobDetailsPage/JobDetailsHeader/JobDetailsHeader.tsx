@@ -18,7 +18,7 @@ const JobDetailsHeader: React.FC<JobDetailsHeaderProps> = ({
   postedDate,
 }) => {
   return (
-    <div className="bg-gradient-primary-button border border-neutral-55 rounded-2xl p-6">
+    <div className="bg-gradient-hero border border-neutral-55 rounded-2xl p-6">
       <h2 className="text-xl font-bold text-neutral-90">{title}</h2>
       <p className="text-lg font-medium text-neutral-90 mt-1">{company}</p>
       

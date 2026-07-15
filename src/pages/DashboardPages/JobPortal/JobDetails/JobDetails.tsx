@@ -8,8 +8,12 @@ import RequiredSkills from "../../../../components/Dashboard/JobDetailsPage/Requ
 import RequiredQualifications from "../../../../components/Dashboard/JobDetailsPage/RequiredQualifications/RequiredQualifications";
 import JobResponsibilities from "../../../../components/Dashboard/JobDetailsPage/JobResponsibilities/JobResponsibilities";
 import CompanyInformation from "../../../../components/Dashboard/JobDetailsPage/CompanyInformation/CompanyInformation";
+import ApplyJobModal from "../../../../components/Dashboard/JobPortalPage/ApplyJobModal/ApplyJobModal";
+import { useState } from "react";
 
 const JobDetails = () => {
+  const [isApplyJobModalOpen, setIsApplyJobModalOpen] =
+    useState<boolean>(false);
   // Sample job data
   const jobData = {
     title: "Senior UI/UX Designer",
@@ -53,10 +57,6 @@ const JobDetails = () => {
     },
   };
 
-  const handleApply = () => {
-    console.log("Apply Now clicked");
-  };
-
   const handleShare = () => {
     console.log("Share clicked");
   };
@@ -90,6 +90,7 @@ const JobDetails = () => {
             className="p-2.25"
           />
           <Button
+            onClick={() => setIsApplyJobModalOpen(true)}
             label="Apply Now"
             rightIcon={ICONS.arrowRight}
             className="px-4 py-2 text-sm"
@@ -127,14 +128,6 @@ const JobDetails = () => {
           <div className="lg:hidden">
             <CompanyInformation companyInfo={jobData.companyInfo} />
           </div>
-
-          {/* Apply Button (Mobile) */}
-          <button
-            onClick={handleApply}
-            className="w-full lg:hidden py-3 bg-primary-10 text-white rounded-xl font-semibold hover:bg-primary-20 transition-colors"
-          >
-            Apply Now
-          </button>
         </div>
 
         {/* Right Column - Sidebar */}
@@ -153,6 +146,11 @@ const JobDetails = () => {
           /> */}
         </div>
       </div>
+
+      <ApplyJobModal
+        isModalOpen={isApplyJobModalOpen}
+        setIsModalOpen={setIsApplyJobModalOpen}
+      />
     </div>
   );
 };
