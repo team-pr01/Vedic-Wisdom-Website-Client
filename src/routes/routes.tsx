@@ -33,6 +33,7 @@ import MyReferrals from "../pages/DashboardPages/MyProfile/MyReferrals/MyReferra
 import SubscriptionPricing from "../components/HomePage/SubscriptionPricing/SubscriptionPricing";
 import SpiritualVideos from "../pages/DashboardPages/SpiritualVideos/SpiritualVideos";
 import JobPortal from "../pages/DashboardPages/JobPortal/JobPortal";
+import JobDetails from "../pages/DashboardPages/JobPortal/JobDetails/JobDetails";
 
 export const router = createBrowserRouter([
   {
@@ -170,6 +171,10 @@ export const router = createBrowserRouter([
       {
         path: "job-portal",
         element: <JobPortal />,
+      },
+      {
+        path: "job/:id",
+        element: <JobDetails />,
       },
     ],
   },

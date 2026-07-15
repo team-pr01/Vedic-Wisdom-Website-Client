@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { ICONS } from "../../../../assets";
 import Button from "../../../Reusable/Button/Button";
 
@@ -51,10 +52,20 @@ const JobCard = () => {
       <div className="bg-neutral-50/10 h-0.5" />
 
       <div className="flex items-center justify-between gap-3">
-        <Button variant="secondary" leftIcon={ICONS.share} className="py-2.75" />
+        <Button
+          variant="secondary"
+          leftIcon={ICONS.share}
+          className="py-2.75"
+        />
         <div className="flex items-center gap-3">
+          <Link to={`/dashboard/job/${1}`}>
             <Button variant="secondary" label="View Details" />
-        <Button variant="primary" label="Apply Now" rightIcon={ICONS.arrowRight} />
+          </Link>
+          <Button
+            variant="primary"
+            label="Apply Now"
+            rightIcon={ICONS.arrowRight}
+          />
         </div>
       </div>
     </div>
