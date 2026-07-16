@@ -30,11 +30,31 @@ const authApi = baseApi.injectEndpoints({
       invalidatesTags: ["users"],
     }),
 
-    resetPassword: builder.mutation({
-      query: ({resetPasswordData, token}) => ({
-        url: `/auth/reset-password/${token}`,
+    verifyForgotPasswordOtp: builder.mutation({
+      query: (forgotPasswordData) => ({
+        url: "/auth/verify-forgot-password-otp",
         method: "POST",
-        body: resetPasswordData,
+        body: forgotPasswordData,
+        credentials: "include",
+      }),
+      invalidatesTags: ["users"],
+    }),
+
+    resendForgotPasswordOtp: builder.mutation({
+      query: (forgotPasswordData) => ({
+        url: "/auth/verify-forgot-password-otp",
+        method: "POST",
+        body: forgotPasswordData,
+        credentials: "include",
+      }),
+      invalidatesTags: ["users"],
+    }),
+
+    resetPassword: builder.mutation({
+      query: (data) => ({
+        url: `/auth/reset-password`,
+        method: "POST",
+        body: data,
         credentials: "include",
       }),
       invalidatesTags: ["users"],
@@ -49,27 +69,6 @@ const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["users"],
     }),
-
-    assignPages: builder.mutation({
-      query: (data) => ({
-        url: `/auth/assign-pages`,
-        method: "PUT",
-        body: data,
-        credentials: "include",
-      }),
-      invalidatesTags: ["users"],
-    }),
-
-    deleteUser: builder.mutation({
-      query: (id) => ({
-        url: `/user/remove-user/${id}`,
-        method: "DELETE",
-        credentials: "include",
-      }),
-      invalidatesTags: ["users"],
-    }),
-
-
   }),
 });
 
@@ -77,8 +76,8 @@ export const {
   useLoginMutation,
   useSignupMutation,
   useForgotPasswordMutation,
+  useVerifyForgotPasswordOtpMutation,
+  useResendForgotPasswordOtpMutation,
   useResetPasswordMutation,
   useChangeUserRoleMutation,
-  useAssignPagesMutation,
-  useDeleteUserMutation,
 } = authApi;

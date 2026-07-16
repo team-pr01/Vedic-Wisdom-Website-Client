@@ -83,7 +83,7 @@ const LoginForm = () => {
           title: "Reset Password",
           description:
             "Create a new password for your account. Make sure it's strong and secure.",
-          component: <ResetPassword setModalType={setModalType} />,
+          component: <ResetPassword setIsForgotPasswordModalOpen={setIsForgotPasswordModalOpen} />,
         };
       default:
         return {

@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { ICONS } from "../../../assets";
 import Button from "../../Reusable/Button/Button";
 import TextInput from "../../Reusable/TextInput/TextInput";
+import { useForgotPasswordMutation } from "../../../redux/Features/Auth/authApi";
 
 type TFormData = {
   email: string;
@@ -14,38 +15,47 @@ const ForgotPassword = ({
     React.SetStateAction<"forgotPassword" | "verifyOtp" | "resetPassword">
   >;
 }) => {
+  const [forgotPassword] = useForgotPasswordMutation();
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm<TFormData>();
-  const handleForgotPassword = (data: TFormData) => {
+  const handleForgotPassword = async (data: TFormData) => {
     try {
-      console.log(data);
-      setModalType("verifyOtp");
+      const payload = {
+        email: data.email,
+      };
+      const response = await forgotPassword(payload).unwrap();
+      {
+        if (response?.success) {
+          localStorage.setItem("email", data.email);
+          setModalType("verifyOtp");
+        }
+      }
     } catch (error: any) {
       console.log(error);
     }
   };
   return (
-      <form
-        onSubmit={handleSubmit(handleForgotPassword)}
-        className="space-y-4 w-full mt-6 text-left"
-      >
-        <TextInput
-          placeholder="Enter your registered email address"
-          error={errors.email}
-          {...register("email", {
-            required: "Email is required",
-          })}
-        />
-        <Button
-          type="submit"
-          label="Reset Password"
-          rightIcon={ICONS.arrowRight}
-          className="w-full"
-        />
-      </form>
+    <form
+      onSubmit={handleSubmit(handleForgotPassword)}
+      className="space-y-4 w-full mt-6 text-left"
+    >
+      <TextInput
+        placeholder="Enter your registered email address"
+        error={errors.email}
+        {...register("email", {
+          required: "Email is required",
+        })}
+      />
+      <Button
+        type="submit"
+        label="Reset Password"
+        rightIcon={ICONS.arrowRight}
+        className="w-full"
+      />
+    </form>
   );
 };
 

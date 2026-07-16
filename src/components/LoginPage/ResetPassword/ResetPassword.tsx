@@ -3,23 +3,30 @@ import { useForm } from "react-hook-form";
 import PasswordInput from "../../Reusable/PasswordInput/PasswordInput";
 import Button from "../../Reusable/Button/Button";
 import { ICONS } from "../../../assets";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useResetPasswordMutation } from "../../../redux/Features/Auth/authApi";
+import toast from "react-hot-toast";
 
 type TFormData = {
   password: string;
   confirmPassword: string;
 };
-
-type TModalType = "forgotPassword" | "verifyOtp" | "resetPassword";
-
 const ResetPassword = ({
-  setModalType,
+  setIsForgotPasswordModalOpen,
 }: {
-  setModalType: React.Dispatch<React.SetStateAction<TModalType>>;
+  setIsForgotPasswordModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const [resetPassword] = useResetPasswordMutation();
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState<boolean>(false);
+
+  const [email, setEmail] = useState<string>("");
+
+  useEffect(() => {
+    const email = localStorage.getItem("email") || "";
+    setEmail(email);
+  }, []);
 
   const {
     register,
@@ -32,15 +39,19 @@ const ResetPassword = ({
 
   const password = watch("password");
 
-  const handleResetPassword = (data: TFormData) => {
+  const handleResetPassword = async (data: TFormData) => {
     try {
-      console.log("Reset Password Data:", data);
-      // API call to reset password
-      // On success, show success message and redirect to login
-      alert(
-        "Password reset successfully! Please login with your new password.",
-      );
-      setModalType("forgotPassword");
+      const payload = {
+        email,
+        newPassword: data.password,
+      };
+      const response = await resetPassword(payload).unwrap();
+
+      if (response?.success) {
+        localStorage.removeItem("email");
+        toast.success("Password reset successfully. You can now login.");
+        setIsForgotPasswordModalOpen(false);
+      }
     } catch (error: any) {
       console.log(error);
       setError("password", {
