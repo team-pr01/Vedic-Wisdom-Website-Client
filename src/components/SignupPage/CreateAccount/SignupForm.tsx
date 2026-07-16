@@ -7,24 +7,33 @@ import PasswordInput from "../../Reusable/PasswordInput/PasswordInput";
 import { useState } from "react";
 import SelectDropdownWithSearch from "../../Reusable/SelectDropdownWithSearch/SelectDropdownWithSearch";
 import Button from "../../Reusable/Button/Button";
-import { Link } from "react-router-dom";
-import PhoneInput from "react-phone-number-input";
+import { Link, useNavigate } from "react-router-dom";
+import PhoneInput, { parsePhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { ICONS } from "../../../assets";
+import { useSignupMutation } from "../../../redux/Features/Auth/authApi";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../redux/Features/Auth/authSlice";
+import Cookies from "js-cookie";
 
 type TFormData = {
   role: string;
   fullName: string;
   email: string;
-  phone: string;
+  phoneNumber: string;
+  countryCode: string;
   password: string;
   referralCode?: string;
 };
 
 const SignupForm = () => {
+  const [signup] = useSignupMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [phone, setPhone] = useState<string | undefined>("");
+  const [countryCode, setCountryCode] = useState<string>("");
 
   const {
     register,
@@ -43,24 +52,73 @@ const SignupForm = () => {
   };
 
   const handlePhoneChange = (value: string | undefined) => {
+    console.log("Full phone value:", value);
     setPhone(value);
-    setValue("phone", value || "");
+    setValue("phoneNumber", value || "");
+
+    // Extract country code from the phone number
     if (value) {
-      clearErrors("phone");
+      try {
+        const parsed = parsePhoneNumber(value);
+        if (parsed) {
+          const code = parsed.countryCallingCode;
+          setCountryCode(code);
+          setValue("countryCode", code);
+          console.log("Country Code:", code);
+        }
+      } catch (error) {
+        console.log("Error parsing phone number:", error);
+      }
+    } else {
+      setCountryCode("");
+      setValue("countryCode", "");
+    }
+
+    if (value) {
+      clearErrors("phoneNumber");
     }
   };
 
   const role = watch("role");
 
-  const handleSignup = (data: TFormData) => {
+  const handleSignup = async (data: TFormData) => {
     if (!role) {
       setFieldErrors((prev: any) => ({
         ...prev,
         role: "Role is required",
       }));
+      return;
     }
+
     try {
-      console.log(data);
+      const payload = {
+        name: data.fullName,
+        email: data.email,
+        password: data.password,
+        countryCode: countryCode,
+        phoneNumber: data.phoneNumber,
+        role: data.role,
+        referralCode: data.referralCode,
+      };
+      const response = await signup(payload).unwrap();
+      if (response?.success) {
+        const accessToken = response?.data?.accessToken;
+        const user = response?.data?.user;
+
+        Cookies.set("accessToken", accessToken, {
+          expires: 7,
+          secure: true,
+          sameSite: "strict",
+        });
+        dispatch(
+          setUser({
+            user: user,
+            token: accessToken,
+          }),
+        );
+
+        navigate("/dashboard");
+      }
     } catch (error: any) {
       console.log(error);
     }
@@ -68,18 +126,18 @@ const SignupForm = () => {
 
   const roles = [
     {
-      label : "User",
-      value : "user",
+      label: "User",
+      value: "user",
     },
     {
-      label : "Temple",
-      value : "temple",
+      label: "Temple",
+      value: "temple",
     },
     {
-      label : "Organization",
-      value : "organization",
+      label: "Organization",
+      value: "organization",
     },
-  ]
+  ];
 
   return (
     <div className="p-8 border border-primary-50 bg-neutral-45 shadow-hero-user-community-box font-Manrope rounded-4xl">
@@ -146,18 +204,20 @@ const SignupForm = () => {
             value={phone}
             onChange={handlePhoneChange}
             className={`w-full px-4 py-3.5 rounded-lg border leading-4.5 focus:outline-none focus:border-primary-10 transition duration-300 bg-white ${
-              errors.phone ? "border-red-500" : "border-neutral-55"
+              errors.phoneNumber ? "border-red-500" : "border-neutral-55"
             }`}
             placeholder="Enter phone number"
             required
             onBlur={() => {
               if (!phone) {
-                setValue("phone", "");
+                setValue("phoneNumber", "");
               }
             }}
           />
-          {errors.phone && (
-            <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
+          {errors.phoneNumber && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.phoneNumber.message}
+            </p>
           )}
         </div>
 

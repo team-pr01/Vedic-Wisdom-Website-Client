@@ -105,7 +105,7 @@ const UserMenu = () => {
                   key={idx}
                   to={item.path}
                   onClick={() => setIsUserMenuOpen(false)}
-                  className="flex items-center gap-3 p-3 rounded-xl text-neutral-5 hover:bg-primary-5/5 hover:text-primary-5 transition-all font-medium text-sm"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-neutral-5 hover:bg-primary-5/5 hover:text-primary-5 transition-all font-medium text-sm"
                 >
                   {item.icon}
                   {item.label}

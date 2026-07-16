@@ -29,7 +29,7 @@ const Hero = () => {
                 rightIcon={ICONS.explore}
               />
             </Link>
-            <a href="/signup/tutor">
+            <a href="/signup">
               <Button
                 label="Get Started"
                 className="text-sm"
