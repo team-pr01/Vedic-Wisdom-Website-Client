@@ -10,6 +10,10 @@ import ForgotPassword from "../ForgotPassword/ForgotPassword";
 import Modal from "../../Reusable/Modal/Modal";
 import VerifyOtp from "../VerifyOtp/VerifyOtp";
 import ResetPassword from "../ResetPassword/ResetPassword";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../../../redux/Features/Auth/authApi";
+import { setUser } from "../../../redux/Features/Auth/authSlice";
 
 type TFormData = {
   email: string;
@@ -19,6 +23,9 @@ type TFormData = {
 type TModalType = "forgotPassword" | "verifyOtp" | "resetPassword";
 
 const LoginForm = () => {
+  const [login] = useLoginMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [modalType, setModalType] = useState<TModalType>("forgotPassword");
   const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] =
     useState<boolean>(false);
@@ -30,9 +37,25 @@ const LoginForm = () => {
     handleSubmit,
   } = useForm<TFormData>();
 
-  const handleLogin = (data: TFormData) => {
+  const handleLogin = async (data: TFormData) => {
     try {
-      console.log(data);
+      const payload = {
+        email: data.email,
+        password: data.password,
+      };
+      const response = await login(payload).unwrap();
+      if (response?.success) {
+        const accessToken = response?.data?.accessToken;
+        const user = response?.data?.user;
+        dispatch(
+          setUser({
+            user: user,
+            token: accessToken,
+          }),
+        );
+
+        navigate("/dashboard");
+      }
     } catch (error: any) {
       console.log(error);
     }

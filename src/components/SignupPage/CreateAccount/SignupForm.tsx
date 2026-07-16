@@ -14,7 +14,6 @@ import { ICONS } from "../../../assets";
 import { useSignupMutation } from "../../../redux/Features/Auth/authApi";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../redux/Features/Auth/authSlice";
-import Cookies from "js-cookie";
 
 type TFormData = {
   role: string;
@@ -104,12 +103,6 @@ const SignupForm = () => {
       if (response?.success) {
         const accessToken = response?.data?.accessToken;
         const user = response?.data?.user;
-
-        Cookies.set("accessToken", accessToken, {
-          expires: 7,
-          secure: true,
-          sameSite: "strict",
-        });
         dispatch(
           setUser({
             user: user,
