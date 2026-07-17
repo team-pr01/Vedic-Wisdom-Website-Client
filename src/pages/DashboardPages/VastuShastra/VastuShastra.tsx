@@ -100,7 +100,7 @@ const VastuShastra = () => {
       </div>
 
       <PopularVastuTips />
-      <AvailableExperts areaOfExpertise="Vastu" />
+      <AvailableExperts areaOfExpertise="vastu" />
     </div>
   );
 };

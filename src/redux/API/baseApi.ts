@@ -54,7 +54,7 @@ export const baseApi = createApi({
   refetchOnReconnect: true,
   refetchOnFocus: true,
   tagTypes: [
-     "emergencies",
+    "emergencies",
     "users",
     "reels",
     "yoga",
@@ -82,6 +82,7 @@ export const baseApi = createApi({
     "product",
     "productBanner",
     "consultation",
+    "consultant",
     "bulkSms",
     "dailyHoroscope",
     "subscription",
