@@ -7,14 +7,24 @@ import {
   useGetSingleNewsQuery,
 } from "../../../redux/Features/News/newsApi";
 import type { TNews } from "../../../types/news.type";
+import { useState } from "react";
+import LogoLoader from "../../../components/Shared/LogoLoader/LogoLoader";
 
 const NewsDetails = () => {
   const { id } = useParams();
-  const { data } = useGetSingleNewsQuery({ id, languageCode: "en" });
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("en");
+  const { data, isLoading, isFetching, error } = useGetSingleNewsQuery({
+    id,
+    languageCode: selectedLanguage,
+  });
   const news = data?.data || {};
   const { data: trendingNews } = useGetAllTrendingNewsQuery({});
   const allTrendingNews =
     trendingNews?.data?.data?.filter((news: TNews) => news?._id !== id) || [];
+
+  if (isLoading || isFetching) {
+    return <LogoLoader />;
+  }
   return (
     <div className="font-Manrope">
       <Breadcrumb
@@ -35,7 +45,11 @@ const NewsDetails = () => {
 
       <div className="flex gap-8 mt-8">
         <div className="space-y-5 w-[60%]">
-          <NewsContent news={news} />
+          <NewsContent
+            news={news}
+            setSelectedLanguage={setSelectedLanguage}
+            error={error}
+          />
         </div>
 
         <div className="w-[40%] sticky top-5 h-fit">
@@ -47,6 +61,11 @@ const NewsDetails = () => {
               <TrendingNewsCard key={item?._id} news={item} />
             ))}
           </div>
+          {allTrendingNews?.length === 0 && (
+            <h4 className="text-neutral-90">
+              No trending news found at the moment.
+            </h4>
+          )}
         </div>
       </div>
     </div>

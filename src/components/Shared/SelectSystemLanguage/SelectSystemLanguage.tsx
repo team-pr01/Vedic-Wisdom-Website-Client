@@ -1,6 +1,7 @@
 import { IoSearchOutline } from "react-icons/io5";
 import Modal from "../../Reusable/Modal/Modal";
 import { useState } from "react";
+import { SUPPORTED_LANGUAGES } from "../../../data/languages";
 
 type TSelectSystemLanguageProps = {
   isModalOpen: boolean;
@@ -13,6 +14,12 @@ const SelectSystemLanguage: React.FC<TSelectSystemLanguageProps> = ({
   setSelectedLanguage,
 }) => {
   const [keyword, setKeyword] = useState<string>("");
+  const filteredLanguages = SUPPORTED_LANGUAGES?.filter((language) => {
+    return (
+      language?.name?.toLowerCase()?.includes(keyword?.toLowerCase()) ||
+      language?.code?.toLowerCase()?.includes(keyword?.toLowerCase())
+    );
+  });
   return (
     <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
       <h2 className="text-neutral-90 text-xl font-bold">Select Language</h2>
@@ -28,24 +35,18 @@ const SelectSystemLanguage: React.FC<TSelectSystemLanguageProps> = ({
       </div>
 
       <div className="flex flex-col gap-2 mt-4">
-        <button
-          onClick={() => setSelectedLanguage("Bangla")}
-          className="w-full px-4 py-3.5 rounded-lg border bg-white hover:bg-primary-10 hover:text-white transition duration-300 border-neutral-55 text-left"
-        >
-          Bangla
-        </button>
-        <button
-          onClick={() => setSelectedLanguage("English")}
-          className="w-full px-4 py-3.5 rounded-lg border bg-white hover:bg-primary-10 hover:text-white transition duration-300 border-neutral-55 text-left"
-        >
-          English
-        </button>
-        <button
-          onClick={() => setSelectedLanguage("Hindi")}
-          className="w-full px-4 py-3.5 rounded-lg border bg-white hover:bg-primary-10 hover:text-white transition duration-300 border-neutral-55 text-left"
-        >
-          Hindi
-        </button>
+        {filteredLanguages?.map((language) => (
+          <button
+            key={language?.code}
+            onClick={() => {
+              setSelectedLanguage(language?.code);
+              setIsModalOpen(false);
+            }}
+            className="w-full px-4 py-3.5 rounded-lg border bg-white hover:bg-primary-10 hover:text-white transition duration-300 border-neutral-55 text-left"
+          >
+            {language?.name}
+          </button>
+        ))}
       </div>
     </Modal>
   );

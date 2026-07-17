@@ -8,6 +8,7 @@ export type TNewsTranslation = {
 
 export type TNews = {
   _id: string;
+  translatedContent: TNewsTranslation;
   imageUrl: string;
   title : string;
   overview: string;
