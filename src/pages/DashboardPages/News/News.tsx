@@ -4,8 +4,18 @@ import { ICONS } from "../../../assets";
 import NewsCard from "../../../components/Dashboard/NewsPage/NewsCard/NewsCard";
 import TrendingNewsCard from "../../../components/Dashboard/NewsPage/TrendingNewsCard/TrendingNewsCard";
 import SelectSystemLanguage from "../../../components/Shared/SelectSystemLanguage/SelectSystemLanguage";
+import {
+  useGetAllNewsQuery,
+  useGetAllTrendingNewsQuery,
+} from "../../../redux/Features/News/newsApi";
+import type { TNews } from "../../../types/news.type";
 
 const News = () => {
+  const { data } = useGetAllNewsQuery({});
+  const { data: trendingNews } = useGetAllTrendingNewsQuery({});
+  const allTrendingNews = trendingNews?.data?.data || [];
+  console.log(trendingNews);
+  const news = data?.data?.news || [];
   const [isTranslateNewsModalOpen, setIsTranslateNewsModalOpen] =
     useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
@@ -53,31 +63,18 @@ const News = () => {
         <div className="w-[60%]">
           <h4 className="text-neutral-90 font-bold text-xl">Latest News</h4>
           <div className="space-y-5 mt-4">
-            <NewsCard />
-            <NewsCard />
-            <NewsCard />
+            {news?.map((item: TNews) => (
+              <NewsCard key={item?._id} news={item} />
+            ))}
           </div>
         </div>
 
         <div className="w-[40%] sticky top-5 h-fit">
           <h4 className="text-neutral-90 font-bold text-xl">Trending News</h4>
           <div className="flex flex-col gap-4 mt-4">
-            <TrendingNewsCard />
-            <TrendingNewsCard />
-            <TrendingNewsCard />
-            <TrendingNewsCard />
-            <TrendingNewsCard />
-            <TrendingNewsCard />
-            <TrendingNewsCard />
-            <TrendingNewsCard />
-            <TrendingNewsCard />
-            <TrendingNewsCard />
-            <TrendingNewsCard />
-            <TrendingNewsCard />
-            <TrendingNewsCard />
-            <TrendingNewsCard />
-            <TrendingNewsCard />
-            <TrendingNewsCard />
+            {allTrendingNews?.map((item: TNews) => (
+              <TrendingNewsCard key={item?._id} news={item} />
+            ))}
           </div>
         </div>
       </div>
