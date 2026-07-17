@@ -7,19 +7,23 @@ import { ICONS } from "../../../assets";
 import AvailableExperts from "../../../components/Reusable/AvailableExperts/AvailableExperts";
 import VastuShastraVideoCard from "../../../components/Dashboard/VastuShastraPage/VastuShastraVideoCard/VastuShastraVideoCard";
 import PopularVastuTips from "../../../components/Dashboard/VastuShastraPage/PopularVastuTips/PopularVastuTips";
+import { useGetAllVastuQuery } from "../../../redux/Features/Vastu/vastuApi";
+import type { TVastu } from "../../../types/vastu.type";
+import { useGetAllCategoriesByAreaNameQuery } from "../../../redux/Features/Categories/ReelCategory/categoriesApi";
+import type { TCategories } from "../../../types/categories.interface";
 
 const VastuShastra = () => {
   const swiperRef = useRef<SwiperType | null>(null);
-  const [slidesPerView, setSlidesPerView] = useState<number>(5);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const { data: categories } = useGetAllCategoriesByAreaNameQuery("vastu");
   const vastuCategories = [
     "All",
-    "Entrance",
-    "Bedroom",
-    "Kitchen",
-    "Bathroom",
-    "Living Room",
+    ...(categories?.data?.map((category: TCategories) => category?.category) ||
+      []),
   ];
+
+  const { data } = useGetAllVastuQuery({ category: selectedCategory });
+  const allVastu = data?.data?.vastu || [];
   return (
     <div className="font-Manrope space-y-8">
       <DashboardHeading
@@ -72,13 +76,6 @@ const VastuShastra = () => {
           modules={[Navigation, Pagination]}
           spaceBetween={20}
           slidesPerView={4.5}
-          onSwiper={(swiper) => {
-            swiperRef.current = swiper;
-            setSlidesPerView(Number(swiper.params.slidesPerView));
-          }}
-          onBreakpoint={(swiper) => {
-            setSlidesPerView(Number(swiper.params.slidesPerView));
-          }}
           breakpoints={{
             320: {
               slidesPerView: 1,
@@ -89,14 +86,14 @@ const VastuShastra = () => {
               spaceBetween: 25,
             },
             1024: {
-              slidesPerView: 5,
+              slidesPerView: 4.3,
               spaceBetween: 30,
             },
           }}
         >
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]?.map((_, index) => (
-            <SwiperSlide key={index}>
-              <VastuShastraVideoCard />
+          {allVastu?.map((vastu: TVastu) => (
+            <SwiperSlide key={vastu?._id}>
+              <VastuShastraVideoCard vastu={vastu} />
             </SwiperSlide>
           ))}
         </Swiper>
