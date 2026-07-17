@@ -11,6 +11,7 @@ export type TNews = {
   imageUrl: string;
   title : string;
   overview: string;
+  content: string;
   category: string;
   likes?: number;
   likedBy?: string[];

@@ -92,8 +92,8 @@ const newsApi = baseApi.injectEndpoints({
     }),
 
     getSingleNews: builder.query({
-      query: (id) => ({
-        url: `/news/${id}`,
+      query: ({id, languageCode}) => ({
+        url: `/news/${id}/${languageCode}`,
         method: "GET",
         credentials: "include",
       }),

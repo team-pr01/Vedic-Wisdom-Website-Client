@@ -4,12 +4,15 @@ import { Link } from "react-router-dom";
 import { formatDate } from "../../../../utils/formatDate";
 import { useToggleLikeNewsMutation } from "../../../../redux/Features/News/newsApi";
 import { useSelector } from "react-redux";
-import { useCurrentUser } from "../../../../redux/Features/Auth/authSlice";
+import {
+  useCurrentUser,
+  type TLoggedInUser,
+} from "../../../../redux/Features/Auth/authSlice";
 import { useState } from "react";
 import type { TNews } from "../../../../types/news.type";
 
 const NewsCard = ({ news }: { news: TNews }) => {
-  const user = useSelector(useCurrentUser);
+  const user = useSelector(useCurrentUser) as TLoggedInUser;
   const [toggleLikeNews] = useToggleLikeNewsMutation();
   const [isLiked, setIsLiked] = useState(
     news?.likedBy?.some((id: string) => id === user?._id) || false,

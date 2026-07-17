@@ -14,7 +14,6 @@ const News = () => {
   const { data } = useGetAllNewsQuery({});
   const { data: trendingNews } = useGetAllTrendingNewsQuery({});
   const allTrendingNews = trendingNews?.data?.data || [];
-  console.log(trendingNews);
   const news = data?.data?.news || [];
   const [isTranslateNewsModalOpen, setIsTranslateNewsModalOpen] =
     useState(false);
