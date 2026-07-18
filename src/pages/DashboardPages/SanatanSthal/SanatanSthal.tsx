@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useGetAllTempleQuery } from "../../../redux/Features/Temple/templeApi";
 import type { TTemple } from "../../../types/temple.type";
 import EmptyState from "../../../components/Reusable/EmptyState/EmptyState";
+import VastuShastraVideoCardSkeleton from "../../../components/SkeletonLoaders/VastuShastraVideoCardSkeleton/VastuShastraVideoCardSkeleton";
 
 const SanatanSthal = () => {
   const [keyword, setKeyword] = useState<string>("");
@@ -77,21 +78,15 @@ const SanatanSthal = () => {
             </p>
           </div>
 
-          {/* Loading State */}
-          {isLoading && (
-            <div className="flex justify-center py-12">
-              <div className="w-12 h-12 border-4 border-primary-10 border-t-transparent rounded-full animate-spin" />
-            </div>
-          )}
-
-          {/* Temple Cards */}
-          {!isLoading && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {allSanatanSthals?.map((temple: TTemple) => (
-                <TempleCard key={temple?._id} temple={temple} />
-              ))}
-            </div>
-          )}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {isLoading
+              ? Array.from({ length: 8 }).map((_, index) => (
+                  <VastuShastraVideoCardSkeleton key={index} />
+                ))
+              : allSanatanSthals?.map((temple: TTemple) => (
+                  <TempleCard key={temple?._id} temple={temple} />
+                ))}
+          </div>
 
           {/* No Results */}
           {!isLoading && allSanatanSthals?.length === 0 && <EmptyState />}

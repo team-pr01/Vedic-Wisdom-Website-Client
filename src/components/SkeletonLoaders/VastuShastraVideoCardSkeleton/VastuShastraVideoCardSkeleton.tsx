@@ -1,6 +1,6 @@
 const VastuShastraVideoCardSkeleton = () => {
   return (
-    <div className="rounded-2xl relative shadow-food-card w-fit border border-primary-80/60 bg-white animate-pulse">
+    <div className="rounded-2xl relative shadow-food-card border border-primary-80/60 bg-white animate-pulse">
       {/* Video Thumbnail Skeleton */}
       <div className="relative aspect-video h-48 rounded-t-2xl bg-neutral-20" />
 
