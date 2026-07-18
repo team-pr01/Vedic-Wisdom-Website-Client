@@ -8,6 +8,12 @@ import TextInput from "../../../../components/Reusable/TextInput/TextInput";
 import SelectDropdown from "../../../../components/Reusable/SelectDropdown/SelectDropdown";
 import { ICONS } from "../../../../assets";
 import Button from "../../../../components/Reusable/Button/Button";
+import { useAddTempleMutation } from "../../../../redux/Features/Temple/templeApi";
+import toast from "react-hot-toast";
+import Breadcrumb from "../../../../components/Reusable/Breadcrumb/Breadcrumb";
+import FilterDropdown from "../../../../components/Dashboard/SanathanSthalPage/Filters/FilterDropdown";
+import { Country, State, City } from "country-state-city";
+import Textarea from "../../../../components/Reusable/TextArea/TextArea";
 
 // --- TYPES & INTERFACES ---
 export interface TBasicInfo {
@@ -28,7 +34,6 @@ export interface TLocation {
   city: string;
   state: string;
   country: string;
-  area?: string;
   googleMapUrl?: string;
 }
 
@@ -67,10 +72,18 @@ const categoryOptions = [
 ];
 
 const AddTemple = () => {
+  const [addTemple] = useAddTempleMutation();
   const [currentStep, setCurrentStep] = useState(1);
   const [images, setImages] = useState<File[]>([]);
   const [videoUrls, setVideoUrls] = useState<string[]>([]);
   const [newVideoUrl, setNewVideoUrl] = useState("");
+
+  const [country, setCountry] = useState<any>(null);
+  const [state, setState] = useState<any>(null);
+  const [city, setCity] = useState<any>(null);
+  const [states, setStates] = useState<any[]>([]);
+  const [cities, setCities] = useState<any[]>([]);
+  const [selectedCountry, setSelectedCountry] = useState<any>(null);
 
   const {
     register,
@@ -79,8 +92,8 @@ const AddTemple = () => {
     setValue,
     trigger,
     getValues,
+    reset,
   } = useForm<TFormData>({
-    // CRITICAL: shouldUnregister: false ensures data persists when components unmount
     shouldUnregister: false,
     mode: "onChange",
     defaultValues: {
@@ -90,7 +103,6 @@ const AddTemple = () => {
         city: "",
         state: "",
         country: "",
-        area: "",
         googleMapUrl: "",
       },
       otherInfo: { visitingHours: "", phoneNumber: "", email: "", website: "" },
@@ -98,6 +110,27 @@ const AddTemple = () => {
       category: "",
     },
   });
+
+  const countries = Country.getAllCountries();
+  const countryOptions = countries.map((country) => ({
+    label: country?.name,
+    value: country?.isoCode,
+    isoCode: country?.isoCode,
+    countryData: country,
+  }));
+
+  const stateOptions = states.map((state) => ({
+    label: state?.name,
+    value: state?.isoCode,
+    isoCode: state?.isoCode,
+    stateData: state,
+  }));
+
+  const cityOptions = cities.map((city) => ({
+    label: city?.name,
+    value: city?.name,
+    cityData: city,
+  }));
 
   const totalSteps = 5;
   const steps = [
@@ -143,7 +176,12 @@ const AddTemple = () => {
     setValue("media.videoUrls", updatedVideos);
   };
 
-  const nextStep = async () => {
+  const nextStep = async (e?: React.MouseEvent) => {
+    // Prevent default behavior
+    if (e) {
+      e.preventDefault();
+    }
+
     const fieldsToValidate: any = {
       1: [
         "basicInfo.templeName",
@@ -157,11 +195,14 @@ const AddTemple = () => {
         "location.state",
         "location.country",
       ],
+      3: [],
+      4: [],
     };
 
-    const isValid = fieldsToValidate[currentStep]
-      ? await trigger(fieldsToValidate[currentStep])
-      : true;
+    const isValid =
+      fieldsToValidate[currentStep]?.length > 0
+        ? await trigger(fieldsToValidate[currentStep])
+        : true;
 
     if (isValid && currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
@@ -176,19 +217,129 @@ const AddTemple = () => {
     }
   };
 
-  const onSubmit = (data: TFormData) => {
-    console.log("Final Form Submission Data:", data);
+  const onSubmit = async (data: TFormData) => {
+    // Only submit on the last step
+    if (currentStep !== totalSteps) {
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+
+      const flattenedData: any = {
+        templeName: data.basicInfo.templeName,
+        mainDeity: data.basicInfo.mainDeity,
+        description: data.basicInfo.description,
+        category: data.category,
+        address: data.location.address,
+        city: city?.label || data.location.city,
+        state: state?.label || data.location.state,
+        country: country?.label || data.location.country,
+        googleMapUrl: data.location.googleMapUrl || "",
+        facebook: data.socialMedia?.facebook || "",
+        youtube: data.socialMedia?.youtube || "",
+        instagram: data.socialMedia?.instagram || "",
+        linkedin: data.socialMedia?.linkedin || "",
+        establishedYear: data.otherInfo?.establishedYear || null,
+        visitingHours: data.otherInfo?.visitingHours || "",
+        phoneNumber: data.otherInfo?.phoneNumber || "",
+        email: data.otherInfo?.email || "",
+        website: data.otherInfo?.website || "",
+        videoUrls: JSON.stringify(videoUrls || []),
+      };
+
+      Object.keys(flattenedData).forEach((key) => {
+        if (flattenedData[key] !== null && flattenedData[key] !== "") {
+          formData.append(key, String(flattenedData[key]));
+        }
+      });
+
+      images.forEach((image) => {
+        formData.append("files", image);
+      });
+
+      const response = await addTemple(formData).unwrap();
+
+      if (response?.success) {
+        toast.success("Temple added successfully! We will review it soon.");
+        reset();
+        setImages([]);
+        setVideoUrls([]);
+        setCurrentStep(1);
+        setCountry(null);
+        setState(null);
+        setCity(null);
+        setStates([]);
+        setCities([]);
+      }
+    } catch (error: any) {
+      console.error("Failed to add temple:", error);
+      toast.error(
+        error?.data?.message || "Failed to add temple. Please try again.",
+      );
+    }
+  };
+
+  // Handle country selection
+  const handleCountrySelect = (selected: any) => {
+    setSelectedCountry(selected);
+    setCities([]);
+    setState(null);
+    setCity(null);
+
+    if (selected?.isoCode) {
+      const countryStates = State.getStatesOfCountry(selected.isoCode);
+      setStates(countryStates);
+    }
+
+    setCountry(selected);
+  };
+
+  // Handle state selection
+  const handleStateSelect = (selected: any) => {
+    setCities([]);
+    setCity(null);
+
+    if (selected?.value && selectedCountry?.isoCode) {
+      const stateCities = City.getCitiesOfState(
+        selectedCountry.isoCode,
+        selected.value,
+      );
+      setCities(stateCities);
+    }
+
+    setState(selected);
+  };
+
+  // Handle city selection
+  const handleCitySelect = (selected: any) => {
+    setCity(selected);
   };
 
   return (
-    <div className="font-Manrope">
+    <div className="font-Manrope space-y-8">
+      <Breadcrumb
+        items={[
+          { label: "Dashboard", path: "/dashboard" },
+          {
+            label: "Sanatan Sthal",
+            path: `/dashboard/sanatan-sthal`,
+          },
+          {
+            label: "Add Temple",
+            path: `/dashboard/add-temple`,
+            isActive: true,
+          },
+        ]}
+      />
+
       <DashboardHeading
         title="Add New Temple"
         description="Fill in the details to add a new Sanatan Sthal to our directory."
       />
 
       {/* Progress Steps Indicator */}
-      <div className="mt-8 mb-10">
+      <div className="mb-10">
         <div className="flex items-center justify-between max-w-3xl mx-auto">
           {steps.map((step, index) => (
             <div key={step.number} className="flex items-center">
@@ -203,14 +354,22 @@ const AddTemple = () => {
                   {step.number}
                 </div>
                 <span
-                  className={`text-xs mt-2 font-medium ${currentStep >= step.number ? "text-primary-10" : "text-neutral-60"}`}
+                  className={`text-xs mt-2 font-medium ${
+                    currentStep >= step.number
+                      ? "text-primary-10"
+                      : "text-neutral-60"
+                  }`}
                 >
                   {step.label}
                 </span>
               </div>
               {index < steps.length - 1 && (
                 <div
-                  className={`w-16 h-0.5 mx-2 ${currentStep > step.number ? "bg-primary-10" : "bg-neutral-60/50"}`}
+                  className={`w-16 h-0.5 mx-2 ${
+                    currentStep > step.number
+                      ? "bg-primary-10"
+                      : "bg-neutral-60/50"
+                  }`}
                 />
               )}
             </div>
@@ -219,11 +378,6 @@ const AddTemple = () => {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* 
-            TECHNIQUE: We render all sections but hide the ones that are not current.
-            This prevents DOM unmounting and guarantees zero data loss.
-        */}
-
         {/* STEP 1: BASIC INFO */}
         <div className={currentStep !== 1 ? "hidden" : ""}>
           <section className="bg-white border border-neutral-55 rounded-2xl p-6">
@@ -243,28 +397,16 @@ const AddTemple = () => {
                 error={errors.basicInfo?.mainDeity}
                 {...register("basicInfo.mainDeity", { required: "Required" })}
               />
-              <div className="md:col-span-2">
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-neutral-10 text-sm font-medium">
-                    Description <span className="text-red-500">*</span>
-                  </label>
-                  <textarea
-                    placeholder="Describe significance..."
-                    className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:border-primary-10 transition bg-white resize-none ${errors.basicInfo?.description ? "border-red-500" : "border-neutral-55"}`}
-                    rows={4}
-                    {...register("basicInfo.description", {
-                      required: "Required",
-                      minLength: 20,
-                    })}
-                  />
-                  {errors.basicInfo?.description && (
-                    <span className="text-red-500 text-sm">
-                      {errors.basicInfo.description.message}
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className="md:col-span-2">
+
+              <div className="md:col-span-2 space-y--4">
+                <Textarea
+                  label="Description"
+                  placeholder="Write about the temple"
+                  error={errors.basicInfo?.description}
+                  {...register("basicInfo.description", {
+                    required: "Required",
+                  })}
+                />
                 <SelectDropdown
                   label="Category"
                   error={errors.category}
@@ -281,35 +423,37 @@ const AddTemple = () => {
           <section className="bg-white border border-neutral-55 rounded-2xl p-6">
             <h2 className="text-xl font-bold text-neutral-90 mb-6">Location</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FilterDropdown
+                label="Country"
+                options={countryOptions}
+                value={country}
+                onChange={handleCountrySelect}
+                isRequired={false}
+                placeholder="Select country"
+              />
+              <FilterDropdown
+                label="State"
+                options={stateOptions}
+                value={state}
+                onChange={handleStateSelect}
+                isRequired={false}
+                placeholder="Select state"
+                dropdownDirection="bottom-full"
+              />
+              <FilterDropdown
+                label="City"
+                options={cityOptions}
+                value={city}
+                onChange={handleCitySelect}
+                isRequired={false}
+                placeholder="Select city"
+                dropdownDirection="bottom-full"
+              />
               <TextInput
                 label="Address"
                 placeholder="Enter full address"
                 {...register("location.address", { required: "Required" })}
                 error={errors.location?.address}
-              />
-              <TextInput
-                label="City"
-                placeholder="Enter city"
-                {...register("location.city", { required: "Required" })}
-                error={errors.location?.city}
-              />
-              <TextInput
-                label="State"
-                placeholder="Enter state/province"
-                {...register("location.state", { required: "Required" })}
-                error={errors.location?.state}
-              />
-              <TextInput
-                label="Country"
-                placeholder="Enter country"
-                {...register("location.country", { required: "Required" })}
-                error={errors.location?.country}
-              />
-              <TextInput
-                label="Area (Optional)"
-                placeholder="Enter area or locality"
-                {...register("location.area")}
-                isRequired={false}
               />
               <TextInput
                 label="Google Maps URL"
