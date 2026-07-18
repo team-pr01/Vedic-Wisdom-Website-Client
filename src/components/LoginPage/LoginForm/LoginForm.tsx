@@ -23,7 +23,7 @@ type TFormData = {
 type TModalType = "forgotPassword" | "verifyOtp" | "resetPassword";
 
 const LoginForm = () => {
-  const [login] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [modalType, setModalType] = useState<TModalType>("forgotPassword");
@@ -83,7 +83,11 @@ const LoginForm = () => {
           title: "Reset Password",
           description:
             "Create a new password for your account. Make sure it's strong and secure.",
-          component: <ResetPassword setIsForgotPasswordModalOpen={setIsForgotPasswordModalOpen} />,
+          component: (
+            <ResetPassword
+              setIsForgotPasswordModalOpen={setIsForgotPasswordModalOpen}
+            />
+          ),
         };
       default:
         return {
@@ -162,7 +166,13 @@ const LoginForm = () => {
           </div>
         </div>
 
-        <Button label="Login" className="w-full" type="submit" />
+        <Button
+          label="Login"
+          className="w-full"
+          type="submit"
+          isLoading={isLoading}
+          isDisabled={isLoading}
+        />
       </form>
 
       <div className="space-y-4 mt-6">

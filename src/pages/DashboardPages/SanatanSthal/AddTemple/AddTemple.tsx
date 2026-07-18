@@ -72,7 +72,7 @@ const categoryOptions = [
 ];
 
 const AddTemple = () => {
-  const [addTemple] = useAddTempleMutation();
+  const [addTemple, { isLoading }] = useAddTempleMutation();
   const [currentStep, setCurrentStep] = useState(1);
   const [images, setImages] = useState<File[]>([]);
   const [videoUrls, setVideoUrls] = useState<string[]>([]);
@@ -643,6 +643,8 @@ const AddTemple = () => {
                 label="Add Temple"
                 className="px-8"
                 rightIcon={ICONS.arrowRight}
+                isLoading={isLoading}
+                isDisabled={isLoading}
               />
             ) : (
               <Button

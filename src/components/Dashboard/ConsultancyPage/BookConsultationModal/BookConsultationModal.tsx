@@ -6,6 +6,9 @@ import Textarea from "../../../Reusable/TextArea/TextArea";
 import Button from "../../../Reusable/Button/Button";
 import { ICONS, IMAGES } from "../../../../assets";
 import { useForm } from "react-hook-form";
+import type { TConsultant } from "../../../../types/consultants.type";
+import { useBookConsultationMutation } from "../../../../redux/Features/Consultation/consultationApi";
+import toast from "react-hot-toast";
 
 type TFormData = {
   concern: string;
@@ -16,6 +19,7 @@ type TModalProps = {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   closeOnBackdropClick?: boolean;
   closeOnEsc?: boolean;
+  consultant: TConsultant;
 };
 
 const BookConsultationModal: React.FC<TModalProps> = ({
@@ -23,6 +27,7 @@ const BookConsultationModal: React.FC<TModalProps> = ({
   setIsModalOpen,
   closeOnBackdropClick = true,
   closeOnEsc = true,
+  consultant,
 }) => {
   // Handle ESC key press
   useEffect(() => {
@@ -92,15 +97,30 @@ const BookConsultationModal: React.FC<TModalProps> = ({
     },
   };
 
+  const [bookConsultation, { isLoading }] = useBookConsultationMutation();
   const {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm<TFormData>();
 
-  const handleBookConsultation = (data: TFormData) => {
+  const handleBookConsultation = async (data: TFormData) => {
     try {
-      console.log(data);
+      const payload = {
+        consultantId: consultant._id,
+        concern: data.concern,
+      };
+
+      const response = await bookConsultation(payload).unwrap();
+
+      if (response?.success) {
+        reset();
+        setIsModalOpen(false);
+        toast.success(
+          "Your consultation booked successfully! We will contact you soon.",
+        );
+      }
     } catch (error: any) {
       console.log(error);
     }
@@ -148,29 +168,35 @@ const BookConsultationModal: React.FC<TModalProps> = ({
 
                 <div className="size-75 mx-auto rounded-full relative">
                   <img
-                    src={IMAGES.dummyAvatar}
+                    src={consultant?.imageUrl}
                     alt=""
                     className="size-full rounded-full"
                   />
 
                   <div className="p-2 rounded-lg bg-neutral-20/80 absolute left-0 bottom-16 min-w-16">
-                    <h2 className="text-neutral-90 font-bold">$15</h2>
+                    <h2 className="text-neutral-90 font-bold">
+                      {consultant?.fees}
+                    </h2>
                     <p className="text-neutral-50 font-medium text-xs mt-px">
                       Per hr
                     </p>
                   </div>
 
                   <div className="p-2 rounded-lg bg-neutral-20/80 absolute right-0 top-3">
-                    <h2 className="text-neutral-90 font-bold">15 years of</h2>
+                    <h2 className="text-neutral-90 font-bold">
+                      {consultant?.experience}
+                    </h2>
                     <p className="text-neutral-50 font-medium text-xs mt-px">
                       Experience
                     </p>
                   </div>
 
                   <div className="p-2 rounded-lg bg-neutral-20/80 absolute right-0 bottom-3">
-                    <h2 className="text-neutral-90 font-bold">Sharad More</h2>
-                    <p className="text-neutral-50 font-medium text-xs mt-px">
-                      Jyotish Expert
+                    <h2 className="text-neutral-90 font-bold">
+                      {consultant?.name}
+                    </h2>
+                    <p className="text-neutral-50 font-medium text-xs mt-px capitalize">
+                      {consultant?.category} Expert
                     </p>
                   </div>
                 </div>
@@ -227,6 +253,8 @@ const BookConsultationModal: React.FC<TModalProps> = ({
                     label="Book Consultation"
                     rightIcon={ICONS.arrowRight}
                     className="w-full"
+                    isLoading={isLoading}
+                    isDisabled={isLoading}
                   />
                 </form>
               </div>

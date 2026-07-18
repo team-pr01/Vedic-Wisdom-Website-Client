@@ -6,16 +6,17 @@ import { useGetAllConsultantsQuery } from "../../../redux/Features/Consultation/
 import type { TConsultant } from "../../../types/consultants.type";
 import { useCategories } from "../../../hooks/useCategories";
 import CategoryFilter from "../../../components/Reusable/CategoryFilter/CategoryFilter";
+import EmptyState from "../../../components/Reusable/EmptyState/EmptyState";
+import ConsultantCardSkeleton from "../../../components/SkeletonLoaders/ConsultantCardSkeleton/ConsultantCardSkeleton/ConsultantCardSkeleton";
 
 const Consultancy = () => {
   const [keyword, setKeyword] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
-  const { data } = useGetAllConsultantsQuery({
+  const { data, isLoading, isFetching } = useGetAllConsultantsQuery({
     keyword,
     category: selectedCategory,
   });
-  console.log(data);
   const allConsultants = data?.data?.consultants || [];
   const { categories } = useCategories({
     areaName: "consultants",
@@ -45,10 +46,16 @@ const Consultancy = () => {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-        {allConsultants?.map((consultant: TConsultant) => (
-          <ConsultantCard key={consultant?._id} consultant={consultant} />
-        ))}
+        {isLoading || isFetching
+          ? Array.from({ length: 8 }).map((_, index) => (
+              <ConsultantCardSkeleton key={index} />
+            ))
+          : allConsultants?.map((consultant: TConsultant) => (
+              <ConsultantCard key={consultant?._id} consultant={consultant} />
+            ))}
       </div>
+
+      {!isLoading && allConsultants?.length === 0 && <EmptyState />}
     </div>
   );
 };

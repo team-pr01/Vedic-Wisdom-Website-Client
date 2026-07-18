@@ -15,7 +15,7 @@ const ForgotPassword = ({
     React.SetStateAction<"forgotPassword" | "verifyOtp" | "resetPassword">
   >;
 }) => {
-  const [forgotPassword] = useForgotPasswordMutation();
+  const [forgotPassword, {isLoading}] = useForgotPasswordMutation();
   const {
     register,
     formState: { errors },
@@ -54,6 +54,8 @@ const ForgotPassword = ({
         label="Reset Password"
         rightIcon={ICONS.arrowRight}
         className="w-full"
+        isLoading={isLoading}
+        isDisabled={isLoading}
       />
     </form>
   );

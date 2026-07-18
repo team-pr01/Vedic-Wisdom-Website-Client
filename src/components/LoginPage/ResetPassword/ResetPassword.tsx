@@ -16,7 +16,7 @@ const ResetPassword = ({
 }: {
   setIsForgotPasswordModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [resetPassword] = useResetPasswordMutation();
+  const [resetPassword, { isLoading }] = useResetPasswordMutation();
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState<boolean>(false);
@@ -144,6 +144,8 @@ const ResetPassword = ({
         label="Reset Password"
         rightIcon={ICONS.arrowRight}
         className="w-full"
+        isLoading={isLoading}
+        isDisabled={isLoading}
       />
     </form>
   );

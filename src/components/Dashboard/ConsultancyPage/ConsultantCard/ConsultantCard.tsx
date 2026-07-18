@@ -10,6 +10,8 @@ import type { TConsultant } from "../../../../types/consultants.type";
 const ConsultantCard = ({ consultant }: { consultant: TConsultant }) => {
   const [isBookConsultationModalOpen, setIsBookConsultationModalOpen] =
     useState<boolean>(false);
+  const [selectedConsultant, setSelectedConsultant] =
+    useState<TConsultant | null>(null);
   const renderStars = (rating: number) => {
     const stars = [];
     const fullStars = Math.floor(rating);
@@ -101,7 +103,10 @@ const ConsultantCard = ({ consultant }: { consultant: TConsultant }) => {
             <Button
               label="Book Consultation"
               className="py-2.5"
-              onClick={() => setIsBookConsultationModalOpen(true)}
+              onClick={() => {
+                setSelectedConsultant(consultant);
+                setIsBookConsultationModalOpen(true);
+              }}
             />
           </div>
         </div>
@@ -110,6 +115,7 @@ const ConsultantCard = ({ consultant }: { consultant: TConsultant }) => {
       <BookConsultationModal
         isModalOpen={isBookConsultationModalOpen}
         setIsModalOpen={setIsBookConsultationModalOpen}
+        consultant={selectedConsultant as TConsultant}
       />
     </>
   );

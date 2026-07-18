@@ -26,7 +26,7 @@ type TFormData = {
 };
 
 const SignupForm = () => {
-  const [signup] = useSignupMutation();
+  const [signup, { isLoading }] = useSignupMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
@@ -283,7 +283,8 @@ const SignupForm = () => {
           label="Create Account"
           className="w-full mt-3"
           type="submit"
-          isDisabled={!agreeToTerms}
+          isLoading={isLoading}
+          isDisabled={isLoading || !agreeToTerms}
         />
       </form>
 
