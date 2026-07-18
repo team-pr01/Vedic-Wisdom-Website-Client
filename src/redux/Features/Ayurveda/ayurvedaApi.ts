@@ -2,68 +2,53 @@ import { baseApi } from "../../API/baseApi";
 
 const ayurvedaApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+
     getAllAyurveda: builder.query({
-      query: (params) => {
-        let queryStr = "";
-        if (params) {
-          const queryParams = new URLSearchParams();
-          if (params.keyword) queryParams.append("keyword", params.keyword);
-          if (params.category) queryParams.append("category", params.category);
-          queryStr = `?${queryParams.toString()}`;
+      query: ({
+        keyword,
+        limit,
+        page,
+        skip,
+        category,
+      }: {
+        keyword?: string;
+        limit?: number;
+        page?: number;
+        skip?: number;
+        category?: string;
+      } = {}) => {
+        const params = new URLSearchParams();
+
+        // Handle keyword - skip if "All"
+        if (keyword && keyword !== "All") {
+          params.append("keyword", keyword);
         }
+
+        // Handle limit
+        if (typeof limit === "number") params.append("limit", limit.toString());
+
+        // Handle page
+        if (typeof page === "number") params.append("page", page.toString());
+
+        // Handle skip
+        if (typeof skip === "number") params.append("skip", skip.toString());
+
+        // Handle category - skip if "All" or empty
+        if (category && category !== "All") {
+          params.append("category", category);
+        }
+
         return {
-          url: `/ayurveda${queryStr}`,
+          url: `/ayurveda?${params.toString()}`,
           method: "GET",
           credentials: "include",
         };
       },
       providesTags: ["ayurveda"],
     }),
-
-    getSingleAyurveda: builder.query({
-      query: (id) => ({
-        url: `/ayurveda/${id}`,
-        method: "GET",
-        credentials: "include",
-      }),
-      providesTags: ["ayurveda"],
-    }),
-
-    addAyurveda: builder.mutation({
-      query: (data) => ({
-        url: `/ayurveda/add`,
-        method: "POST",
-        body: data,
-        credentials: "include",
-      }),
-      invalidatesTags: ["ayurveda"],
-    }),
-
-    updateAyurveda: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `/ayurveda/update/${id}`,
-        method: "PUT",
-        body: data,
-        credentials: "include",
-      }),
-      invalidatesTags: ["ayurveda"],
-    }),
-
-    deleteAyurveda: builder.mutation({
-      query: (id) => ({
-        url: `/ayurveda/delete/${id}`,
-        method: "DELETE",
-        credentials: "include",
-      }),
-      invalidatesTags: ["ayurveda"],
-    }),
   }),
 });
 
 export const {
   useGetAllAyurvedaQuery,
-  useGetSingleAyurvedaQuery,
-  useAddAyurvedaMutation,
-  useUpdateAyurvedaMutation,
-  useDeleteAyurvedaMutation,
 } = ayurvedaApi;

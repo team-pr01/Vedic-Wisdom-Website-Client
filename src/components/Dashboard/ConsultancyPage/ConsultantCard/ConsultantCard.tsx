@@ -33,7 +33,7 @@ const ConsultantCard = ({ consultant }: { consultant: TConsultant }) => {
 
   return (
     <>
-      <div className="bg-white rounded-2xl border border-neutral-20 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden group">
+      <div className="bg-white rounded-2xl border border-neutral-20 shadow hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden group">
         <div className="p-6">
           {/* Header with Image and Status */}
           <div className="flex items-start gap-4">

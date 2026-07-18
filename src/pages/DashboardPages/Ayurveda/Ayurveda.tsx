@@ -1,39 +1,48 @@
 import { useState } from "react";
 import DashboardHeading from "../../../components/Reusable/DashboardHeading/DashboardHeading";
 import AyurvedaCard from "../../../components/Dashboard/AyurvedaPage/AyurvedaCard/AyurvedaCard";
+import { useGetAllAyurvedaQuery } from "../../../redux/Features/Ayurveda/ayurvedaApi";
+import type { TAyurveda } from "../../../types/ayurveda.type";
+import AyurvedaCardSkeleton from "../../../components/SkeletonLoaders/AyurvedaCardSkeleton/AyurvedaCardSkeleton";
+import CategoryFilter from "../../../components/Reusable/CategoryFilter/CategoryFilter";
+import { useCategories } from "../../../hooks/useCategories";
+import Button from "../../../components/Reusable/Button/Button";
+import { Link } from "react-router-dom";
 
 const Ayurveda = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
-  const foodCategories = ["All", "Sattvic", "Prasad", "Veg", "Non-veg"];
+  const { data, isLoading } = useGetAllAyurvedaQuery({
+    category: selectedCategory,
+  });
+  const allAyurveda = data?.data?.ayurveda || [];
+  const { categories } = useCategories({
+    areaName: "ayurveda",
+  });
   return (
-    <div>
+    <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <DashboardHeading
           title="Ayurveda"
           description="Discover the art of Ayurveda to balance your mind, body and soul."
         />
-        <div className="flex items-center gap-3">
-          {foodCategories?.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-3xl border border-primary-80  hover:bg-primary-10 hover:text-white transition duration-300 text-sm ${
-                selectedCategory === category
-                  ? "bg-primary-10 text-white"
-                  : "bg-white text-neutral-40"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-      </div>
 
-      <div className="grid grid-cols-4 gap-4 mt-10">
-        <AyurvedaCard/>
-        <AyurvedaCard/>
-        <AyurvedaCard/>
-        <AyurvedaCard/>
+        <Link to="/dashboard/consultancy">
+          <Button label="View Experts" />
+        </Link>
+      </div>{" "}
+      <CategoryFilter
+        categories={categories}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+      />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {isLoading
+          ? Array.from({ length: 8 }).map((_, index) => (
+              <AyurvedaCardSkeleton key={index} />
+            ))
+          : allAyurveda?.map((ayurveda: TAyurveda) => (
+              <AyurvedaCard key={ayurveda?._id} ayurveda={ayurveda} />
+            ))}
       </div>
     </div>
   );

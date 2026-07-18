@@ -24,7 +24,7 @@ const CategoryFilter = ({
   }
 
   return (
-    <div className="flex items-center gap-3 flex-wrap">
+    <div className="flex flex-wrap items-center gap-3 flex-wrap">
       {categories?.map((category: string) => (
         <button
           key={category}
