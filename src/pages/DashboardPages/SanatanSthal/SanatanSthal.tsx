@@ -6,15 +6,25 @@ import { IoSearchOutline } from "react-icons/io5";
 import TempleCard from "../../../components/Dashboard/SanathanSthalPage/TempleCard/TempleCard";
 import Button from "../../../components/Reusable/Button/Button";
 import { Link } from "react-router-dom";
+import { useGetAllTempleQuery } from "../../../redux/Features/Temple/templeApi";
+import type { TTemple } from "../../../types/temple.type";
+import EmptyState from "../../../components/Reusable/EmptyState/EmptyState";
 
 const SanatanSthal = () => {
   const [keyword, setKeyword] = useState<string>("");
   const [country, setCountry] = useState<any>(null);
   const [state, setState] = useState<any>(null);
   const [city, setCity] = useState<any>(null);
-  const [category, setCategory] = useState<any>(null);
+  const [category, setCategory] = useState<any>("");
 
-  const isLoading = false;
+  const { data, isLoading } = useGetAllTempleQuery({
+    keyword,
+    country: country?.label,
+    state: state?.label,
+    city: city?.label,
+    category: category?.value,
+  });
+  const allSanatanSthals = data?.data?.temples || [];
 
   return (
     <div className="font-Manrope">
@@ -24,9 +34,7 @@ const SanatanSthal = () => {
           description="Discover the timeless wisdom of Sanatan traditions from around the world. Explore the sacred texts, rituals, and traditions that have shaped our spiritual journey."
         />
         <Link to={"/dashboard/add-temple"}>
-          <Button
-            label="Add a Temple You Know"
-          />
+          <Button label="Add a Temple You Know" />
         </Link>
       </div>
 
@@ -79,20 +87,14 @@ const SanatanSthal = () => {
           {/* Temple Cards */}
           {!isLoading && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[1, 2, 3, 4]?.map((_, index) => (
-                <TempleCard />
+              {allSanatanSthals?.map((temple: TTemple) => (
+                <TempleCard key={temple?._id} temple={temple} />
               ))}
             </div>
           )}
 
           {/* No Results */}
-          {!isLoading && (
-            <div className="text-center py-12">
-              <p className="text-neutral-60">
-                No temples found matching your filters.
-              </p>
-            </div>
-          )}
+          {!isLoading && allSanatanSthals?.length === 0 && <EmptyState />}
         </div>
       </div>
     </div>

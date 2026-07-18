@@ -4,6 +4,9 @@ import { ICONS } from "../../../../assets";
 import { Country, State, City } from "country-state-city";
 import FilterDropdown from "./FilterDropdown";
 import { useState } from "react";
+import { useCategories } from "../../../../hooks/useCategories";
+// import { useUserLocation } from "../../../../hooks/useUserLocation";
+import toast from "react-hot-toast";
 
 type TFilters = {
   setCountry: any;
@@ -31,9 +34,14 @@ const Filters: React.FC<TFilters> = ({
   const [cities, setCities] = useState<any[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<any>(null);
   const [selectedState, setSelectedState] = useState<any>(null);
+  const [isLocating, setIsLocating] = useState(false);
 
   // Countries
   const countries = Country.getAllCountries();
+
+  const { categories } = useCategories({
+    areaName: "temple",
+  });
 
   const countryOptions = countries.map((country) => ({
     label: country?.name,
@@ -43,31 +51,106 @@ const Filters: React.FC<TFilters> = ({
   }));
 
   // Category Options
-  const categoryOptions = [
-    { label: "All Temples", value: "all" },
-    { label: "Ganesh Temple", value: "ganesh" },
-    { label: "Durga Temple", value: "durga" },
-    { label: "Shiva Temple", value: "shiva" },
-    { label: "Vishnu Temple", value: "vishnu" },
-    { label: "Krishna Temple", value: "krishna" },
-    { label: "Hanuman Temple", value: "hanuman" },
-    { label: "Saraswati Temple", value: "saraswati" },
-    { label: "Lakshmi Temple", value: "lakshmi" },
-    { label: "Kali Temple", value: "kali" },
-    { label: "Ram Temple", value: "ram" },
-    { label: "Sita Temple", value: "sita" },
-    { label: "Radha Krishna Temple", value: "radha-krishna" },
-    { label: "Jagannath Temple", value: "jagannath" },
-    { label: "Venkateswara Temple", value: "venkateswara" },
-    { label: "Murugan Temple", value: "murugan" },
-    { label: "Ayyappa Temple", value: "ayyappa" },
-    { label: "Sai Baba Temple", value: "sai-baba" },
-    { label: "Mata Temple", value: "mata" },
-    { label: "Navagraha Temple", value: "navagraha" },
-    { label: "Panchayatana Temple", value: "panchayatana" },
-    { label: "Ashram", value: "ashram" },
-    { label: "Gurudwara", value: "gurudwara" },
-  ];
+  const categoryOptions = categories.map((category) => ({
+    label: category,
+    value: category,
+  }));
+
+  // Handle Near Me click
+  const handleNearMe = async () => {
+    if (!navigator.geolocation) {
+      toast.error("Geolocation is not supported by your browser");
+      return;
+    }
+
+    setIsLocating(true);
+
+    try {
+      const position = await new Promise<GeolocationPosition>(
+        (resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: true,
+            timeout: 10000,
+          });
+        },
+      );
+
+      const { latitude, longitude } = position.coords;
+
+      // Reverse geocoding to get location details
+      const response = await fetch(
+        `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
+      );
+      const data = await response.json();
+
+      const cityName = data.city || data.locality || null;
+      const stateName = data.principalSubdivision || null;
+      const countryName = data.countryName || null;
+      const countryCode = data.countryCode || null;
+
+      // Set country
+      if (countryCode) {
+        const countryObj = countries.find((c) => c.isoCode === countryCode);
+        if (countryObj) {
+          const selectedCountry = {
+            label: countryObj.name,
+            value: countryObj.isoCode,
+            isoCode: countryObj.isoCode,
+            countryData: countryObj,
+          };
+          setSelectedCountry(selectedCountry);
+          setCountry(selectedCountry);
+
+          // Get states for this country
+          const countryStates = State.getStatesOfCountry(countryObj.isoCode);
+          setStates(countryStates);
+
+          // Set state
+          if (stateName) {
+            const stateObj = countryStates.find((s) => s.name === stateName);
+            if (stateObj) {
+              const selectedState = {
+                label: stateObj.name,
+                value: stateObj.isoCode,
+                isoCode: stateObj.isoCode,
+                stateData: stateObj,
+              };
+              setSelectedState(selectedState);
+              setState(selectedState);
+
+              // Get cities for this state
+              const stateCities = City.getCitiesOfState(
+                countryObj.isoCode,
+                stateObj.isoCode,
+              );
+              setCities(stateCities);
+
+              // Set city
+              if (cityName) {
+                const cityObj = stateCities.find((c) => c.name === cityName);
+                if (cityObj) {
+                  const selectedCity = {
+                    label: cityObj.name,
+                    value: cityObj.name,
+                    cityData: cityObj,
+                  };
+                  setCity(selectedCity);
+                }
+              }
+            }
+          }
+
+          toast.success(
+            `Location set to ${cityName || stateName || countryName}`,
+          );
+        }
+      }
+    } catch (error: any) {
+      toast.error(error?.message || "Failed to get location");
+    } finally {
+      setIsLocating(false);
+    }
+  };
 
   // Handle country selection
   const handleCountrySelect = (selected: any) => {
@@ -109,6 +192,7 @@ const Filters: React.FC<TFilters> = ({
 
   // Handle category selection
   const handleCategorySelect = (selected: any) => {
+    console.log(selected);
     setCategory(selected);
   };
 
@@ -154,7 +238,13 @@ const Filters: React.FC<TFilters> = ({
       <div className="space-y-4 mt-4">
         <p className="text-neutral-10/90 text-[15px]">
           View temples{" "}
-          <button className="font-medium text-primary-10 underline">Near Me</button>
+          <button
+            onClick={handleNearMe}
+            disabled={isLocating}
+            className="font-medium text-primary-10 underline hover:opacity-80 transition-opacity disabled:opacity-50"
+          >
+            {isLocating ? "Getting location..." : "Near Me"}
+          </button>
         </p>
 
         {/* Category Dropdown */}
@@ -186,6 +276,7 @@ const Filters: React.FC<TFilters> = ({
           onChange={handleStateSelect}
           isRequired={false}
           placeholder="Select state"
+          dropdownDirection="bottom-full"
         />
 
         {/* City Dropdown*/}

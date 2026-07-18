@@ -1,31 +1,42 @@
-import { ICONS, IMAGES } from "../../../../assets";
+import { Link } from "react-router-dom";
+import { ICONS } from "../../../../assets";
+import type { TTemple } from "../../../../types/temple.type";
 import Button from "../../../Reusable/Button/Button";
 
-const TempleCard = () => {
+const TempleCard = ({ temple }: { temple: TTemple }) => {
   return (
     <div className="rounded-xl border border-primary-80 p-3 bg-white">
       <img
-        src={IMAGES.dummyProject}
+        src={temple?.media?.imageUrls[0]}
         alt=""
         className="rounded-xl w-full h-56 object-cover"
       />
-      <h4 className="text-neutral-90 font-bold mt-3">Ayurvedic Khichadi</h4>
+      <h4 className="text-neutral-90 font-bold mt-3">
+        {temple?.basicInfo?.templeName}
+      </h4>
       <p className="description mt-1">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aspernatur,
-        vel?
+        {temple?.basicInfo?.description?.slice(0, 80).concat("...")}
       </p>
 
       <div className="flex items-center gap-3 mt-3">
         <div className="flex items-center gap-2">
           <img src={ICONS.location} alt="" />
-          <p className="text-neutral-50 text-sm">Amritsar, India</p>
+          <p className="text-neutral-50 text-sm">
+            {temple?.location?.city}, {temple?.location?.country}
+          </p>
         </div>
         <div className="px-2 py-1 rounded bg-primary-50 text-primary-10 text-xs text-center">
-          <span>Ganesh Mandir</span>
+          <span>{temple?.category}</span>
         </div>
       </div>
 
-      <Button variant="secondary" label="View Details" className="mt-4 w-full" />
+      <Link to={`/dashboard/sanatan-sthal/${temple?._id}`}>
+        <Button
+          variant="secondary"
+          label="View Details"
+          className="mt-4 w-full"
+        />
+      </Link>
     </div>
   );
 };

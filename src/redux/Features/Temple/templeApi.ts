@@ -3,11 +3,47 @@ import { baseApi } from "../../API/baseApi";
 const templeApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllTemple: builder.query({
-      query: () => ({
-        url: `/temple`,
-        method: "GET",
-        credentials: "include",
-      }),
+      query: ({
+        keyword,
+        limit,
+        page,
+        skip,
+        country,
+        state,
+        city,
+        category,
+      }: {
+        keyword?: string;
+        limit?: number;
+        page?: number;
+        skip?: number;
+        country?: string;
+        state?: string;
+        city?: string;
+        category?: string;
+      } = {}) => {
+        const params = new URLSearchParams();
+
+        // Handle keyword - skip if "All"
+        if (keyword && keyword !== "All") {
+          params.append("keyword", keyword);
+        }
+        if (typeof limit === "number") params.append("limit", limit.toString());
+        if (typeof page === "number") params.append("page", page.toString());
+        if (typeof skip === "number") params.append("skip", skip.toString());
+        if (country) params.append("country", country);
+        if (state) params.append("state", state);
+        if (city) params.append("city", city);
+        if (category && category !== "All" && category !== "") {
+          params.append("category", category);
+        }
+
+        return {
+          url: `/temple?${params.toString()}`,
+          method: "GET",
+          credentials: "include",
+        };
+      },
       providesTags: ["temple"],
     }),
 
@@ -20,63 +56,17 @@ const templeApi = baseApi.injectEndpoints({
       providesTags: ["temple"],
     }),
 
-    addTemple: builder.mutation<any, any>({
+
+    addTemple: builder.mutation({
       query: (data) => ({
-        url: `/temple/add-temple`,
+        url: `/temple/add`,
         method: "POST",
         body: data,
         credentials: "include",
       }),
-      invalidatesTags: ["temple"],
+      invalidatesTags: ["users"],
     }),
 
-    addEvent: builder.mutation<any, any>({
-      query: ({data, id}) => ({
-        url: `/temple/${id}/events`,
-        method: "POST",
-        body: data,
-        credentials: "include",
-      }),
-      invalidatesTags: ["temple"],
-    }),
-
-    deleteTemple: builder.mutation<any, string>({
-      query: (id) => ({
-        url: `/temple/${id}`,
-        method: "DELETE",
-        credentials: "include",
-      }),
-      invalidatesTags: ["temple"],
-    }),
-
-    deleteEvent: builder.mutation<any, any>({
-      query: ({id, eventId}) => ({
-        url: `/temple/${id}/events/${eventId}`,
-        method: "DELETE",
-        credentials: "include",
-      }),
-      invalidatesTags: ["temple"],
-    }),
-
-    updateTemple: builder.mutation<any, any>({
-      query: ({ id, data }) => ({
-        url: `/temple/${id}`,
-        method: "PUT",
-        body: data,
-        credentials: "include",
-      }),
-      invalidatesTags: ["temple"],
-    }),
-
-    approveTemple: builder.mutation<any, any>({
-      query: ({ id, data }) => ({
-        url: `/temple/update-status/${id}`,
-        method: "PUT",
-        body: data,
-        credentials: "include",
-      }),
-      invalidatesTags: ["temple"],
-    }),
   }),
 });
 
@@ -84,9 +74,4 @@ export const {
   useGetAllTempleQuery,
   useGetSingleTempleQuery,
   useAddTempleMutation,
-  useAddEventMutation,
-  useDeleteTempleMutation,
-  useDeleteEventMutation,
-  useUpdateTempleMutation,
-  useApproveTempleMutation,
 } = templeApi;
