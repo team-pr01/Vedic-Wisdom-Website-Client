@@ -1,5 +1,6 @@
 import { useGetAllVastuTipsQuery } from "../../../../redux/Features/Vastu/vastuTipsApi";
 import type { TVastuTips } from "../../../../types/vastuTips.type";
+import EmptyState from "../../../Reusable/EmptyState/EmptyState";
 import VastuTipsCardSkeleton from "../../../SkeletonLoaders/VastuTipsCardSkeleton/VastuTipsCardSkeleton";
 import VastuTipsCard from "./VastuTipsCard/VastuTipsCard";
 
@@ -23,6 +24,8 @@ const PopularVastuTips = () => {
           ))}
         </div>
       )}
+
+      {!isLoading && vastuTips?.length === 0 && <EmptyState />}
     </div>
   );
 };

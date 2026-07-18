@@ -54,6 +54,7 @@ export const baseApi = createApi({
   refetchOnReconnect: true,
   refetchOnFocus: true,
   tagTypes: [
+    "food",
     "emergencies",
     "users",
     "reels",

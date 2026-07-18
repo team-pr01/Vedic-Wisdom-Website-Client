@@ -12,6 +12,7 @@ import type { TVastu } from "../../../types/vastu.type";
 import { useCategories } from "../../../hooks/useCategories";
 import CategoryFilter from "../../../components/Reusable/CategoryFilter/CategoryFilter";
 import VastuShastraVideoCardSkeleton from "../../../components/SkeletonLoaders/VastuShastraVideoCardSkeleton/VastuShastraVideoCardSkeleton";
+import EmptyState from "../../../components/Reusable/EmptyState/EmptyState";
 
 const VastuShastra = () => {
   const swiperRef = useRef<SwiperType | null>(null);
@@ -96,6 +97,8 @@ const VastuShastra = () => {
           </Swiper>
         </div>
       )}
+
+      {!isLoading && allVastu?.length === 0 && <EmptyState />}
 
       <PopularVastuTips />
       <AvailableExperts areaOfExpertise="vastu" />

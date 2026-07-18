@@ -4,10 +4,22 @@ import AiRecipeGeneratorBanner from "../../../components/Dashboard/FoodPage/AiRe
 import FoodCard from "../../../components/Dashboard/FoodPage/FoodCard/FoodCard";
 import Button from "../../../components/Reusable/Button/Button";
 import DashboardHeading from "../../../components/Reusable/DashboardHeading/DashboardHeading";
+import { useGetAllRecipesQuery } from "../../../redux/Features/Food/foodApi";
+import type { TFood } from "../../../types/food.type";
+import FoodCardSkeleton from "../../../components/SkeletonLoaders/FoodCardSkeleton/FoodCardSkeleton";
+import { useCategories } from "../../../hooks/useCategories";
+import CategoryFilter from "../../../components/Reusable/CategoryFilter/CategoryFilter";
+import EmptyState from "../../../components/Reusable/EmptyState/EmptyState";
 
 const Food = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
-  const foodCategories = ["All", "Sattvic", "Prasad", "Veg", "Non-veg"];
+  const { data, isLoading } = useGetAllRecipesQuery({
+    category: selectedCategory,
+  });
+  const allRecipes = data?.data?.foods || [];
+  const { categories } = useCategories({
+    areaName: "food",
+  });
   return (
     <div className="font-Manrope">
       <div className="flex items-center justify-between">
@@ -20,38 +32,33 @@ const Food = () => {
       </div>
 
       <div className="mt-10">
-        <div className="flex items-center gap-3">
-          {foodCategories?.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-3xl border border-primary-80  hover:bg-primary-10 hover:text-white transition duration-300 text-sm ${
-                selectedCategory === category
-                  ? "bg-primary-10 text-white"
-                  : "bg-white text-neutral-40"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
+        <CategoryFilter
+          categories={categories}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
 
         <div className="flex gap-10 mt-6">
-          <div className="grid grid-cols-4 gap-4 w-[80%]">
-            <FoodCard />
-            <FoodCard />
-            <FoodCard />
-            <FoodCard />
-            <FoodCard />
-            <FoodCard />
-            <FoodCard />
-            <FoodCard />
-          </div>
+          {isLoading ? (
+            <div className="grid grid-cols-3 gap-5">
+              {[1, 2, 3]?.map((_, index) => (
+                <FoodCardSkeleton key={index} />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-4 gap-4 w-[80%]">
+              {allRecipes?.map((recipe: TFood) => (
+                <FoodCard key={recipe._id} recipe={recipe} />
+              ))}
+            </div>
+          )}
 
           <div className="w-[20%] sticky top-10 h-full">
             <AiRecipeGeneratorBanner />
           </div>
         </div>
+
+        {!isLoading && allRecipes?.length === 0 && <EmptyState />}
       </div>
     </div>
   );

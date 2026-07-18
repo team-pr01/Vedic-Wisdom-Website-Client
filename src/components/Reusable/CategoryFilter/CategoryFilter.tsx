@@ -2,11 +2,27 @@ const CategoryFilter = ({
   categories,
   selectedCategory,
   setSelectedCategory,
+  isLoading = false,
 }: {
   categories: string[];
   selectedCategory: string;
   setSelectedCategory: (category: string) => void;
+  isLoading?: boolean;
 }) => {
+  // Skeleton loading state
+  if (isLoading) {
+    return (
+      <div className="flex items-center gap-3 flex-wrap animate-pulse">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <div
+            key={index}
+            className="px-4 py-2 rounded-3xl bg-neutral-20 h-10 w-20"
+          />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="flex items-center gap-3 flex-wrap">
       {categories?.map((category: string) => (
