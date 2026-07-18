@@ -39,19 +39,15 @@ const Food = () => {
         />
 
         <div className="flex gap-10 mt-6">
-          {isLoading ? (
-            <div className="grid grid-cols-3 gap-5">
-              {[1, 2, 3]?.map((_, index) => (
-                <FoodCardSkeleton key={index} />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-4 gap-4 w-[80%]">
-              {allRecipes?.map((recipe: TFood) => (
-                <FoodCard key={recipe._id} recipe={recipe} />
-              ))}
-            </div>
-          )}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {isLoading
+              ? Array.from({ length: 8 }).map((_, index) => (
+                  <FoodCardSkeleton key={index} />
+                ))
+              : allRecipes?.map((recipe: TFood) => (
+                  <FoodCard key={recipe._id} recipe={recipe} />
+                ))}
+          </div>
 
           <div className="w-[20%] sticky top-10 h-full">
             <AiRecipeGeneratorBanner />

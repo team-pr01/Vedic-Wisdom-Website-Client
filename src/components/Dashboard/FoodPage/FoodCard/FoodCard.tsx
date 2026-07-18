@@ -4,8 +4,8 @@ import Button from "../../../Reusable/Button/Button";
 
 const FoodCard = ({ recipe }: { recipe: TFood }) => {
   return (
-    <div className="rounded-2xl relative shadow-food-card w-fit border border-primary-80/60 bg-white">
-      <div className="relative aspect-video bg-black/5 h-56 rounded-t-2xl">
+    <div className="rounded-2xl relative shadow-food-card border border-primary-80/60 bg-white">
+      <div className="relative aspect-video bg-black/5 h-56 rounded-t-2xl w-full">
         <iframe
           src={recipe?.videoUrl}
           title={recipe?.title}
