@@ -8,7 +8,10 @@ import {
 } from "../../../redux/Features/News/newsApi";
 import type { TNews } from "../../../types/news.type";
 import LogoLoader from "../../../components/Shared/LogoLoader/LogoLoader";
-import { FaFire, FaSearch, FaExclamationCircle } from "react-icons/fa";
+import { FaFire, FaExclamationCircle } from "react-icons/fa";
+import EmptyState from "../../../components/Reusable/EmptyState/EmptyState";
+import { useCategories } from "../../../hooks/useCategories";
+import CategoryFilter from "../../../components/Reusable/CategoryFilter/CategoryFilter";
 
 const News = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -20,13 +23,9 @@ const News = () => {
   const allTrendingNews = trendingNews?.data?.data || [];
   const news = data?.data?.news || [];
 
-  const newsCategories = [
-    "All",
-    "Spiritual",
-    "Temple",
-    "Community",
-    "Announcements",
-  ];
+  const { categories } = useCategories({
+    areaName: "news",
+  });
 
   if (isLoading || isFetching || isTrendingLoading) {
     return <LogoLoader />;
@@ -39,23 +38,11 @@ const News = () => {
         description="Explore our various spiritual news."
       />
 
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3 flex-wrap">
-          {newsCategories?.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-3xl border border-primary-80 hover:bg-primary-10 hover:text-white transition duration-300 text-sm ${
-                selectedCategory === category
-                  ? "bg-primary-10 text-white"
-                  : "bg-white text-neutral-40"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-      </div>
+      <CategoryFilter
+        categories={categories}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+      />
 
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Latest News Section */}
@@ -67,29 +54,7 @@ const News = () => {
                 <NewsCard key={item?._id} news={item} />
               ))
             ) : (
-              <div className="mt-12 text-center">
-                <div className="flex flex-col items-center">
-                  <div className="w-20 h-20 rounded-full bg-neutral-10/10 flex items-center justify-center mb-4">
-                    <FaSearch className="text-4xl text-neutral-30" />
-                  </div>
-                  <h4 className="text-lg font-semibold text-neutral-90">
-                    No News Found
-                  </h4>
-                  <p className="text-sm text-neutral-60 mt-2 max-w-sm">
-                    {selectedCategory === "All"
-                      ? "There are no news articles available at the moment. Please check back later."
-                      : `No news found in the "${selectedCategory}" category. Try selecting a different category.`}
-                  </p>
-                  {selectedCategory !== "All" && (
-                    <button
-                      onClick={() => setSelectedCategory("All")}
-                      className="mt-4 text-primary-10 text-sm font-medium hover:underline"
-                    >
-                      View all news
-                    </button>
-                  )}
-                </div>
-              </div>
+              <EmptyState />
             )}
           </div>
         </div>

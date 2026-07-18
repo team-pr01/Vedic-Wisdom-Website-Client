@@ -9,20 +9,20 @@ import VastuShastraVideoCard from "../../../components/Dashboard/VastuShastraPag
 import PopularVastuTips from "../../../components/Dashboard/VastuShastraPage/PopularVastuTips/PopularVastuTips";
 import { useGetAllVastuQuery } from "../../../redux/Features/Vastu/vastuApi";
 import type { TVastu } from "../../../types/vastu.type";
-import { useGetAllCategoriesByAreaNameQuery } from "../../../redux/Features/Categories/ReelCategory/categoriesApi";
-import type { TCategories } from "../../../types/categories.interface";
+import { useCategories } from "../../../hooks/useCategories";
+import CategoryFilter from "../../../components/Reusable/CategoryFilter/CategoryFilter";
+import VastuShastraVideoCardSkeleton from "../../../components/SkeletonLoaders/VastuShastraVideoCardSkeleton/VastuShastraVideoCardSkeleton";
 
 const VastuShastra = () => {
   const swiperRef = useRef<SwiperType | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
-  const { data: categories } = useGetAllCategoriesByAreaNameQuery("vastu");
-  const vastuCategories = [
-    "All",
-    ...(categories?.data?.map((category: TCategories) => category?.category) ||
-      []),
-  ];
+  const { categories } = useCategories({
+    areaName: "vastu",
+  });
 
-  const { data } = useGetAllVastuQuery({ category: selectedCategory });
+  const { data, isLoading } = useGetAllVastuQuery({
+    category: selectedCategory,
+  });
   const allVastu = data?.data?.vastu || [];
   return (
     <div className="font-Manrope space-y-8">
@@ -32,21 +32,11 @@ const VastuShastra = () => {
       />
 
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          {vastuCategories?.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-3xl border border-primary-80  hover:bg-primary-10 hover:text-white transition duration-300 text-sm ${
-                selectedCategory === category
-                  ? "bg-primary-10 text-white"
-                  : "bg-white text-neutral-40"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
+        <CategoryFilter
+          categories={categories}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
         {/* Navigation */}
         <div className="flex items-center justify-center gap-3">
           {/* Previous */}
@@ -71,33 +61,41 @@ const VastuShastra = () => {
         </div>
       </div>
 
-      <div className="w-full mt-6 relative">
-        <Swiper
-          modules={[Navigation, Pagination]}
-          spaceBetween={20}
-          slidesPerView={4.5}
-          breakpoints={{
-            320: {
-              slidesPerView: 1,
-              spaceBetween: 20,
-            },
-            768: {
-              slidesPerView: 2,
-              spaceBetween: 25,
-            },
-            1024: {
-              slidesPerView: 4.3,
-              spaceBetween: 30,
-            },
-          }}
-        >
-          {allVastu?.map((vastu: TVastu) => (
-            <SwiperSlide key={vastu?._id}>
-              <VastuShastraVideoCard vastu={vastu} />
-            </SwiperSlide>
+      {isLoading ? (
+        <div className="grid grid-cols-4 gap-5">
+          {[1, 2, 3, 4]?.map((_, index) => (
+            <VastuShastraVideoCardSkeleton key={index} />
           ))}
-        </Swiper>
-      </div>
+        </div>
+      ) : (
+        <div className="w-full mt-6 relative">
+          <Swiper
+            modules={[Navigation, Pagination]}
+            spaceBetween={20}
+            slidesPerView={4.5}
+            breakpoints={{
+              320: {
+                slidesPerView: 1,
+                spaceBetween: 20,
+              },
+              768: {
+                slidesPerView: 2,
+                spaceBetween: 25,
+              },
+              1024: {
+                slidesPerView: 4.3,
+                spaceBetween: 30,
+              },
+            }}
+          >
+            {allVastu?.map((vastu: TVastu) => (
+              <SwiperSlide key={vastu?._id}>
+                <VastuShastraVideoCard vastu={vastu} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      )}
 
       <PopularVastuTips />
       <AvailableExperts areaOfExpertise="vastu" />

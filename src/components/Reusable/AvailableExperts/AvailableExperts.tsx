@@ -3,6 +3,7 @@ import { GoArrowRight } from "react-icons/go";
 import ConsultantCard from "../../Dashboard/ConsultancyPage/ConsultantCard/ConsultantCard";
 import { useGetConsultantsByCategoryQuery } from "../../../redux/Features/Consultation/consultantApi";
 import type { TConsultant } from "../../../types/consultants.type";
+import ConsultantCardSkeleton from "../../SkeletonLoaders/ConsultantCardSkeleton/ConsultantCardSkeleton/ConsultantCardSkeleton";
 
 const AvailableExperts = ({
   areaOfExpertise,
@@ -11,7 +12,7 @@ const AvailableExperts = ({
   areaOfExpertise: string;
   gridDirection?: string;
 }) => {
-  const { data } = useGetConsultantsByCategoryQuery(areaOfExpertise);
+  const { data, isLoading } = useGetConsultantsByCategoryQuery(areaOfExpertise);
   const availableExperts = data?.data?.data ?? [];
 
   return (
@@ -29,11 +30,19 @@ const AvailableExperts = ({
         </Link>
       </div>
 
-      <div className={`${gridDirection} gap-6`}>
-        {availableExperts?.map((consultant: TConsultant) => (
-          <ConsultantCard key={consultant?._id} consultant={consultant} />
-        ))}
-      </div>
+      {isLoading ? (
+        <div className="grid grid-cols-3 gap-5">
+          {[1, 2, 3]?.map((_, index) => (
+            <ConsultantCardSkeleton key={index} />
+          ))}
+        </div>
+      ) : (
+        <div className={`${gridDirection} gap-6`}>
+          {availableExperts?.map((consultant: TConsultant) => (
+            <ConsultantCard key={consultant?._id} consultant={consultant} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
