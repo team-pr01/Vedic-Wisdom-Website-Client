@@ -15,7 +15,8 @@ const TempleCard = ({ temple }: { temple: TTemple }) => {
         {temple?.basicInfo?.templeName}
       </h4>
       <p className="description mt-1">
-        {temple?.basicInfo?.description?.slice(0, 80).concat("...")}
+        {temple?.basicInfo?.description?.slice(0, 80)}
+        {temple?.basicInfo?.description?.length > 80 && "..."}
       </p>
 
       <div className="flex items-center gap-3 mt-3">

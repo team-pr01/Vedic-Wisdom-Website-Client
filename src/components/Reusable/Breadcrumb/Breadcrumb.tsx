@@ -26,9 +26,9 @@ const Breadcrumb = ({
     <nav className={`flex items-center text-sm font-Manrope ${className}`}>
       <Link
         to="/"
-        className="flex items-center gap-1 text-neutral-5 hover:text-primary-10 transition-colors"
+        className="flex items-center gap-1 text-neutral-50 hover:text-primary-10 transition-colors"
       >
-        <IoHomeOutline className="w-4 h-4" />
+        <IoHomeOutline />
         {homeLabel}
       </Link>
 
@@ -43,7 +43,7 @@ const Breadcrumb = ({
               {item.label}
             </Link>
           ) : (
-            <span className="text-primary-5">{item?.label}</span>
+            <span className="text-primary-10">{item?.label}ss</span>
           )}
         </div>
       ))}
