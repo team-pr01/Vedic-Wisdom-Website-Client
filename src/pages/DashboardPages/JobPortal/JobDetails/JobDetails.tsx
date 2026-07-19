@@ -12,10 +12,11 @@ import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useGetSingleJobByIdQuery } from "../../../../redux/Features/Job/jobApi";
 import toast from "react-hot-toast";
+import LogoLoader from "../../../../components/Shared/LogoLoader/LogoLoader";
 
 const JobDetails = () => {
   const { id } = useParams();
-  const { data } = useGetSingleJobByIdQuery(id);
+  const { data, isLoading } = useGetSingleJobByIdQuery(id);
   const job = data?.data || {};
   const [isApplyJobModalOpen, setIsApplyJobModalOpen] =
     useState<boolean>(false);
@@ -80,6 +81,8 @@ const JobDetails = () => {
       }
     }
   };
+
+  if (isLoading) return <LogoLoader />;
 
   return (
     <div className="font-Manrope">

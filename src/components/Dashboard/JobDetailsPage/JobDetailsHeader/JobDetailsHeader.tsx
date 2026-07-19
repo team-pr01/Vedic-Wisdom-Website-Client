@@ -43,7 +43,12 @@ const JobDetailsHeader = ({ job }: { job: TJob }) => {
         </div>
 
         <div>
-          <h5 className="text-neutral-90 text-lg font-bold">{job?.title}</h5>
+          <div className="flex items-center gap-3">
+            <h5 className="text-neutral-90 text-lg font-bold">{job?.title}</h5>
+          <div className="px-2 py-1 bg-neutral-70 rounded text-primary-10 text-sm w-fit capitalize">
+            {job?.workMode}
+          </div>
+          </div>
           <div className="flex items-center gap-1">
             <p className="text-neutral-50">
               {job?.hiringType === "individual"

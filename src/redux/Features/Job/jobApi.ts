@@ -13,7 +13,7 @@ const jobApi = baseApi.injectEndpoints({
         state,
         city,
         jobType,
-        mode,
+        workMode,
         experienceLevel,
         minSalary,
         maxSalary,
@@ -27,7 +27,7 @@ const jobApi = baseApi.injectEndpoints({
         state?: string;
         city?: string;
         jobType?: string;
-        mode?: string;
+        workMode?: string;
         experienceLevel?: string[];
         minSalary?: string;
         maxSalary?: string;
@@ -78,9 +78,9 @@ const jobApi = baseApi.injectEndpoints({
           params.append("jobType", jobType.trim());
         }
 
-        // Mode - if "All" then don't add to params
-        if (mode && !isAll(mode) && mode.trim() !== "") {
-          params.append("mode", mode.trim());
+        // workMode - if "All" then don't add to params
+        if (workMode && !isAll(workMode) && workMode.trim() !== "") {
+          params.append("workMode", workMode.trim());
         }
 
         // Experience Level - handle array

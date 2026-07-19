@@ -9,6 +9,8 @@ import JobCard from "../../../components/Dashboard/JobPortalPage/JobCard/JobCard
 import PostJobModal from "../../../components/Dashboard/JobPortalPage/EmployerPage/PostJobModal/PostJobModal";
 import { useGetAlJobsQuery } from "../../../redux/Features/Job/jobApi";
 import type { TJob } from "../../../types/job.type";
+import JobCardSkeleton from "../../../components/SkeletonLoaders/JobCardSkeleton/JobCardSkeleton";
+import EmptyState from "../../../components/Reusable/EmptyState/EmptyState";
 
 const JobPortal = () => {
   const [keyword, setKeyword] = useState<string>("");
@@ -21,13 +23,13 @@ const JobPortal = () => {
   const [jobCategory, setJobCategory] = useState<string[]>([]);
   const [isPostJobModalOpen, setIsPostJobModalOpen] = useState<boolean>(false);
 
-  const { data, isLoading } = useGetAlJobsQuery({
+  const { data, isLoading, isFetching } = useGetAlJobsQuery({
     keyword,
-    country,
-    state,
-    city,
+    country: country?.label,
+    state: state?.label,
+    city: city?.label,
     jobType,
-    mode,
+    workMode: mode,
     experienceLevel,
     category: jobCategory,
   });
@@ -63,7 +65,10 @@ const JobPortal = () => {
           {/* Results Count */}
           <div className="flex items-center justify-between">
             <p className="text-neutral-60 text-sm">
-              Showing <span className="font-semibold text-neutral-90">10</span>{" "}
+              Showing{" "}
+              <span className="font-semibold text-neutral-90">
+                {allJobs?.length}
+              </span>{" "}
               results
               {country && ` in ${country.label}`}
               {state && `, ${state.label}`}
@@ -71,30 +76,15 @@ const JobPortal = () => {
             </p>
           </div>
 
-          {/* Loading State */}
-          {isLoading && (
-            <div className="flex justify-center py-12">
-              <div className="w-12 h-12 border-4 border-primary-10 border-t-transparent rounded-full animate-spin" />
-            </div>
-          )}
-
-          {/* Temple Cards */}
-          {!isLoading && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {allJobs?.map((job: TJob) => (
-                <JobCard key={job?._id} job={job} />
-              ))}
-            </div>
-          )}
-
-          {/* No Results */}
-          {!isLoading && (
-            <div className="text-center py-12">
-              <p className="text-neutral-60">
-                No results found matching your filters.
-              </p>
-            </div>
-          )}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+            {isLoading || isFetching
+              ? Array.from({ length: 8 }).map((_, index) => (
+                  <JobCardSkeleton key={index} />
+                ))
+              : allJobs?.map((job: TJob) => (
+                  <JobCard key={job?._id} job={job} />
+                ))}
+          </div>
         </div>
 
         {/* Filters Sidebar - Sticky */}
@@ -117,6 +107,8 @@ const JobPortal = () => {
           />
         </div>
       </div>
+
+      {!isLoading && allJobs?.length === 0 && <EmptyState />}
 
       <PostJobModal
         isModalOpen={isPostJobModalOpen}

@@ -8,11 +8,16 @@ const JobCard = ({ job }: { job: TJob }) => {
   const jobAdditionalInfo = [
     {
       icon: ICONS.location,
-      value: job?.location?.country,
+      value: `${job?.location?.city}, ${job?.location?.state}, ${job?.location?.country}`,
     },
     {
       icon: ICONS.time,
-      value: job?.jobType,
+      value:
+        job?.jobType === "fullTime"
+          ? "Full Time"
+          : job?.jobType === "partTime"
+            ? "Part Time"
+            : job?.jobType,
     },
     {
       icon: ICONS.experience,
@@ -59,7 +64,7 @@ const JobCard = ({ job }: { job: TJob }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl border border-primary-80 p-3 xl:p-4 flex flex-col gap-4">
+    <div className="bg-white rounded-xl border border-primary-80 p-3 xl:p-4 flex flex-col gap-4 relative">
       <div className="flex items-center gap-3">
         <div className="size-12.5 bg-neutral-30 border border-neutral-86 rounded-md flex items-center justify-center overflow-hidden">
           {job?.hiringType === "company" && job?.company?.logo ? (
@@ -88,6 +93,10 @@ const JobCard = ({ job }: { job: TJob }) => {
             <img src={ICONS.checkMark} alt="" className="size-4 mt-1" />
           </div>
         </div>
+      </div>
+
+      <div className="px-2 py-1 bg-neutral-70 rounded text-primary-10 text-sm w-fit absolute top-3 right-3 capitalize">
+        {job?.workMode}
       </div>
 
       <p className="text-neutral-50 mt-2">

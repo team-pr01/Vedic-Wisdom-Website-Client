@@ -42,7 +42,6 @@ const JobFilters: React.FC<TJobFilters> = ({
   const [states, setStates] = useState<any[]>([]);
   const [cities, setCities] = useState<any[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<any>(null);
-  const [selectedState, setSelectedState] = useState<any>(null);
 
   // Countries
   const countries = Country.getAllCountries();
@@ -57,9 +56,9 @@ const JobFilters: React.FC<TJobFilters> = ({
   // Job Type Options
   const jobTypeOptions = [
     { label: "All", value: "all" },
-    { label: "Full-Time", value: "full-time" },
-    { label: "Part-Time", value: "part-time" },
-    { label: "Contract", value: "contract" },
+    { label: "Full Time", value: "fullTime" },
+    { label: "Part Time", value: "partTime" },
+    { label: "Contractual", value: "contractual" },
     { label: "Internship", value: "internship" },
     { label: "Freelance", value: "freelance" },
   ];
@@ -83,22 +82,46 @@ const JobFilters: React.FC<TJobFilters> = ({
 
   // Job Category Options
   const jobCategoryOptions = [
-    { label: "IT & Software", value: "it-software" },
-    { label: "Design & Creative", value: "design-creative" },
-    { label: "Marketing & Sales", value: "marketing-sales" },
-    { label: "Business & Finance", value: "business-finance" },
-    { label: "Education & Training", value: "education" },
-    { label: "Healthcare & Wellness", value: "healthcare" },
+    { label: "Accounting & Finance", value: "accountingFinance" },
+    { label: "Administrative & Office", value: "administrativeOffice" },
+    { label: "Advertising & Marketing", value: "advertisingMarketing" },
+    { label: "Art & Creative", value: "artCreative" },
+    { label: "Banking & Financial Services", value: "bankingFinancial" },
+    { label: "Business Development", value: "businessDevelopment" },
     { label: "Consultancy", value: "consultancy" },
-    { label: "Spiritual & Wellness", value: "spiritual" },
-    { label: "Non-Profit", value: "non-profit" },
+    { label: "Customer Service", value: "customerService" },
+    { label: "Data Science & Analytics", value: "dataScienceAnalytics" },
+    { label: "Education & Training", value: "educationTraining" },
+    { label: "Engineering", value: "engineering" },
+    { label: "Entertainment & Media", value: "entertainmentMedia" },
+    { label: "Government & Public Sector", value: "governmentPublic" },
+    { label: "Healthcare & Wellness", value: "healthcareWellness" },
+    { label: "Hospitality & Tourism", value: "hospitalityTourism" },
+    { label: "Human Resources", value: "humanResources" },
+    { label: "Information Technology", value: "informationTechnology" },
+    { label: "Legal & Compliance", value: "legalCompliance" },
+    { label: "Logistics & Supply Chain", value: "logisticsSupplyChain" },
+    { label: "Manufacturing", value: "manufacturing" },
+    { label: "Media & Communications", value: "mediaCommunications" },
+    { label: "Non-Profit & NGO", value: "nonProfitNgo" },
+    { label: "Project Management", value: "projectManagement" },
+    { label: "Real Estate", value: "realEstate" },
+    { label: "Research & Development", value: "researchDevelopment" },
+    { label: "Retail", value: "retail" },
+    { label: "Sales", value: "sales" },
+    { label: "Software Development", value: "softwareDevelopment" },
+    { label: "Sports & Fitness", value: "sportsFitness" },
+    { label: "Spiritual & Wellness", value: "spiritualWellness" },
+    { label: "Technology", value: "technology" },
+    { label: "Travel & Tourism", value: "travelTourism" },
+    { label: "UX/UI Design", value: "uxUiDesign" },
+    { label: "Writing & Editing", value: "writingEditing" },
     { label: "Other", value: "other" },
   ];
 
   // Handle country selection
   const handleCountrySelect = (selected: any) => {
     setSelectedCountry(selected);
-    setSelectedState(null);
     setCities([]);
     setState(null);
     setCity(null);
@@ -113,7 +136,6 @@ const JobFilters: React.FC<TJobFilters> = ({
 
   // Handle state selection
   const handleStateSelect = (selected: any) => {
-    setSelectedState(selected);
     setCities([]);
     setCity(null);
 
@@ -168,7 +190,6 @@ const JobFilters: React.FC<TJobFilters> = ({
 
   const handleClearFilters = () => {
     setSelectedCountry(null);
-    setSelectedState(null);
     setCities([]);
     setStates([]);
     setCountry(null);
