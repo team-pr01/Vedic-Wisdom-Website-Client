@@ -70,7 +70,7 @@ const SanatanSthal = () => {
           {/* Results Count */}
           <div className="flex items-center justify-between">
             <p className="text-neutral-60 text-sm">
-              Showing <span className="font-semibold text-neutral-90">10</span>{" "}
+              Showing <span className="font-semibold text-neutral-90">{allSanatanSthals?.length}</span>{" "}
               temples
               {country && ` in ${country.label}`}
               {state && `, ${state.label}`}

@@ -1,4 +1,4 @@
-import { ICONS } from "../../../../../assets";
+import { ICONS, IMAGES } from "../../../../../assets";
 import type { TCourse } from "../../../../../types/course.type";
 import Button from "../../../../Reusable/Button/Button";
 
@@ -6,7 +6,7 @@ const CourseCard = ({ course }: { course: TCourse }) => {
   return (
     <div className="rounded-2xl relative shadow-food-card w-fit border border-primary-80/60 bg-white">
       <img
-        src={course?.thumbnail}
+        src={course?.thumbnail || IMAGES.imagePlaceholder}
         alt=""
         className="rounded-t-2xl h-56 object-cover"
       />

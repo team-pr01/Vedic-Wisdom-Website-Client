@@ -32,6 +32,7 @@ import dangerSign from "./images/danger-sign.webp";
 import bookHeroImg from "./images/book-hero-img.webp";
 import startSelling from "./images/start-selling.webp";
 import discountBox from "./images/discount-box.gif";
+import imagePlaceholder from "./images/image-placeholder.svg";
 
 // ICONS
 import arrowRight from "./icons/arrow-right.svg";
@@ -146,6 +147,7 @@ export const IMAGES = {
     bookHeroImg,
     startSelling,
     discountBox,
+    imagePlaceholder,
 };
 
 export const ICONS = {

@@ -3,10 +3,16 @@ import { useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import FilterDropdown from "../../../SanathanSthalPage/Filters/FilterDropdown";
 import BookCard from "../BookCard/BookCard";
+import { useGetAllBooksQuery } from "../../../../../redux/Features/Book/bookApi";
+import type { TBooks } from "../../../../../types/books.type";
+import BookCardSkeleton from "../../../../SkeletonLoaders/BookCardSkeleton/BookCardSkeleton";
 
 const AllBooks = () => {
   const [keyword, setKeyword] = useState<string>("");
   const [category, setCategory] = useState<string>("");
+  const { data, isLoading } = useGetAllBooksQuery({ keyword, category });
+  console.log(data);
+  const allBooks = data?.data?.data || [];
   const categoryOptions = [
     { label: "All Temples", value: "all" },
     { label: "Ganesh Temple", value: "ganesh" },
@@ -58,14 +64,13 @@ const AllBooks = () => {
       </div>
 
       <div className="grid grid-cols-6 gap-4 mt-6">
-        <BookCard />
-        <BookCard />
-        <BookCard />
-        <BookCard />
-        <BookCard />
-        <BookCard />
-        <BookCard />
-        <BookCard />
+        {isLoading
+          ? Array.from({ length: 8 }).map((_, index) => (
+              <BookCardSkeleton key={index} />
+            ))
+          : allBooks?.map((book: TBooks) => (
+              <BookCard key={book?._id} book={book} />
+            ))}
       </div>
     </div>
   );

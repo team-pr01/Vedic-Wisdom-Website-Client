@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ICONS } from "../../../../assets";
+import { ICONS, IMAGES } from "../../../../assets";
 import type { TTemple } from "../../../../types/temple.type";
 import Button from "../../../Reusable/Button/Button";
 
@@ -7,7 +7,7 @@ const TempleCard = ({ temple }: { temple: TTemple }) => {
   return (
     <div className="rounded-xl border border-primary-80 p-3 bg-white">
       <img
-        src={temple?.media?.imageUrls[0]}
+        src={temple?.media?.imageUrls[0] || IMAGES.imagePlaceholder}
         alt=""
         className="rounded-xl w-full h-56 object-cover"
       />

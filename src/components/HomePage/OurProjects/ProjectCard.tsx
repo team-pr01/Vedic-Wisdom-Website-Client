@@ -32,7 +32,7 @@ const ProjectCard = ({ project }: { project: TProject }) => {
     <>
       <div className="border border-primary-10/20 bg-neutral-65 space-y-4 text-left rounded-4xl group relative">
         <img
-          src={project?.imageUrl}
+          src={project?.imageUrl || IMAGES.imagePlaceholder}
           alt=""
           className="rounded-t-2xl h-56 w-full object-cover"
         />

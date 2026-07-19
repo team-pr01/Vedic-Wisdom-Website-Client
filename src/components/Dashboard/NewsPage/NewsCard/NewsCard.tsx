@@ -1,5 +1,5 @@
 import { IoHeartOutline, IoHeart } from "react-icons/io5";
-import { ICONS } from "../../../../assets";
+import { ICONS, IMAGES } from "../../../../assets";
 import { Link } from "react-router-dom";
 import { formatDate } from "../../../../utils/formatDate";
 import { useToggleLikeNewsMutation } from "../../../../redux/Features/News/newsApi";
@@ -57,7 +57,7 @@ const NewsCard = ({ news }: { news: TNews }) => {
   return (
     <div className="bg-white border border-primary-80 rounded-xl">
       <img
-        src={news?.imageUrl}
+        src={news?.imageUrl  || IMAGES.imagePlaceholder}
         alt=""
         className="w-full rounded-t-xl h-100 object-cover"
       />
