@@ -7,6 +7,8 @@ import DashboardHeading from "../../../components/Reusable/DashboardHeading/Dash
 import { useState } from "react";
 import JobCard from "../../../components/Dashboard/JobPortalPage/JobCard/JobCard";
 import PostJobModal from "../../../components/Dashboard/JobPortalPage/EmployerPage/PostJobModal/PostJobModal";
+import { useGetAlJobsQuery } from "../../../redux/Features/Job/jobApi";
+import type { TJob } from "../../../types/job.type";
 
 const JobPortal = () => {
   const [keyword, setKeyword] = useState<string>("");
@@ -19,7 +21,17 @@ const JobPortal = () => {
   const [jobCategory, setJobCategory] = useState<string[]>([]);
   const [isPostJobModalOpen, setIsPostJobModalOpen] = useState<boolean>(false);
 
-  const isLoading = false;
+  const { data, isLoading } = useGetAlJobsQuery({
+    keyword,
+    country,
+    state,
+    city,
+    jobType,
+    mode,
+    experienceLevel,
+    category: jobCategory,
+  });
+  const allJobs = data?.data?.jobs || [];
   return (
     <div className="font-Manrope">
       <div className="flex items-center justify-between">
@@ -69,8 +81,8 @@ const JobPortal = () => {
           {/* Temple Cards */}
           {!isLoading && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[1, 2, 3, 4]?.map((_, index) => (
-                <JobCard />
+              {allJobs?.map((job: TJob) => (
+                <JobCard key={job?._id} job={job} />
               ))}
             </div>
           )}
@@ -108,7 +120,7 @@ const JobPortal = () => {
 
       <PostJobModal
         isModalOpen={isPostJobModalOpen}
-        setIsModakOpen={setIsPostJobModalOpen}
+        setIsModalOpen={setIsPostJobModalOpen}
       />
     </div>
   );

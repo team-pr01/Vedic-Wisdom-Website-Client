@@ -1,4 +1,3 @@
-import { FaArrowLeft } from "react-icons/fa";
 import Breadcrumb from "../../../../components/Reusable/Breadcrumb/Breadcrumb";
 import Button from "../../../../components/Reusable/Button/Button";
 import { ICONS } from "../../../../assets";
@@ -10,9 +9,14 @@ import JobResponsibilities from "../../../../components/Dashboard/JobDetailsPage
 import CompanyInformation from "../../../../components/Dashboard/JobDetailsPage/CompanyInformation/CompanyInformation";
 import ApplyJobModal from "../../../../components/Dashboard/JobPortalPage/ApplyJobModal/ApplyJobModal";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { useGetSingleJobByIdQuery } from "../../../../redux/Features/Job/jobApi";
+import toast from "react-hot-toast";
 
 const JobDetails = () => {
+  const { id } = useParams();
+  const { data } = useGetSingleJobByIdQuery(id);
+  const job = data?.data || {};
   const [isApplyJobModalOpen, setIsApplyJobModalOpen] =
     useState<boolean>(false);
   // Sample job data
@@ -58,8 +62,23 @@ const JobDetails = () => {
     },
   };
 
-  const handleShare = () => {
-    console.log("Share clicked");
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: job?.title || "Check this out!",
+          url: window.location.href,
+        });
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        toast.success("Link copied to clipboard!");
+      }
+    } catch (error) {
+      if (error instanceof Error && error.name !== "AbortError") {
+        console.error("Share failed:", error);
+        toast.error("Failed to share");
+      }
+    }
   };
 
   return (
@@ -68,8 +87,8 @@ const JobDetails = () => {
       <Breadcrumb
         items={[
           { label: "Dashboard", path: "/dashboard" },
-          { label: "Job Board", path: "/dashboard/job-board" },
-          { label: jobData.title, path: "#" },
+          { label: "Job Board", path: "/dashboard/job-portal" },
+          { label: job?.title, path: "#" },
         ]}
       />
 
@@ -79,9 +98,7 @@ const JobDetails = () => {
           <Link to={"/dashboard/job-portal"}>
             <img src={ICONS.arrowLeft} alt="" className="size-5" />
           </Link>
-          <h1 className="text-2xl font-bold text-neutral-90">
-            {jobData.title}
-          </h1>
+          <h1 className="text-2xl font-bold text-neutral-90">{job?.title}</h1>
         </div>
         <div className="flex items-center gap-3">
           <Button
@@ -104,30 +121,29 @@ const JobDetails = () => {
         {/* Left Column */}
         <div className="w-full lg:w-[65%] space-y-6">
           {/* Job Header */}
-          <JobDetailsHeader
-            title={jobData.title}
-            company={jobData.company}
-            location={jobData.location}
-            type={jobData.type}
-            salary={jobData.salary}
-            postedDate={jobData.postedDate}
-          />
+          <JobDetailsHeader job={job} />
 
           {/* Job Description */}
-          <JobDescription description={jobData.description} />
+          <JobDescription description={job?.description} />
 
           {/* Required Skills */}
-          <RequiredSkills skills={jobData.skills} />
+          <RequiredSkills skills={job?.requiredSkills} />
 
           {/* Qualifications */}
           <RequiredQualifications qualifications={jobData.qualifications} />
 
           {/* Responsibilities */}
-          <JobResponsibilities responsibilities={jobData.responsibilities} />
+          <JobResponsibilities responsibilities={job?.responsibilities} />
 
           {/* Company Info (Mobile) */}
           <div className="lg:hidden">
-            <CompanyInformation companyInfo={jobData.companyInfo} />
+            <CompanyInformation
+              hiringType={job?.hiringType}
+              companyInfo={job?.hiringType === "company" ? job?.company : null}
+              individualInfo={
+                job?.hiringType === "individual" ? job?.individual : null
+              }
+            />
           </div>
         </div>
 
@@ -135,7 +151,13 @@ const JobDetails = () => {
         <div className="w-full lg:w-[35%] space-y-6">
           {/* Company Info (Desktop) */}
           <div className="hidden lg:block">
-            <CompanyInformation companyInfo={jobData.companyInfo} />
+            <CompanyInformation
+              hiringType={job?.hiringType}
+              companyInfo={job?.hiringType === "company" ? job?.company : null}
+              individualInfo={
+                job?.hiringType === "individual" ? job?.individual : null
+              }
+            />
           </div>
 
           {/* Job Sidebar */}
