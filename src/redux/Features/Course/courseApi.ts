@@ -3,15 +3,46 @@ import { baseApi } from "../../API/baseApi";
 const courseApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAlCourses: builder.query({
-      query: ({ keyword, category }) => ({
-        url: `/course`,
-        method: "GET",
-        credentials: "include",
-        params: {
-          keyword,
-          category,
-        },
-      }),
+      query: ({
+        keyword,
+        limit,
+        page,
+        skip,
+        category,
+      }: {
+        keyword?: string;
+        limit?: number;
+        page?: number;
+        skip?: number;
+        category?: string;
+      } = {}) => {
+        const params = new URLSearchParams();
+
+        // Handle keyword - skip if "All"
+        if (keyword && keyword !== "All") {
+          params.append("keyword", keyword);
+        }
+
+        // Handle limit
+        if (typeof limit === "number") params.append("limit", limit.toString());
+
+        // Handle page
+        if (typeof page === "number") params.append("page", page.toString());
+
+        // Handle skip
+        if (typeof skip === "number") params.append("skip", skip.toString());
+
+        // Handle category - skip if "All" or empty
+        if (category && category !== "All") {
+          params.append("category", category);
+        }
+
+        return {
+          url: `/course?${params.toString()}`,
+          method: "GET",
+          credentials: "include",
+        };
+      },
       providesTags: ["course"],
     }),
 
@@ -23,42 +54,10 @@ const courseApi = baseApi.injectEndpoints({
       }),
       providesTags: ["course"],
     }),
-
-    addCourse: builder.mutation<any, any>({
-      query: (data) => ({
-        url: `/course/add-course`,
-        method: "POST",
-        body: data,
-        credentials: "include",
-      }),
-      invalidatesTags: ["course"],
-    }),
-
-    deleteCourse: builder.mutation<any, string>({
-      query: (id) => ({
-        url: `/course/${id}`,
-        method: "DELETE",
-        credentials: "include",
-      }),
-      invalidatesTags: ["course"],
-    }),
-
-    updateCourse: builder.mutation<any, any>({
-      query: ({ id, data }) => ({
-        url: `/course/${id}`,
-        method: "PUT",
-        body: data,
-        credentials: "include",
-      }),
-      invalidatesTags: ["course"],
-    }),
   }),
 });
 
 export const {
   useGetAlCoursesQuery,
   useGetSingleCourseQuery,
-  useAddCourseMutation,
-  useDeleteCourseMutation,
-  useUpdateCourseMutation,
 } = courseApi;
