@@ -43,7 +43,7 @@ const Breadcrumb = ({
               {item.label}
             </Link>
           ) : (
-            <span className="text-primary-10">{item?.label}ss</span>
+            <span className="text-primary-10">{item?.label}</span>
           )}
         </div>
       ))}

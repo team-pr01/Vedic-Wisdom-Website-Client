@@ -1,20 +1,18 @@
 import { baseApi } from "../../API/baseApi";
 
-const courseApi = baseApi.injectEndpoints({
+const projectApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAlCourses: builder.query({
+    getAllProjects: builder.query({
       query: ({
         keyword,
         limit,
         page,
         skip,
-        category,
       }: {
         keyword?: string;
         limit?: number;
         page?: number;
         skip?: number;
-        category?: string;
       } = {}) => {
         const params = new URLSearchParams();
         if (keyword && keyword !== "All") {
@@ -23,31 +21,28 @@ const courseApi = baseApi.injectEndpoints({
         if (typeof limit === "number") params.append("limit", limit.toString());
         if (typeof page === "number") params.append("page", page.toString());
         if (typeof skip === "number") params.append("skip", skip.toString());
-        if (category && category !== "All") {
-          params.append("category", category);
-        }
 
         return {
-          url: `/course?${params.toString()}`,
+          url: `/project?${params.toString()}`,
           method: "GET",
           credentials: "include",
         };
       },
-      providesTags: ["course"],
+      providesTags: ["project"],
     }),
 
-    getSingleCourse: builder.query({
+    getSingleProjectById: builder.query({
       query: (id) => ({
-        url: `/course/${id}`,
+        url: `/project/${id}`,
         method: "GET",
         credentials: "include",
       }),
-      providesTags: ["course"],
+      providesTags: ["project"],
     }),
   }),
 });
 
 export const {
-  useGetAlCoursesQuery,
-  useGetSingleCourseQuery,
-} = courseApi;
+  useGetAllProjectsQuery,
+  useGetSingleProjectByIdQuery,
+} = projectApi;

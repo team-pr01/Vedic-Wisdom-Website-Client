@@ -56,6 +56,7 @@ export const baseApi = createApi({
   tagTypes: [
     "food",
     "job",
+    "project",
     "emergencies",
     "users",
     "reels",
@@ -77,8 +78,6 @@ export const baseApi = createApi({
     "course",
     "recipe",
     "content",
-    "donations",
-    "donation",
     "quiz",
     "ayurveda",
     "product",

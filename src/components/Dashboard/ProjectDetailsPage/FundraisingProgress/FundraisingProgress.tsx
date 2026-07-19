@@ -1,19 +1,11 @@
 interface FundraisingStats {
+  currency: string;
   raised: number;
   goal: number;
-  currency?: string;
 }
 
-const FundraisingProgress = ({ 
-  raised, 
-  goal, 
-  currency = "₹" 
-}: FundraisingStats) => {
+const FundraisingProgress = ({ currency, raised, goal }: FundraisingStats) => {
   const percentage = Math.min((raised / goal) * 100, 100);
-  
-  const formatCurrency = (amount: number) => {
-    return `${currency} ${amount.toLocaleString('en-IN')}`;
-  };
 
   return (
     <div className="space-y-3 border border-neutral-55 bg-white p-4 rounded-2xl">
@@ -25,7 +17,8 @@ const FundraisingProgress = ({
               Raised
             </p>
             <p className="text-neutral-90 text-xl font-bold">
-              {formatCurrency(raised)}
+              {currency}
+              {raised}
             </p>
           </div>
           <div className="w-px h-8 bg-neutral-30" />
@@ -34,7 +27,8 @@ const FundraisingProgress = ({
               Goal
             </p>
             <p className="text-neutral-90 text-xl font-bold">
-              {formatCurrency(goal)}
+              {currency}
+              {goal}
             </p>
           </div>
         </div>
@@ -48,7 +42,7 @@ const FundraisingProgress = ({
       {/* Progress Bar */}
       <div className="relative pt-1">
         <div className="w-full h-2.5 bg-neutral-30 rounded-full overflow-hidden">
-          <div 
+          <div
             className="h-full bg-linear-to-r from-primary-10 to-primary-20 rounded-full transition-all duration-1000 ease-out"
             style={{ width: `${percentage}%` }}
           />
@@ -58,7 +52,8 @@ const FundraisingProgress = ({
       {/* Remaining Amount */}
       <div className="flex justify-end">
         <p className="text-xs text-neutral-60">
-          {formatCurrency(goal - raised)} remaining to reach goal
+          {currency}
+          {goal - raised} remaining to reach goal
         </p>
       </div>
     </div>

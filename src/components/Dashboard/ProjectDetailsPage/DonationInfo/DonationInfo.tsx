@@ -3,7 +3,15 @@ import Button from "../../../Reusable/Button/Button";
 import FundraisingProgress from "../FundraisingProgress/FundraisingProgress";
 import { ICONS } from "../../../../assets";
 
-const DonationInfo = () => {
+const DonationInfo = ({
+  currency,
+  amountNeeded,
+  amountRaised,
+}: {
+  currency: string;
+  amountNeeded: number;
+  amountRaised: number;
+}) => {
   return (
     <div className="bg-white rounded-[2.5rem] p-8 shadow-2xl shadow-neutral-10/10 border border-slate-50 space-y-6">
       <div>
@@ -11,14 +19,20 @@ const DonationInfo = () => {
           Fundraising Status
         </h4>
         <p className="text-3xl font-black text-neutral-5">
-          ₹10,000{" "}
+          {currency}
+          {amountRaised}{" "}
           <span className="text-sm font-medium text-neutral-10">
-            raised of ₹20,000
+            raised of {currency}
+            {amountNeeded}
           </span>
         </p>
       </div>
 
-      <FundraisingProgress raised={10000} goal={20000} />
+      <FundraisingProgress
+        currency={currency}
+        raised={amountRaised}
+        goal={amountNeeded}
+      />
 
       <Button
         label="Donate Now"

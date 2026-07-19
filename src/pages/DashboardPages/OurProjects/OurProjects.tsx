@@ -1,41 +1,14 @@
-import { ICONS, IMAGES } from "../../../assets";
+import { ICONS } from "../../../assets";
 import ProjectCard from "../../../components/HomePage/OurProjects/ProjectCard";
 import Button from "../../../components/Reusable/Button/Button";
 import DashboardHeading from "../../../components/Reusable/DashboardHeading/DashboardHeading";
+import FoodCardSkeleton from "../../../components/SkeletonLoaders/FoodCardSkeleton/FoodCardSkeleton";
+import { useGetAllProjectsQuery } from "../../../redux/Features/Project/projectApi";
+import type { TProject } from "../../../types/project.type";
 
 const OurProjects = () => {
-  const projects = [
-    {
-      _id: 1,
-      title: "Spiritual Learning...",
-      description: "Spreading authentic Shanthan knowledge",
-      image: IMAGES.dummyProject,
-    },
-    {
-      _id: 2,
-      title: "Spiritual Learning...",
-      description: "Spreading authentic Shanthan knowledge",
-      image: IMAGES.dummyProject,
-    },
-    {
-      _id: 3,
-      title: "Spiritual Learning...",
-      description: "Spreading authentic Shanthan knowledge",
-      image: IMAGES.dummyProject,
-    },
-    {
-      _id: 4,
-      title: "Spiritual Learning...",
-      description: "Spreading authentic Shanthan knowledge",
-      image: IMAGES.dummyProject,
-    },
-    {
-      _id: 5,
-      title: "Spiritual Learning...",
-      description: "Spreading authentic Shanthan knowledge",
-      image: IMAGES.dummyProject,
-    },
-  ];
+  const { data, isLoading } = useGetAllProjectsQuery({});
+  const allProjects = data?.data?.projects || [];
   return (
     <div className="font-Manrope space-y-8">
       <DashboardHeading
@@ -44,9 +17,13 @@ const OurProjects = () => {
       />
 
       <div className="grid grid-cols-4 gap-5">
-        {projects?.map((project) => (
-          <ProjectCard key={project?._id} project={project} />
-        ))}
+        {isLoading
+          ? Array.from({ length: 8 }).map((_, index) => (
+              <FoodCardSkeleton key={index} />
+            ))
+          : allProjects?.map((project: TProject) => (
+              <ProjectCard key={project?._id} project={project} />
+            ))}
       </div>
 
       <div className="bg-neutral-82 p-10 rounded-xl flex items-center justify-between sticky bottom-0 border border-neutral-55 z-10">
@@ -64,7 +41,7 @@ const OurProjects = () => {
           </div>
         </div>
 
-        <Button label="Donate Now" rightIcon={ICONS.arrowRight} />
+        <Button variant="secondary" label="Your Support Matters"/>
       </div>
     </div>
   );

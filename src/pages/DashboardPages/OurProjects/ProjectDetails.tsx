@@ -3,43 +3,50 @@ import {
   IoCalendarOutline,
   IoShareSocialOutline,
 } from "react-icons/io5";
-import { IMAGES } from "../../../assets";
 import Breadcrumb from "../../../components/Reusable/Breadcrumb/Breadcrumb";
 import RecentDonors from "../../../components/Dashboard/ProjectDetailsPage/RecentDonors/RecentDonors";
 import DonationInfo from "../../../components/Dashboard/ProjectDetailsPage/DonationInfo/DonationInfo";
+import { useParams } from "react-router-dom";
+import { useGetSingleProjectByIdQuery } from "../../../redux/Features/Project/projectApi";
+import type { TProject } from "../../../types/project.type";
+import { formatDate } from "../../../utils/formatDate";
+import LogoLoader from "../../../components/Shared/LogoLoader/LogoLoader";
 
 const ProjectDetails = () => {
-  const recentDonors = [
-    { name: "Ankit Sharma", amount: "₹2,500", time: "2 hours ago" },
-    { name: "Priya Singh", amount: "₹500", time: "5 hours ago" },
-    { name: "Anonymous", amount: "₹10,000", time: "1 day ago" },
-  ];
+  const { id } = useParams();
+  const { data, isLoading } = useGetSingleProjectByIdQuery(id);
+  const project = (data?.data as TProject) || {};
 
+  if (isLoading) return <LogoLoader />;
   return (
     <div className="font-Manrope">
       {/* 1. Category & Title Header */}
       <div className="mb-8">
         <Breadcrumb
           items={[
-            { label: "Dashboard", path: "/dashboard", isActive: true },
+            { label: "Dashboard", path: "/dashboard" },
             {
-              label: "Project Details",
-              path: "/dashboard/project/1",
+              label: "Projects",
+              path: "/dashboard/our-projects",
+            },
+            {
+              label: project?.title,
+              path: `/dashboard/project/${project?._id}`,
               isActive: true,
             },
           ]}
         />
         <h2 className="text-3xl md:text-4xl font-extrabold text-neutral-5 mt-4 leading-tight">
-          Spiritual Learning Center for Underprivileged Children
+          {project?.title}
         </h2>
         <div className="flex flex-wrap gap-6 mt-4 text-neutral-10 text-sm">
           <div className="flex items-center gap-2">
             <IoLocationOutline className="text-primary-5" size={18} />
-            Varanasi, Uttar Pradesh
+            {project?.location}
           </div>
           <div className="flex items-center gap-2">
             <IoCalendarOutline className="text-primary-5" size={18} />
-            Started on Oct 10, 2024
+            Starting from {formatDate(project?.startDate as string)}
           </div>
         </div>
       </div>
@@ -50,7 +57,7 @@ const ProjectDetails = () => {
           {/* Main Image */}
           <div className="relative group">
             <img
-              src={IMAGES.dummyProject}
+              src={project?.imageUrl}
               alt="Project"
               className="w-full aspect-video rounded-[2.5rem] object-cover shadow-xl"
             />
@@ -64,27 +71,24 @@ const ProjectDetails = () => {
             <h3 className="text-xl font-bold text-neutral-5 mb-4">
               About the Project
             </h3>
-            <p className="text-neutral-10 text-sm leading-relaxed font-medium">
-              We aim to establish a state-of-the-art spiritual learning center
-              that provides traditional Vedic education combined with modern
-              scientific curriculum. This initiative will support 500+ children
-              who lack access to quality education and spiritual guidance.
-              <br />
-              <br />
-              The funds will be utilized for constructing classrooms, purchasing
-              educational materials, and providing nutritious meals for the
-              students.
-            </p>
+            <div
+              className="text-neutral-10 text-sm leading-relaxed font-medium"
+              dangerouslySetInnerHTML={{ __html: project?.description }}
+            />
           </div>
         </div>
 
         {/* RIGHT COLUMN: Action & Stats (35%) */}
         <div className="lg:w-[35%] space-y-6">
           {/* Donation Card */}
-          <DonationInfo />
+          <DonationInfo
+            currency={project?.currency}
+            amountNeeded={project?.amountNeeded || 0}
+            amountRaised={project?.amountRaised || 0}
+          />
 
           {/* Recent Donors Card */}
-          <RecentDonors recentDonors={recentDonors} />
+          <RecentDonors currency={project?.currency} donors={project?.donors || []} />
         </div>
       </div>
     </div>
