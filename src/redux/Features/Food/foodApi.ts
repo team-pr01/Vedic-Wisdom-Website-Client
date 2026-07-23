@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "../../API/baseApi";
 
 const foodApi = baseApi.injectEndpoints({
@@ -45,9 +46,20 @@ const foodApi = baseApi.injectEndpoints({
             },
             providesTags: ["food"],
         }),
+
+        generateRecipe: builder.mutation<any, any>({
+            query: (data) => ({
+                url: `/ai/generate-recipe`,
+                method: "POST",
+                body: data,
+                credentials: "include",
+            }),
+            invalidatesTags: ["book"],
+        }),
     }),
 });
 
 export const {
     useGetAllRecipesQuery,
+    useGenerateRecipeMutation
 } = foodApi;

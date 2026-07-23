@@ -10,8 +10,10 @@ import FoodCardSkeleton from "../../../components/SkeletonLoaders/FoodCardSkelet
 import { useCategories } from "../../../hooks/useCategories";
 import CategoryFilter from "../../../components/Reusable/CategoryFilter/CategoryFilter";
 import EmptyState from "../../../components/Reusable/EmptyState/EmptyState";
+import GenerateRecipeModal from "../../../components/Dashboard/FoodPage/GenerateRecipeModal/GenerateRecipeModal";
 
 const Food = () => {
+  const [isGenerateRecipeModalOpen, setIsGenerateRecipeModalOpen] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const { data, isLoading } = useGetAllRecipesQuery({
     category: selectedCategory,
@@ -28,7 +30,7 @@ const Food = () => {
           description="Discover the art of Sattvic cooking and nourishing prasad recipes to
             balance your mind, body and soul."
         />
-        <Button leftIcon={ICONS.ai} label="Cook With AI" />
+        <Button onClick={() => setIsGenerateRecipeModalOpen(true)} leftIcon={ICONS.ai} label="Cook With AI" />
       </div>
 
       <div className="mt-10">
@@ -56,6 +58,8 @@ const Food = () => {
 
         {!isLoading && allRecipes?.length === 0 && <EmptyState />}
       </div>
+
+      <GenerateRecipeModal isModalOpen={isGenerateRecipeModalOpen} setIsModalOpen={setIsGenerateRecipeModalOpen} />
     </div>
   );
 };
