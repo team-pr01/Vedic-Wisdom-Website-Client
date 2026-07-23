@@ -11,7 +11,6 @@ const AllBooks = () => {
   const [keyword, setKeyword] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const { data, isLoading } = useGetAllBooksQuery({ keyword, category });
-  console.log(data);
   const allBooks = data?.data?.data || [];
   const categoryOptions = [
     { label: "All Temples", value: "all" },
