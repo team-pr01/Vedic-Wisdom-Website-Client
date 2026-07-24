@@ -36,6 +36,8 @@ import JobPortal from "../pages/DashboardPages/JobPortal/JobPortal";
 import JobDetails from "../pages/DashboardPages/JobPortal/JobDetails/JobDetails";
 import EmployerDashboard from "../pages/DashboardPages/JobPortal/Employer/EmployerDashboard/EmployerDashboard";
 import AllApplications from "../pages/DashboardPages/JobPortal/Employer/AllApplications/AllApplications";
+import AudioBook from "../pages/DashboardPages/LearnAndExplore/AudioBook/AudioBook";
+import AudioBookDetails from "../pages/DashboardPages/LearnAndExplore/AudioBook/AudioBookDetails/AudioBookDetails";
 
 export const router = createBrowserRouter([
   {
@@ -169,6 +171,14 @@ export const router = createBrowserRouter([
       {
         path: "learn-and-explore/book/:id",
         element: <BookDetails />,
+      },
+      {
+        path: "learn-and-explore/audio-book",
+        element: <AudioBook />,
+      },
+      {
+        path: "learn-and-explore/audio-book/:id",
+        element: <AudioBookDetails />,
       },
       {
         path: "job-portal",

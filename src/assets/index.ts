@@ -112,6 +112,7 @@ import giftIcon from "./icons/gift.svg";
 import subscriptionPlans from "./icons/subscription-plans.svg";
 import experience from "./icons/experience.svg";
 import company from "./icons/company.svg";
+import premiumCircle from "./icons/premium-circle.svg";
 
 export const IMAGES = {
     logo,
@@ -228,4 +229,5 @@ export const ICONS = {
     subscriptionPlans,
     experience,
     company,
+    premiumCircle,
 };
