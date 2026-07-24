@@ -24,12 +24,6 @@ const AudioBookDetails = () => {
     }
   }, [tracks]);
 
-  // Total duration
-  const totalAudioTracksDuration = tracks?.reduce(
-    (acc: any, track: TAudioTrack) => acc + (track?.duration || 0),
-    0,
-  );
-
   // Handle Next
   const handleNext = () => {
     if (tracks.length === 0) return;
@@ -68,8 +62,6 @@ const AudioBookDetails = () => {
           <span className="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-xs">
             {tracks.length} Chapters
           </span>
-          <span className="w-1.5 h-1.5 bg-neutral-60/50 rounded-full"></span>
-          <span>{totalAudioTracksDuration} total</span>
           <span className="w-1.5 h-1.5 bg-neutral-60/50 rounded-full"></span>
           <span
             className={`${audioTrack?.isPremium ? "text-orange-500" : "text-green-500"}`}

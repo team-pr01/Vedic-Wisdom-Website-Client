@@ -11,9 +11,10 @@ const AudioBookCard = ({
 }) => {
   const isRow = direction === "row";
   return (
-    <Link
+    <div className={`rounded relative ${isRow ? "border border-neutral-55" : ""}`}>
+      <Link
       to={`/dashboard/learn-and-explore/audio-book/${book?._id}`}
-      className={`rounded relative ${isRow ? "border border-neutral-55" : ""}`}
+      
     >
       {book?.isPremium ? (
         <div className="absolute top-1 left-px">
@@ -48,6 +49,7 @@ const AudioBookCard = ({
         </div>
       </div>
     </Link>
+    </div>
   );
 };
 
