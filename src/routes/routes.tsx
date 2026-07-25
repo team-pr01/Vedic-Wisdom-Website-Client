@@ -38,6 +38,8 @@ import EmployerDashboard from "../pages/DashboardPages/JobPortal/Employer/Employ
 import AllApplications from "../pages/DashboardPages/JobPortal/Employer/AllApplications/AllApplications";
 import AudioBook from "../pages/DashboardPages/LearnAndExplore/AudioBook/AudioBook";
 import AudioBookDetails from "../pages/DashboardPages/LearnAndExplore/AudioBook/AudioBookDetails/AudioBookDetails";
+import PaymentFailed from "../pages/DashboardPages/PaymentFailed/PaymentFailed";
+import PaymentSuccess from "../pages/DashboardPages/PaymentSuccess/PaymentSuccess";
 
 export const router = createBrowserRouter([
   {
@@ -56,6 +58,14 @@ export const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "coin-transaction/fail",
+        element: <PaymentFailed />,
+      },
+      {
+        path: "coin-transaction/success",
+        element: <PaymentSuccess />,
       },
     ],
   },

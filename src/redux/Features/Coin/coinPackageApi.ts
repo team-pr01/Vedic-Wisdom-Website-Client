@@ -26,21 +26,9 @@ const coinPackageApi = baseApi.injectEndpoints({
             },
             providesTags: ["coinPackage"],
         }),
-
-        generateRecipe: builder.mutation<any, any>({
-
-            query: (data) => ({
-                url: `/ai/generate-recipe`,
-                method: "POST",
-                body: data,
-                credentials: "include",
-            }),
-            invalidatesTags: ["book"],
-        }),
     }),
 });
 
 export const {
     useGetAllCoinPackagesQuery,
-    useGenerateRecipeMutation
 } = coinPackageApi;

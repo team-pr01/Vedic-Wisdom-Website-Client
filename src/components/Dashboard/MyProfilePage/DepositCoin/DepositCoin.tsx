@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { FaCoins, FaShieldAlt, FaLock } from "react-icons/fa";
 import Modal from "../../../Reusable/Modal/Modal";
@@ -5,6 +6,8 @@ import Button from "../../../Reusable/Button/Button";
 import { ICONS } from "../../../../assets";
 import { useGetAllCoinPackagesQuery } from "../../../../redux/Features/Coin/coinPackageApi";
 import type { TCoinPackage } from "../../../../types/coinPackage.type";
+import { useInitiatePaymentMutation } from "../../../../redux/Features/Coin/coinTransactionApi";
+import toast from "react-hot-toast";
 
 interface DepositCoinProps {
   isModalOpen: boolean;
@@ -17,33 +20,40 @@ const DepositCoin = ({ isModalOpen, setIsModalOpen }: DepositCoinProps) => {
   const [selectedPackage, setSelectedPackage] = useState<TCoinPackage | null>(
     null,
   );
-  const isLoading = false;
+
+  const [initiatePayment, { isLoading }] = useInitiatePaymentMutation();
 
   // 1 Coin = 5 BDT
   const COIN_RATE = 5;
 
-  // const handlePayment = async () => {
-  //   if (!setSelectedPackage) return;
+  const handleInitiatePayment = async () => {
+    // ✅ Fix: Check selectedPackage, not setSelectedPackage
+    if (!selectedPackage) {
+      toast.error("Please select a coin package");
+      return;
+    }
 
-  //   setIsProcessing(true);
-  //   try {
-  //     const packageData = coinPackages.find((p) => p.coins === selectedCoins);
-  //     const amount = packageData?.price || selectedCoins * COIN_RATE;
-  //     console.log("Processing payment for:", {
-  //       coins: selectedCoins,
-  //       amount: amount,
-  //       currency: "BDT",
-  //     });
-  //     await new Promise((resolve) => setTimeout(resolve, 2000));
-
-  //     alert(`Successfully added ${selectedCoins} Arya Coins!`);
-  //     setIsModalOpen(false);
-  //   } catch (error) {
-  //     console.error("Payment failed:", error);
-  //   } finally {
-  //     setIsProcessing(false);
-  //   }
-  // };
+    try {
+      const payload = {
+        packageId: selectedPackage._id,
+      };
+      const response = await initiatePayment(payload).unwrap();
+      
+      if (response?.success) {
+        // ✅ Redirect to SSL Commerz payment page
+        if (response?.data?.paymentUrl) {
+          window.location.href = response.data.paymentUrl;
+        } else {
+          toast .error("Payment URL not received");
+        }
+      } else {
+        toast.error(response?.message || "Failed to initiate payment");
+      }
+    } catch (error: any) {
+      console.error("Payment failed:", error);
+      toast.error(error?.data?.message || "Payment initiation failed");
+    }
+  };
 
   return (
     <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
@@ -152,7 +162,7 @@ const DepositCoin = ({ isModalOpen, setIsModalOpen }: DepositCoinProps) => {
           label={isLoading ? "Processing..." : "Add Coins"}
           className="w-full mt-4"
           rightIcon={ICONS.arrowRight}
-          // onClick={handlePayment}
+          onClick={handleInitiatePayment}
           isDisabled={!selectedPackage || isLoading}
         />
 
