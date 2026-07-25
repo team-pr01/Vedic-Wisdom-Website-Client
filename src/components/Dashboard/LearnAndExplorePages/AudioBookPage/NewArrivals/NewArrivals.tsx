@@ -75,7 +75,7 @@ const NewArrivals = () => {
                 spaceBetween: 25,
               },
               1024: {
-                slidesPerView: 4.7,
+                slidesPerView: 4.4,
                 spaceBetween: 20,
               },
             }}

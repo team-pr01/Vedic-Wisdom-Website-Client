@@ -74,6 +74,7 @@ export const baseApi = createApi({
     "reportMantra",
     "audioBook",
     "audioTrack",
+    "coinPackage",
     "category",
     "consultancyService",
     "apiKeys",
