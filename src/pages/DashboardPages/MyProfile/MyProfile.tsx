@@ -7,6 +7,7 @@ import LifetimePremiumMembershipModal from "../../../components/Shared/LifetimeP
 import DeleteAccountConfirmation from "../../../components/Dashboard/MyProfilePage/DeleteAccountConfirmation/DeleteAccountConfirmation";
 import DepositCoin from "../../../components/Dashboard/MyProfilePage/DepositCoin/DepositCoin";
 import { Link } from "react-router-dom";
+import { useGetMeQuery } from "../../../redux/Features/User/userApi";
 
 const MyProfile = () => {
   const [isDepositCoinModalOpen, setIsDepositCoinModalOpen] = useState(false);
@@ -16,7 +17,9 @@ const MyProfile = () => {
     isDeleteAccountConfirmationModalOpen,
     setIsDeleteAccountConfirmationModalOpen,
   ] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState<string>("");
+
+  const {data} = useGetMeQuery({});
+  const myProfile = data?.data || {};
 
   const [isCoinUsageModalOpen, setIsCoinUsageModalOpen] =
     useState<boolean>(false);
@@ -38,7 +41,7 @@ const MyProfile = () => {
     },
     {
       title: "Membership Plan",
-      value: "Free",
+      value: myProfile?.plan || "Free",
       icon: ICONS.membershipPlan,
     },
   ];
@@ -99,7 +102,7 @@ const MyProfile = () => {
         <div className="flex items-center gap-5">
           <div className="bg-white border border-primary-10 size-25 rounded-full p-1">
             <div className="size-full">
-              <img src={IMAGES.dummyAvatar} alt="" className="size-full" />
+              <img src={myProfile?.profilePicture ||IMAGES.imagePlaceholder} alt="" className="size-full rounded-full" />
             </div>
           </div>
 
@@ -109,14 +112,14 @@ const MyProfile = () => {
                 Mr. John Doe
               </h3>
               <div className="px-2 py-1 border border-neutral-20 bg-white text-xs text-neutral-40 uppercase font-semibold rounded-3xl">
-                Free Plan
+                {myProfile?.plan} Plan
               </div>
             </div>
             <p className="text-neutral-50 text-sm font-medium">
-              User Id : VW324
+              User Id : {myProfile?.userId}
             </p>
             <p className="text-neutral-40 text-sm font-medium">
-              akash@gmail.com
+              {myProfile?.email}
             </p>
           </div>
         </div>
@@ -154,7 +157,7 @@ const MyProfile = () => {
                 </div>
                 <div>
                   <p className="text-neutral-90 text-sm">Arya Coin</p>
-                  <h3 className="text-neutral-40 font-bold">50</h3>
+                  <h3 className="text-neutral-40 font-bold">{myProfile?.coins}</h3>
                 </div>
               </div>
             </div>
@@ -165,7 +168,7 @@ const MyProfile = () => {
             {statics?.map((item) => (
               <div
                 key={item?.title}
-                className="flex items-start gap-3 border border-neutral-55 bg-neutral-70 rounded-lg p-4"
+                className="flex items-start gap-3 border border-neutral-55 bg-neutral-70 rounded-lg p-4 capitalize"
               >
                 <img src={item?.icon} alt="" className="size-7" />
                 <div>
@@ -227,7 +230,6 @@ const MyProfile = () => {
       <SelectSystemLanguage
         isModalOpen={isTranslateNewsModalOpen}
         setIsModalOpen={setIsTranslateNewsModalOpen}
-        setSelectedLanguage={setSelectedLanguage}
       />
 
       <CoinUsages

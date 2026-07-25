@@ -76,6 +76,7 @@ export const baseApi = createApi({
     "audioTrack",
     "coinPackage",
     "coinTransaction",
+    "user",
     "category",
     "consultancyService",
     "apiKeys",
