@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Modal from "../../../../../Reusable/Modal/Modal";
 import { FaCoins, FaLock } from "react-icons/fa";
 import Button from "../../../../../Reusable/Button/Button";
@@ -28,11 +29,12 @@ const PurchaseAudioBookModal = ({
       };
       const response = await purchaseAudioBook(payload).unwrap();
       if (response?.success) {
-        navigate("/dashboard/my-profile");
+        navigate("/dashboard/my-library");
       }
-    } catch (err) {
-      console.log(err);
-      toast.error("Something went wrong. Please try again.");
+    } catch (err: any) {
+      toast.error(
+        err?.data?.message || "Something went wrong. Please try again.",
+      );
     }
   };
 

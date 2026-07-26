@@ -1,26 +1,21 @@
-import { useState } from "react";
-import { useGetAllAudioBooksQuery } from "../../../../../redux/Features/AudioBook/audioBookApi";
-import type { TAudioBook } from "../../../../../types/audioBook.type";
-import AudioBookCardSkeleton from "../../../../SkeletonLoaders/AudioBookCardSkeleton/AudioBookCardSkeleton";
-import AudioBookCard from "../AudioBookCard/AudioBookCard";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IoSearchOutline } from "react-icons/io5";
+import { useGetMyPurchasedAudioBooksQuery } from "../../../../redux/Features/AudioBook/audioBookPurchaseApi";
+import { useState } from "react";
+import AudioBookCardSkeleton from "../../../../components/SkeletonLoaders/AudioBookCardSkeleton/AudioBookCardSkeleton";
+import MyLibraryBookCard from "../../../../components/Dashboard/MyLibraryPage/MyLibraryBookCard/MyLibraryBookCard";
 
-const PeopleAlsoLike = () => {
+const MyLibrary = () => {
   const [keyword, setKeyword] = useState<string>("");
-  const {
-    data: otherBooks,
-    isLoading: isOtherAudioBookLoading,
-    isFetching,
-  } = useGetAllAudioBooksQuery({ keyword });
-
-  const otherAudioBooks = otherBooks?.data?.audioBooks || [];
-
-  const otherSkeletonCount = 6;
+  const { data, isLoading, isFetching } = useGetMyPurchasedAudioBooksQuery({
+    keyword,
+  });
+  const myPurchasedAudioBooks = data?.data?.purchases || [];
   return (
     <div className="font-Manrope">
       <div className="flex items-center justify-between">
         <h4 className="text-neutral-90 font-bold text-xl capitalize">
-          People Also Like
+          My Library
         </h4>
         <div className="relative w-full sm:w-80 lg:w-100">
           <IoSearchOutline className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -35,13 +30,16 @@ const PeopleAlsoLike = () => {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mt-3">
-        {isOtherAudioBookLoading || isFetching ? (
-          Array.from({ length: otherSkeletonCount }).map((_, index) => (
+        {isLoading || isFetching ? (
+          Array.from({ length: 6 }).map((_, index) => (
             <AudioBookCardSkeleton key={`other-${index}`} />
           ))
-        ) : otherAudioBooks.length > 0 ? (
-          otherAudioBooks?.map((audioBook: TAudioBook) => (
-            <AudioBookCard key={audioBook?._id} book={audioBook} />
+        ) : myPurchasedAudioBooks.length > 0 ? (
+          myPurchasedAudioBooks?.map((audioBook: any) => (
+            <MyLibraryBookCard
+              key={audioBook?._id}
+              book={audioBook?.audioBookId}
+            />
           ))
         ) : (
           <div className="col-span-full text-center py-8">
@@ -53,4 +51,4 @@ const PeopleAlsoLike = () => {
   );
 };
 
-export default PeopleAlsoLike;
+export default MyLibrary;

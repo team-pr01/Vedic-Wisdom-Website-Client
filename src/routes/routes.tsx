@@ -40,6 +40,7 @@ import AudioBook from "../pages/DashboardPages/LearnAndExplore/AudioBook/AudioBo
 import AudioBookDetails from "../pages/DashboardPages/LearnAndExplore/AudioBook/AudioBookDetails/AudioBookDetails";
 import PaymentFailed from "../pages/DashboardPages/PaymentFailed/PaymentFailed";
 import PaymentSuccess from "../pages/DashboardPages/PaymentSuccess/PaymentSuccess";
+import MyLibrary from "../pages/DashboardPages/MyProfile/MyLibrary/MyLibrary";
 
 export const router = createBrowserRouter([
   {
@@ -85,6 +86,10 @@ export const router = createBrowserRouter([
       {
         path: "my-referrals",
         element: <MyReferrals />,
+      },
+      {
+        path: "my-library",
+        element: <MyLibrary />,
       },
       {
         path: "subscription-plans",

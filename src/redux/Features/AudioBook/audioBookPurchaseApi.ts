@@ -42,10 +42,21 @@ const audioBookPurchaseApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["audioBookPurchase"],
         }),
+
+        // Check if user owns an audio book
+        checkOwnership: builder.query({
+            query: (id) => ({
+                url: `/audio-book-purchase/check/${id}`,
+                method: "GET",
+                credentials: "include",
+            }),
+            providesTags: ["audioBookPurchase"],
+        }),
     }),
 });
 
 export const {
     useGetMyPurchasedAudioBooksQuery,
     usePurchaseAudioBookMutation,
+    useCheckOwnershipQuery,
 } = audioBookPurchaseApi;

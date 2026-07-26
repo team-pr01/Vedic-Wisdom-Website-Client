@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
 import Breadcrumb from "../../../../../components/Reusable/Breadcrumb/Breadcrumb";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useGetAllAudioTrackByBookIdQuery } from "../../../../../redux/Features/AudioBook/audioTrackApi";
 import AudioPlayer from "../../../../../components/Dashboard/LearnAndExplorePages/AudioBookPage/AudioBookDetailsPage/AudioPlayer/AudioPlayer";
 import AudioTrackCard from "../../../../../components/Dashboard/LearnAndExplorePages/AudioBookPage/AudioBookDetailsPage/AudioTrackCard/AudioTrackCard";
@@ -10,17 +10,21 @@ import type { TAudioTrack } from "../../../../../types/audioTrack.type";
 import Button from "../../../../../components/Reusable/Button/Button";
 import { ICONS } from "../../../../../assets";
 import PurchaseAudioBookModal from "../../../../../components/Dashboard/LearnAndExplorePages/AudioBookPage/AudioBookDetailsPage/PurchaseAudioBookModal/PurchaseAudioBookModal";
+import { useCheckOwnershipQuery } from "../../../../../redux/Features/AudioBook/audioBookPurchaseApi";
 
 const AudioBookDetails = () => {
   const { id } = useParams();
   const { data } = useGetAllAudioTrackByBookIdQuery(id);
   const audioTrack = data?.data || {};
+
+  const { data: checkOwnership } = useCheckOwnershipQuery(id);
+  const hasPurchased = checkOwnership?.data?.hasPurchased || false;
   const tracks = audioTrack?.tracks || [];
   const [activeTrack, setActiveTrack] = useState(null);
   const [activeTrackIndex, setActiveTrackIndex] = useState(0);
 
   const [isPurchaseAudioBookModalOpen, setIsPurchaseAudioBookModalOpen] =
-    useState<boolean>(true);
+    useState<boolean>(false);
 
   // Set initial active track
   useEffect(() => {
@@ -70,19 +74,31 @@ const AudioBookDetails = () => {
               {tracks.length} Chapters
             </span>
             <span className="w-1.5 h-1.5 bg-neutral-60/50 rounded-full"></span>
-            <span
-              className={`${audioTrack?.isPremium ? "text-orange-500" : "text-green-500"}`}
-            >
-              {audioTrack?.isPremium ? "Paid" : "Free"}
-            </span>
+            {!audioTrack?.isPremium && (
+              <span className={`text-green-500`}>Free</span>
+            )}
+            {audioTrack?.isPremium && hasPurchased && (
+              <span className={`text-green-500`}>Unlocked</span>
+            )}
+            {audioTrack?.isPremium && !hasPurchased && (
+              <span className={`text-primary-10`}>
+                {audioTrack?.coinPrice} Coins to Unlock
+              </span>
+            )}
           </div>
         </div>
 
-        <Button
-          onClick={() => setIsPurchaseAudioBookModalOpen(true)}
-          leftIcon={ICONS.unlock}
-          label="Unlock Now"
-        />
+        {hasPurchased ? (
+          <Link to={`/dashboard/my-library`}>
+            <Button variant="secondary" label="View My Library" />
+          </Link>
+        ) : (
+          <Button
+            onClick={() => setIsPurchaseAudioBookModalOpen(true)}
+            leftIcon={ICONS.unlock}
+            label="Unlock Now"
+          />
+        )}
       </div>
 
       <div className="flex flex-col lg:flex-row gap-12 items-start">
