@@ -81,15 +81,15 @@ const audioBookApi = baseApi.injectEndpoints({
       providesTags: ["audioBook"],
     }),
 
-    // createBook: builder.mutation<any, any>({
-    //   query: (data) => ({
-    //     url: `/book/create-book`,
-    //     method: "POST",
-    //     body: data,
-    //     credentials: "include",
-    //   }),
-    //   invalidatesTags: ["book"],
-    // }),
+
+    getSingleAudioBookById: builder.query({
+      query: (id) => ({
+        url: `/audio-book/${id}`,
+        method: "GET",
+        credentials: "include",
+      }),
+      providesTags: ["audioBook"],
+    }),
   }),
 });
 
@@ -97,4 +97,5 @@ export const {
   useGetAllAudioBooksQuery,
   useGetNewArrivalAudioBooksQuery,
   useGetPopularAudioBooksQuery,
+  useGetSingleAudioBookByIdQuery
 } = audioBookApi;

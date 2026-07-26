@@ -7,6 +7,9 @@ import { useGetAllAudioTrackByBookIdQuery } from "../../../../../redux/Features/
 import AudioPlayer from "../../../../../components/Dashboard/LearnAndExplorePages/AudioBookPage/AudioBookDetailsPage/AudioPlayer/AudioPlayer";
 import AudioTrackCard from "../../../../../components/Dashboard/LearnAndExplorePages/AudioBookPage/AudioBookDetailsPage/AudioTrackCard/AudioTrackCard";
 import type { TAudioTrack } from "../../../../../types/audioTrack.type";
+import Button from "../../../../../components/Reusable/Button/Button";
+import { ICONS } from "../../../../../assets";
+import PurchaseAudioBookModal from "../../../../../components/Dashboard/LearnAndExplorePages/AudioBookPage/AudioBookDetailsPage/PurchaseAudioBookModal/PurchaseAudioBookModal";
 
 const AudioBookDetails = () => {
   const { id } = useParams();
@@ -15,6 +18,9 @@ const AudioBookDetails = () => {
   const tracks = audioTrack?.tracks || [];
   const [activeTrack, setActiveTrack] = useState(null);
   const [activeTrackIndex, setActiveTrackIndex] = useState(0);
+
+  const [isPurchaseAudioBookModalOpen, setIsPurchaseAudioBookModalOpen] =
+    useState<boolean>(true);
 
   // Set initial active track
   useEffect(() => {
@@ -54,21 +60,29 @@ const AudioBookDetails = () => {
       />
 
       {/* Header Metadata */}
-      <div className="mt-8 mb-10">
-        <h1 className="text-3xl md:text-4xl font-bold text-neutral-10">
-          {audioTrack?.audioBookName}
-        </h1>
-        <div className="flex items-center gap-4 mt-3 text-neutral-50 font-medium text-sm">
-          <span className="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-xs">
-            {tracks.length} Chapters
-          </span>
-          <span className="w-1.5 h-1.5 bg-neutral-60/50 rounded-full"></span>
-          <span
-            className={`${audioTrack?.isPremium ? "text-orange-500" : "text-green-500"}`}
-          >
-            {audioTrack?.isPremium ? "Paid" : "Free"}
-          </span>
+      <div className="mt-8 mb-10 flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl md:text-4xl font-bold text-neutral-10">
+            {audioTrack?.audioBookName}
+          </h1>
+          <div className="flex items-center gap-4 mt-3 text-neutral-50 font-medium text-sm">
+            <span className="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-xs">
+              {tracks.length} Chapters
+            </span>
+            <span className="w-1.5 h-1.5 bg-neutral-60/50 rounded-full"></span>
+            <span
+              className={`${audioTrack?.isPremium ? "text-orange-500" : "text-green-500"}`}
+            >
+              {audioTrack?.isPremium ? "Paid" : "Free"}
+            </span>
+          </div>
         </div>
+
+        <Button
+          onClick={() => setIsPurchaseAudioBookModalOpen(true)}
+          leftIcon={ICONS.unlock}
+          label="Unlock Now"
+        />
       </div>
 
       <div className="flex flex-col lg:flex-row gap-12 items-start">
@@ -102,6 +116,12 @@ const AudioBookDetails = () => {
           onPrevious={handlePrevious}
         />
       </div>
+
+      <PurchaseAudioBookModal
+        isModalOpen={isPurchaseAudioBookModalOpen}
+        setIsModalOpen={setIsPurchaseAudioBookModalOpen}
+        audioBookId={id as string}
+      />
     </div>
   );
 };

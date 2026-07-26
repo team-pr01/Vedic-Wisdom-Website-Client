@@ -2,8 +2,12 @@
 import { Link } from "react-router-dom";
 import { ICONS, IMAGES } from "../../../../../assets";
 import type { TAudioBook } from "../../../../../types/audioBook.type";
-import { useGetMySavedItemsQuery, useSaveItemMutation, useUnSaveItemMutation } from "../../../../../redux/Features/SavedItem/savedItemApi";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import {
+  useGetMySavedItemsQuery,
+  useSaveItemMutation,
+  useUnSaveItemMutation,
+} from "../../../../../redux/Features/SavedItem/savedItemApi";
+import { FaHeart, FaRegHeart, FaCoins } from "react-icons/fa";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 
@@ -15,7 +19,7 @@ const AudioBookCard = ({
   direction?: "row" | "col";
 }) => {
   const isRow = direction === "row";
-  
+
   const [saveItem] = useSaveItemMutation();
   const [unSaveItem] = useUnSaveItemMutation();
   const [isLoading, setIsLoading] = useState(false);
@@ -60,12 +64,23 @@ const AudioBookCard = ({
   };
 
   return (
-    <div className={`rounded relative ${isRow ? "border border-neutral-55" : ""} group`}>
+    <div
+      className={`rounded relative ${isRow ? "border border-neutral-55" : ""} group`}
+    >
       {/* Premium/Free Badge */}
       {book?.isPremium ? (
-        <div className="absolute top-1 left-px z-10">
-          <img src={ICONS.premiumCircle} alt="Premium" />
-        </div>
+        <>
+          <div className="absolute top-1 left-px z-10">
+            <img src={ICONS.premiumCircle} alt="Premium" />
+          </div>
+          {/* Coin Price Badge - Bottom Left */}
+          {direction === "row" && (
+            <div className="absolute bottom-2 left-2 z-10 flex items-center gap-1 bg-black/70 backdrop-blur-sm text-white px-2 py-1 rounded-full text-[10px]">
+              <FaCoins className="text-yellow-400 text-xs" />
+              <span>{book?.coinPrice || 0} coins</span>
+            </div>
+          )}
+        </>
       ) : (
         <div className="bg-green-500 text-white px-1.5 py-px text-sm rounded-tl rounded-br absolute top-0 left-0 z-10">
           Free
@@ -101,12 +116,21 @@ const AudioBookCard = ({
             className={`${isRow ? "py-2 px-1" : "p-0"} flex flex-col justify-between`}
           >
             <div>
-              <h4 className="text-neutral-90 font-bold group-hover:text-primary-10 transition-colors">
-                {book?.name}
-              </h4>
+              <div className="flex items-center justify-between">
+                <h4 className="text-neutral-90 font-bold group-hover:text-primary-10 transition-colors">
+                  {book?.name}
+                </h4>
+                {book?.isPremium && direction === "col" && (
+                  <span className="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                    <FaCoins className="inline text-amber-500 mr-1 text-[10px]" />
+                    {book?.coinPrice || 0}
+                  </span>
+                )}
+              </div>
               <p className="text-neutral-50 text-sm capitalize">
                 {book?.category}
               </p>
+              
             </div>
             {isRow && (
               <p className="text-neutral-50 text-sm">
