@@ -77,6 +77,7 @@ export const baseApi = createApi({
     "coinPackage",
     "coinTransaction",
     "user",
+    "savedItem",
     "category",
     "consultancyService",
     "apiKeys",

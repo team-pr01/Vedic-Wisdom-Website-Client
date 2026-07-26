@@ -8,6 +8,7 @@ import DeleteAccountConfirmation from "../../../components/Dashboard/MyProfilePa
 import DepositCoin from "../../../components/Dashboard/MyProfilePage/DepositCoin/DepositCoin";
 import { Link } from "react-router-dom";
 import { useGetMeQuery } from "../../../redux/Features/User/userApi";
+import { useGetMySavedItemsCountQuery } from "../../../redux/Features/SavedItem/savedItemApi";
 
 const MyProfile = () => {
   const [isDepositCoinModalOpen, setIsDepositCoinModalOpen] = useState(false);
@@ -18,20 +19,22 @@ const MyProfile = () => {
     setIsDeleteAccountConfirmationModalOpen,
   ] = useState(false);
 
-  const {data} = useGetMeQuery({});
+  const { data } = useGetMeQuery({});
   const myProfile = data?.data || {};
+
+  const { data: savedItemsCount } = useGetMySavedItemsCountQuery({});
 
   const [isCoinUsageModalOpen, setIsCoinUsageModalOpen] =
     useState<boolean>(false);
   const statics = [
     {
       title: "Saved Audio Books",
-      value: 12,
+      value: savedItemsCount?.data?.savedAudioBooksCount || 0,
       icon: ICONS.savedAudioBook,
     },
     {
       title: "Books Saved",
-      value: 20,
+      value: savedItemsCount?.data?.savedBooksCount || 0,
       icon: ICONS.savedBooks,
     },
     {
@@ -102,14 +105,18 @@ const MyProfile = () => {
         <div className="flex items-center gap-5">
           <div className="bg-white border border-primary-10 size-25 rounded-full p-1">
             <div className="size-full">
-              <img src={myProfile?.profilePicture ||IMAGES.imagePlaceholder} alt="" className="size-full rounded-full" />
+              <img
+                src={myProfile?.profilePicture || IMAGES.imagePlaceholder}
+                alt=""
+                className="size-full rounded-full"
+              />
             </div>
           </div>
 
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <h3 className="text-neutral-40 text-lg font-bold">
-                Mr. John Doe
+                {myProfile?.name}
               </h3>
               <div className="px-2 py-1 border border-neutral-20 bg-white text-xs text-neutral-40 uppercase font-semibold rounded-3xl">
                 {myProfile?.plan} Plan
@@ -157,7 +164,9 @@ const MyProfile = () => {
                 </div>
                 <div>
                   <p className="text-neutral-90 text-sm">Arya Coin</p>
-                  <h3 className="text-neutral-40 font-bold">{myProfile?.coins}</h3>
+                  <h3 className="text-neutral-40 font-bold">
+                    {myProfile?.coins}
+                  </h3>
                 </div>
               </div>
             </div>
@@ -235,6 +244,7 @@ const MyProfile = () => {
       <CoinUsages
         isModalOpen={isCoinUsageModalOpen}
         setIsModalOpen={setIsCoinUsageModalOpen}
+        coinBalance={myProfile?.coins}
       />
 
       <LifetimePremiumMembershipModal />

@@ -4,9 +4,11 @@ import Modal from "../../../Reusable/Modal/Modal";
 const CoinUsages = ({
   isModalOpen,
   setIsModalOpen,
+  coinBalance
 }: {
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  coinBalance: number
 }) => {
   return (
     <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
@@ -18,7 +20,7 @@ const CoinUsages = ({
               <FaCoins className="text-primary-10 text-2xl" />
             </div>
             <div>
-              <h2 className="text-neutral-90 text-xl font-bold">Coin Usages</h2>
+              <h2 className="text-neutral-90 text-xl font-bold">Arya Coin Usages</h2>
               <p className="text-sm text-neutral-60">
                 Unlock premium features with coins
               </p>
@@ -28,8 +30,8 @@ const CoinUsages = ({
 
         {/* Coin Balance */}
         <div className="bg-linear-to-r from-primary-10/10 to-primary-10/5 border border-primary-10/20 rounded-2xl p-4 mb-6 text-center">
-          <p className="text-sm text-neutral-60">Your Coin Balance</p>
-          <p className="text-3xl font-bold text-primary-10">250</p>
+          <p className="text-sm text-neutral-60">Your Balance</p>
+          <p className="text-3xl font-bold text-primary-10">{coinBalance}</p>
         </div>
 
         {/* Ways to Use Coins */}
