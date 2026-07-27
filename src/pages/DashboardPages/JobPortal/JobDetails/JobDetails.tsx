@@ -176,6 +176,7 @@ const JobDetails = () => {
       <ApplyJobModal
         isModalOpen={isApplyJobModalOpen}
         setIsModalOpen={setIsApplyJobModalOpen}
+        jobId={id as string}
       />
     </div>
   );

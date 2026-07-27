@@ -1,6 +1,6 @@
-import LoginAccount from "../../components/LoginPage/LoginAccount/LoginAccount";
-import AuthHero from "../../components/Reusable/AuthHero/AuthHero";
-import DownloadApp from "../../components/Shared/DownloadApp/DownloadApp";
+import LoginAccount from "../../../components/LoginPage/LoginAccount/LoginAccount";
+import AuthHero from "../../../components/Reusable/AuthHero/AuthHero";
+import DownloadApp from "../../../components/Shared/DownloadApp/DownloadApp";
 
 const Login = () => {
   return (

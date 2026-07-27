@@ -9,6 +9,16 @@ import DepositCoin from "../../../components/Dashboard/MyProfilePage/DepositCoin
 import { Link } from "react-router-dom";
 import { useGetMeQuery } from "../../../redux/Features/User/userApi";
 import { useGetMySavedItemsCountQuery } from "../../../redux/Features/SavedItem/savedItemApi";
+import {
+  FaPhone,
+  FaMapMarkerAlt,
+  FaCity,
+  FaGlobe,
+  FaCode,
+  FaUsers,
+  FaEnvelope,
+  FaIdCard,
+} from "react-icons/fa";
 
 const MyProfile = () => {
   const [isDepositCoinModalOpen, setIsDepositCoinModalOpen] = useState(false);
@@ -100,42 +110,128 @@ const MyProfile = () => {
   return (
     <div className="font-Manrope">
       <h2 className="heading-dashboard">My Profile</h2>
+      <div className="border border-neutral-50/10 bg-neutral-30 rounded-4xl p-6 mt-6">
+        {/* Top Section */}
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="flex items-center gap-5">
+            <div className="bg-white border border-primary-10 size-25 rounded-full p-1 shrink-0">
+              <div className="size-full">
+                <img
+                  src={myProfile?.profilePicture || IMAGES.imagePlaceholder}
+                  alt={myProfile?.name || "Profile"}
+                  className="size-full rounded-full object-cover"
+                />
+              </div>
+            </div>
 
-      <div className="border border-neutral-50/10 bg-neutral-30 rounded-4xl p-6 flex items-center justify-between mt-6">
-        <div className="flex items-center gap-5">
-          <div className="bg-white border border-primary-10 size-25 rounded-full p-1">
-            <div className="size-full">
-              <img
-                src={myProfile?.profilePicture || IMAGES.imagePlaceholder}
-                alt=""
-                className="size-full rounded-full"
-              />
+            <div className="space-y-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="text-neutral-40 text-lg font-bold">
+                  {myProfile?.name || "User"}
+                </h3>
+                <div className="px-2 py-1 border border-neutral-20 bg-white text-xs text-neutral-40 uppercase font-semibold rounded-3xl">
+                  {myProfile?.plan || "Free"} Plan
+                </div>
+              </div>
+              <p className="text-neutral-50 text-sm font-medium flex items-center gap-1.5">
+                <FaIdCard className="text-primary-10 text-xs" />
+                User ID : {myProfile?.userId || "N/A"}
+              </p>
+              <p className="text-neutral-40 text-sm font-medium flex items-center gap-1.5">
+                <FaEnvelope className="text-primary-10 text-xs" />
+                {myProfile?.email || "No email"}
+              </p>
             </div>
           </div>
 
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <h3 className="text-neutral-40 text-lg font-bold">
-                {myProfile?.name}
-              </h3>
-              <div className="px-2 py-1 border border-neutral-20 bg-white text-xs text-neutral-40 uppercase font-semibold rounded-3xl">
-                {myProfile?.plan} Plan
-              </div>
+          <Button
+            leftIcon={ICONS.editProfile}
+            label="Edit Profile"
+            className="shrink-0"
+          />
+        </div>
+
+        <div className="border-t border-neutral-50/20 my-4" />
+
+        {/* Info Grid with Icons */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+          <div className="bg-white/50 rounded-xl p-3 border border-neutral-20/50">
+            <div className="flex items-center gap-1.5">
+              <FaPhone className="text-primary-10 text-xs" />
+              <p className="text-xs text-neutral-40 font-medium">Phone</p>
             </div>
-            <p className="text-neutral-50 text-sm font-medium">
-              User Id : {myProfile?.userId}
+            <p className="text-sm font-semibold text-neutral-90 mt-0.5 truncate">
+              {myProfile?.phoneNumber || "N/A"}
             </p>
-            <p className="text-neutral-40 text-sm font-medium">
-              {myProfile?.email}
+          </div>
+
+          <div className="bg-white/50 rounded-xl p-3 border border-neutral-20/50">
+            <div className="flex items-center gap-1.5">
+              <FaMapMarkerAlt className="text-primary-10 text-xs" />
+              <p className="text-xs text-neutral-40 font-medium">Address</p>
+            </div>
+            <p className="text-sm font-semibold text-neutral-90 mt-0.5 truncate">
+              {myProfile?.address || "N/A"}
+            </p>
+          </div>
+
+          <div className="bg-white/50 rounded-xl p-3 border border-neutral-20/50">
+            <div className="flex items-center gap-1.5">
+              <FaCity className="text-primary-10 text-xs" />
+              <p className="text-xs text-neutral-40 font-medium">City</p>
+            </div>
+            <p className="text-sm font-semibold text-neutral-90 mt-0.5 truncate">
+              {myProfile?.city || "N/A"}
+            </p>
+          </div>
+
+          <div className="bg-white/50 rounded-xl p-3 border border-neutral-20/50">
+            <div className="flex items-center gap-1.5">
+              <FaMapMarkerAlt className="text-primary-10 text-xs" />
+              <p className="text-xs text-neutral-40 font-medium">State</p>
+            </div>
+            <p className="text-sm font-semibold text-neutral-90 mt-0.5 truncate">
+              {myProfile?.state || "N/A"}
+            </p>
+          </div>
+
+          <div className="bg-white/50 rounded-xl p-3 border border-neutral-20/50">
+            <div className="flex items-center gap-1.5">
+              <FaGlobe className="text-primary-10 text-xs" />
+              <p className="text-xs text-neutral-40 font-medium">Country</p>
+            </div>
+            <p className="text-sm font-semibold text-neutral-90 mt-0.5 truncate">
+              {myProfile?.country || "N/A"}
+            </p>
+          </div>
+
+          <div className="col-span-2 md:col-span-1 bg-linear-to-r from-amber-50 to-yellow-50 rounded-xl p-3 border border-amber-200">
+            <div className="flex items-center gap-1.5">
+              <FaCode className="text-amber-500 text-xs" />
+              <p className="text-xs text-amber-600 font-medium">
+                Referral Code
+              </p>
+            </div>
+            <p className="text-sm font-bold text-amber-700 mt-0.5 font-mono">
+              {myProfile?.referralCode || "N/A"}
+            </p>
+          </div>
+
+          <div className="col-span-2 md:col-span-1 bg-linear-to-r from-blue-50 to-indigo-50 rounded-xl p-3 border border-blue-200">
+            <div className="flex items-center gap-1.5">
+              <FaUsers className="text-blue-500 text-xs" />
+              <p className="text-xs text-blue-600 font-medium">
+                Referral Count
+              </p>
+            </div>
+            <p className="text-sm font-bold text-blue-700 mt-0.5">
+              {myProfile?.referralCount || 0}{" "}
+              {myProfile?.referralCount === 1 ? "Referral" : "Referrals"}
             </p>
           </div>
         </div>
-
-        <Button leftIcon={ICONS.editProfile} label="Edit Profile" />
       </div>
-
       <hr className="border border-neutral-75/60 h-px my-6" />
-
       <div className="flex gap-10">
         <div className="w-[50%] space-y-4">
           <h3 className="text-neutral-90 font-bold">Statistics</h3>
@@ -235,24 +331,20 @@ const MyProfile = () => {
           )}
         </div>
       </div>
-
       <SelectSystemLanguage
         isModalOpen={isTranslateNewsModalOpen}
         setIsModalOpen={setIsTranslateNewsModalOpen}
       />
-
       <CoinUsages
         isModalOpen={isCoinUsageModalOpen}
         setIsModalOpen={setIsCoinUsageModalOpen}
         coinBalance={myProfile?.coins}
       />
-
       <LifetimePremiumMembershipModal />
       <DeleteAccountConfirmation
         isModalOpen={isDeleteAccountConfirmationModalOpen}
         setIsModalOpen={setIsDeleteAccountConfirmationModalOpen}
       />
-
       <DepositCoin
         isModalOpen={isDepositCoinModalOpen}
         setIsModalOpen={setIsDepositCoinModalOpen}

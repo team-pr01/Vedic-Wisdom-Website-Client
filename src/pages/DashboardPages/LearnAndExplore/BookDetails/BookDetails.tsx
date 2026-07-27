@@ -1,6 +1,6 @@
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
-import { ICONS } from "../../../../../assets";
-import Breadcrumb from "../../../../../components/Reusable/Breadcrumb/Breadcrumb";
+import Breadcrumb from "../../../../components/Reusable/Breadcrumb/Breadcrumb";
+import { ICONS } from "../../../../assets";
 
 const BookDetails = () => {
   return (

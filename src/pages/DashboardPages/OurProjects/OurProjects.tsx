@@ -41,7 +41,7 @@ const OurProjects = () => {
           </div>
         </div>
 
-        <Button variant="secondary" label="Your Support Matters"/>
+        <Button variant="secondary" label="Your Support Matters" />
       </div>
     </div>
   );

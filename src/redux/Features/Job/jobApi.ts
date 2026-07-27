@@ -83,7 +83,7 @@ const jobApi = baseApi.injectEndpoints({
           params.append("workMode", workMode.trim());
         }
 
-        // Experience Level - handle array
+        // Experience Level - array
         if (experienceLevel && Array.isArray(experienceLevel) && experienceLevel.length > 0) {
           // Filter out "All" from experience levels
           const filteredExperience = experienceLevel.filter((exp) => !isAll(exp));

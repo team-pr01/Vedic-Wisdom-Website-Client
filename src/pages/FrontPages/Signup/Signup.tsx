@@ -1,6 +1,6 @@
-import AuthHero from "../../components/Reusable/AuthHero/AuthHero";
-import DownloadApp from "../../components/Shared/DownloadApp/DownloadApp";
-import CreateAccount from "../../components/SignupPage/CreateAccount/CreateAccount";
+import AuthHero from "../../../components/Reusable/AuthHero/AuthHero";
+import DownloadApp from "../../../components/Shared/DownloadApp/DownloadApp";
+import CreateAccount from "../../../components/SignupPage/CreateAccount/CreateAccount";
 
 const Signup = () => {
   return (

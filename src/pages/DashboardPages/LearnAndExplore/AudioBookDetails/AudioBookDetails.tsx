@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
-import Breadcrumb from "../../../../../components/Reusable/Breadcrumb/Breadcrumb";
 import { Link, useParams } from "react-router-dom";
-import { useGetAllAudioTrackByBookIdQuery } from "../../../../../redux/Features/AudioBook/audioTrackApi";
-import AudioPlayer from "../../../../../components/Dashboard/LearnAndExplorePages/AudioBookPage/AudioBookDetailsPage/AudioPlayer/AudioPlayer";
-import AudioTrackCard from "../../../../../components/Dashboard/LearnAndExplorePages/AudioBookPage/AudioBookDetailsPage/AudioTrackCard/AudioTrackCard";
-import type { TAudioTrack } from "../../../../../types/audioTrack.type";
-import Button from "../../../../../components/Reusable/Button/Button";
-import { ICONS } from "../../../../../assets";
-import PurchaseAudioBookModal from "../../../../../components/Dashboard/LearnAndExplorePages/AudioBookPage/AudioBookDetailsPage/PurchaseAudioBookModal/PurchaseAudioBookModal";
-import { useCheckOwnershipQuery } from "../../../../../redux/Features/AudioBook/audioBookPurchaseApi";
+import PurchaseAudioBookModal from "../../../../components/Dashboard/LearnAndExplorePages/AudioBookPage/AudioBookDetailsPage/PurchaseAudioBookModal/PurchaseAudioBookModal";
+import { useGetAllAudioTrackByBookIdQuery } from "../../../../redux/Features/AudioBook/audioTrackApi";
+import { useCheckOwnershipQuery } from "../../../../redux/Features/AudioBook/audioBookPurchaseApi";
+import Breadcrumb from "../../../../components/Reusable/Breadcrumb/Breadcrumb";
+import Button from "../../../../components/Reusable/Button/Button";
+import { ICONS } from "../../../../assets";
+import type { TAudioTrack } from "../../../../types/audioTrack.type";
+import AudioTrackCard from "../../../../components/Dashboard/LearnAndExplorePages/AudioBookPage/AudioBookDetailsPage/AudioTrackCard/AudioTrackCard";
+import AudioPlayer from "../../../../components/Dashboard/LearnAndExplorePages/AudioBookPage/AudioBookDetailsPage/AudioPlayer/AudioPlayer";
 
 const AudioBookDetails = () => {
   const { id } = useParams();
@@ -125,7 +125,7 @@ const AudioBookDetails = () => {
           </div>
         </div>
 
-        {/* --- RIGHT: THE PLAYER --- */}
+        {/* --- RIGHT SIDE: THE PLAYER --- */}
         <AudioPlayer
           activeTrack={activeTrack as any}
           onNext={handleNext}

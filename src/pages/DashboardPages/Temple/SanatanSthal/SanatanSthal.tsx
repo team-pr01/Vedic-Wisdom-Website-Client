@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import Filters from "../../../components/Dashboard/SanathanSthalPage/Filters/Filters";
-import DashboardHeading from "../../../components/Reusable/DashboardHeading/DashboardHeading";
 import { IoSearchOutline } from "react-icons/io5";
-import TempleCard from "../../../components/Dashboard/SanathanSthalPage/TempleCard/TempleCard";
-import Button from "../../../components/Reusable/Button/Button";
 import { Link } from "react-router-dom";
-import { useGetAllTempleQuery } from "../../../redux/Features/Temple/templeApi";
-import type { TTemple } from "../../../types/temple.type";
-import EmptyState from "../../../components/Reusable/EmptyState/EmptyState";
-import VastuShastraVideoCardSkeleton from "../../../components/SkeletonLoaders/VastuShastraVideoCardSkeleton/VastuShastraVideoCardSkeleton";
+import { useGetAllTempleQuery } from "../../../../redux/Features/Temple/templeApi";
+import DashboardHeading from "../../../../components/Reusable/DashboardHeading/DashboardHeading";
+import Button from "../../../../components/Reusable/Button/Button";
+import Filters from "../../../../components/Dashboard/SanathanSthalPage/Filters/Filters";
+import VastuShastraVideoCardSkeleton from "../../../../components/SkeletonLoaders/VastuShastraVideoCardSkeleton/VastuShastraVideoCardSkeleton";
+import TempleCard from "../../../../components/Dashboard/SanathanSthalPage/TempleCard/TempleCard";
+import type { TTemple } from "../../../../types/temple.type";
+import EmptyState from "../../../../components/Reusable/EmptyState/EmptyState";
 
 const SanatanSthal = () => {
   const [keyword, setKeyword] = useState<string>("");

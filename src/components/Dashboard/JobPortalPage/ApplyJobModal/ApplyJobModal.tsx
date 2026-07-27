@@ -1,48 +1,63 @@
-import { useState } from "react";
-import {
-  FaBriefcase,
-  FaDollarSign,
-  FaClock,
-  FaCalendarAlt,
-  FaUsers,
-  FaBuilding,
-} from "react-icons/fa";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Modal from "../../../Reusable/Modal/Modal";
 import Button from "../../../Reusable/Button/Button";
 import { ICONS, IMAGES } from "../../../../assets";
-import JobApplyForm from "./JobApplyForm/JobApplyForm";
+import { useForm } from "react-hook-form";
+import TextInput from "../../../Reusable/TextInput/TextInput";
+import Textarea from "../../../Reusable/TextArea/TextArea";
+import { useApplyOnJobMutation } from "../../../../redux/Features/Job/jobApplicationApi";
+import toast from "react-hot-toast";
+
+type TFormData = {
+  jobId: string;
+  resume: string;
+  noteFromApplicant: string;
+  termsAccepted: boolean;
+};
 
 interface ApplyJobModalProps {
   isModalOpen: boolean;
   setIsModalOpen: (open: boolean) => void;
+  jobId: string;
 }
 
-const ApplyJobModal = ({ isModalOpen, setIsModalOpen }: ApplyJobModalProps) => {
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+const ApplyJobModal = ({
+  isModalOpen,
+  setIsModalOpen,
+  jobId,
+}: ApplyJobModalProps) => {
+  const [applyOnJob, { isLoading, isSuccess }] = useApplyOnJobMutation();
 
-  // Job Data
-  const jobData = {
-    title: "Senior UI/UX Designer",
-    company: "Google",
-    location: "Bangladeshi",
-    flag: "🇬🇧",
-    salary: "$80k - $100k",
-    type: "Full-Time",
-    workExperience: "Remote",
-    level: "3-5 Years Exp",
-    deadline: "30 June 2026",
-    vacancies: "3 Candidates",
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm<TFormData>();
+
+  const handleApplyOnJob = async (data: TFormData) => {
+    try {
+      const payload = {
+        jobId,
+        resume: data.resume,
+        noteFromApplicant: data.noteFromApplicant,
+      };
+
+      const response = await applyOnJob(payload).unwrap();
+      if (response?.success) {
+        reset();
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Failed to apply on job");
+    }
   };
 
   const handleClose = () => {
     setIsModalOpen(false);
-    setTimeout(() => {
-      setIsSubmitted(false);
-    }, 300);
   };
 
   // Success Content
-  if (isSubmitted) {
+  if (isSuccess) {
     return (
       <Modal isModalOpen={isModalOpen} setIsModalOpen={handleClose}>
         <div className="flex flex-col items-center text-center py-3">
@@ -51,8 +66,7 @@ const ApplyJobModal = ({ isModalOpen, setIsModalOpen }: ApplyJobModalProps) => {
             Application Submitted
           </h2>
           <p className="text-sm text-neutral-50 font-medium mt-2 max-w-sm">
-            Your application is under admin review. You will be notified once
-            approved.
+            We have received your application. Stay tuned for further updates.
           </p>
           <Button label="Close" className="mt-6 px-8" onClick={handleClose} />
         </div>
@@ -62,96 +76,69 @@ const ApplyJobModal = ({ isModalOpen, setIsModalOpen }: ApplyJobModalProps) => {
 
   return (
     <Modal
-      width="w-[90%] sm:w-[95%] lg:w-[90%] xl:w-[80%] 2xl:w-[60%]"
+      width="w-[90%] sm:w-[60%] lg:w-[40%] xl:w-[40%] 2xl:w-[30%]"
       isModalOpen={isModalOpen}
       setIsModalOpen={handleClose}
     >
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-        {/* Left Side - Job Info */}
-        <div className="lg:col-span-2 bg-neutral-10/5 rounded-2xl p-6 border border-neutral-20 flex flex-col justify-between">
-          <div>
-            {/* Job Header */}
-            <div className="mb-6 text-center flex flex-col items-center">
-              <h2 className="text-xl font-bold text-neutral-90">
-                {jobData.title}
-              </h2>
-              <div className="flex items-center gap-1 text-sm">
-                <p className="text-neutral-10">google</p>
-                <img src={ICONS.checkMark} alt="" className="size-4" />
-              </div>
-              <div className="flex items-center gap-1 text-xs mt-2">
-                <img src={ICONS.location} alt="" className="size-4" />
-                <p className="text-neutral-50">Bangladesh</p>
-              </div>
-            </div>
-
-            {/* Job Details */}
-            <div className="space-y-4">
-              {[
-                {
-                  id: 1,
-                  icon: <FaDollarSign className="text-primary-10" />,
-                  label: "Salary (Monthly)",
-                  value: jobData.salary,
-                },
-                {
-                  id: 2,
-                  icon: <FaBriefcase className="text-primary-10" />,
-                  label: "Job Type",
-                  value: jobData.type,
-                },
-                {
-                  id: 3,
-                  icon: <FaBuilding className="text-primary-10" />,
-                  label: "Work Experience",
-                  value: jobData.workExperience,
-                },
-                {
-                  id: 4,
-                  icon: <FaClock className="text-primary-10" />,
-                  label: "Level",
-                  value: jobData.level,
-                },
-                {
-                  id: 5,
-                  icon: <FaCalendarAlt className="text-primary-10" />,
-                  label: "Deadline",
-                  value: jobData.deadline,
-                },
-                {
-                  id: 6,
-                  icon: <FaUsers className="text-primary-10" />,
-                  label: "Vacancies",
-                  value: jobData.vacancies,
-                },
-              ].map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-center gap-3 bg-white border border-neutral-55 p-2 rounded-lg"
-                >
-                  <div className="p-2 bg-primary-10/10 rounded-lg">
-                    {item.icon}
-                  </div>
-                  <div>
-                    <p className="text-xs text-neutral-40">{item.label}</p>
-                    <p className="font-semibold text-neutral-90">
-                      {item.value}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <p className="text-sm text-neutral-10 text-center">
-            Your information will be kept private.
+      <div>
+        <div className="mb-6">
+          <h2 className="text-neutral-90 text-xl font-bold">
+            Apply for this Job
+          </h2>
+          <p className="text-sm text-neutral-60 mt-1">
+            Please fill in the details below to submit your application.
           </p>
         </div>
 
-        {/* Right Side - Application Form */}
-        <div className="lg:col-span-3 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
-          <JobApplyForm setIsSubmitted={setIsSubmitted} />
-        </div>
+        <form onSubmit={handleSubmit(handleApplyOnJob)} className="space-y-4">
+          {/* Resume URL */}
+          <TextInput
+            label="CV/Resume Link"
+            placeholder="Paste google drive or other link"
+            error={errors.resume}
+            {...register("resume")}
+          />
+
+          <Textarea
+            label="Additional Information (Optional)"
+            placeholder="Write a short message to the employer..."
+            error={errors.noteFromApplicant}
+            {...register("noteFromApplicant")}
+            isRequired={false}
+          />
+
+          {/* Terms */}
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="terms"
+              className="w-4 h-4 accent-primary-10 cursor-pointer"
+              {...register("termsAccepted", {
+                required: "You must agree to the terms",
+              })}
+            />
+            <label
+              htmlFor="terms"
+              className="text-sm text-neutral-60 cursor-pointer"
+            >
+              I declare that this information is accurate.
+            </label>
+          </div>
+          {errors.termsAccepted && (
+            <span className="text-red-500 text-sm -mt-2 block">
+              {errors.termsAccepted.message}
+            </span>
+          )}
+
+          {/* Submit Button */}
+          <Button
+            type="submit"
+            label={isLoading ? "Submitting..." : "Submit Application"}
+            className="w-full mt-2"
+            rightIcon={!isLoading && ICONS.arrowRight}
+            isDisabled={isLoading}
+          />
+        </form>
       </div>
     </Modal>
   );

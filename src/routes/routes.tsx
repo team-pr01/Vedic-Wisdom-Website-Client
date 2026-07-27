@@ -1,9 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout/MainLayout";
-import NotFound from "../pages/NotFound/NotFound";
-import Home from "../pages/Home/Home";
-import Signup from "../pages/Signup/Signup";
-import Login from "../pages/Login/Login";
+import NotFound from "../pages/FrontPages/NotFound/NotFound";
+import Signup from "../pages/FrontPages/Signup/Signup";
 import DashboardLayout from "../layouts/DashboardLayout/DashboardLayout";
 import DashboardHome from "../pages/DashboardPages/DashboardHome/DashboardHome";
 import MyProfile from "../pages/DashboardPages/MyProfile/MyProfile";
@@ -11,9 +9,7 @@ import Help from "../pages/DashboardPages/Help/Help";
 import Food from "../pages/DashboardPages/Food/Food";
 import VastuShastra from "../pages/DashboardPages/VastuShastra/VastuShastra";
 import OurProjects from "../pages/DashboardPages/OurProjects/OurProjects";
-import ProjectDetails from "../pages/DashboardPages/OurProjects/ProjectDetails";
-import SanatanSthal from "../pages/DashboardPages/SanatanSthal/SanatanSthal";
-import SanatanSthalDetails from "../pages/DashboardPages/SanatanSthal/SanatanSthalDetails/SanatanSthalDetails";
+import ProjectDetails from "../pages/DashboardPages/ProjectDetails/ProjectDetails";
 import Ayurveda from "../pages/DashboardPages/Ayurveda/Ayurveda";
 import Astrology from "../pages/DashboardPages/Astrology/Astrology";
 import Consultancy from "../pages/DashboardPages/Consultancy/Consultancy";
@@ -21,9 +17,7 @@ import Course from "../pages/DashboardPages/LearnAndExplore/Course/Course";
 import VedicShop from "../pages/DashboardPages/VedicShop/VedicShop";
 import ProductDetails from "../pages/DashboardPages/VedicShop/ProductDetails/ProductDetails";
 import BecomeAVendor from "../pages/DashboardPages/VedicShop/BecomeAVendor/BecomeAVendor";
-import AddTemple from "../pages/DashboardPages/SanatanSthal/AddTemple/AddTemple";
 import Book from "../pages/DashboardPages/LearnAndExplore/Book/Book";
-import BookDetails from "../pages/DashboardPages/LearnAndExplore/Book/BookDetails/BookDetails";
 import VendorDashboard from "../pages/DashboardPages/VedicShop/VendorDashboard/VendorDashboard";
 import AddProduct from "../pages/DashboardPages/VedicShop/AddProduct/AddProduct";
 import AiChatbot from "../pages/DashboardPages/AiChatbot/AiChatbot";
@@ -37,10 +31,16 @@ import JobDetails from "../pages/DashboardPages/JobPortal/JobDetails/JobDetails"
 import EmployerDashboard from "../pages/DashboardPages/JobPortal/Employer/EmployerDashboard/EmployerDashboard";
 import AllApplications from "../pages/DashboardPages/JobPortal/Employer/AllApplications/AllApplications";
 import AudioBook from "../pages/DashboardPages/LearnAndExplore/AudioBook/AudioBook";
-import AudioBookDetails from "../pages/DashboardPages/LearnAndExplore/AudioBook/AudioBookDetails/AudioBookDetails";
 import PaymentFailed from "../pages/DashboardPages/PaymentFailed/PaymentFailed";
 import PaymentSuccess from "../pages/DashboardPages/PaymentSuccess/PaymentSuccess";
 import MyLibrary from "../pages/DashboardPages/MyProfile/MyLibrary/MyLibrary";
+import AudioBookDetails from "../pages/DashboardPages/LearnAndExplore/AudioBookDetails/AudioBookDetails";
+import Home from "../pages/FrontPages/Home/Home";
+import Login from "../pages/FrontPages/Login/Login";
+import SanatanSthal from "../pages/DashboardPages/Temple/SanatanSthal/SanatanSthal";
+import SanatanSthalDetails from "../pages/DashboardPages/Temple/SanatanSthalDetails/SanatanSthalDetails";
+import AddTemple from "../pages/DashboardPages/Temple/AddTemple/AddTemple";
+import BookDetails from "../pages/DashboardPages/LearnAndExplore/BookDetails/BookDetails";
 
 export const router = createBrowserRouter([
   {
