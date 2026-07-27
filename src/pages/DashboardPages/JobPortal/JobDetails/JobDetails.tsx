@@ -89,7 +89,7 @@ const JobDetails = () => {
   };
 
   const isApplied = job?.applications?.some(
-    (application) => application === user?._id,
+    (application:string) => application === user?._id,
   );
 
   if (isLoading) return <LogoLoader />;

@@ -41,6 +41,7 @@ import SanatanSthal from "../pages/DashboardPages/Temple/SanatanSthal/SanatanSth
 import SanatanSthalDetails from "../pages/DashboardPages/Temple/SanatanSthalDetails/SanatanSthalDetails";
 import AddTemple from "../pages/DashboardPages/Temple/AddTemple/AddTemple";
 import BookDetails from "../pages/DashboardPages/LearnAndExplore/BookDetails/BookDetails";
+import MyApplications from "../pages/DashboardPages/JobPortal/MyApplications/MyApplications";
 
 export const router = createBrowserRouter([
   {
@@ -202,6 +203,10 @@ export const router = createBrowserRouter([
       {
         path: "job/:id",
         element: <JobDetails />,
+      },
+      {
+        path: "my-applications",
+        element: <MyApplications />,
       },
       {
         path: "job-portal/employer",
