@@ -107,7 +107,7 @@ const jobApi = baseApi.injectEndpoints({
           credentials: "include",
         };
       },
-      providesTags: ["job"],
+      providesTags: ["job", "application"],
     }),
 
     getSingleJobById: builder.query({
@@ -116,7 +116,7 @@ const jobApi = baseApi.injectEndpoints({
         method: "GET",
         credentials: "include",
       }),
-      providesTags: ["job"],
+      providesTags: ["job", "application"],
     }),
   }),
 });

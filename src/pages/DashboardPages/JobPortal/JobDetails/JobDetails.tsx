@@ -13,8 +13,14 @@ import { Link, useParams } from "react-router-dom";
 import { useGetSingleJobByIdQuery } from "../../../../redux/Features/Job/jobApi";
 import toast from "react-hot-toast";
 import LogoLoader from "../../../../components/Shared/LogoLoader/LogoLoader";
+import { useSelector } from "react-redux";
+import {
+  useCurrentUser,
+  type TLoggedInUser,
+} from "../../../../redux/Features/Auth/authSlice";
 
 const JobDetails = () => {
+  const user = useSelector(useCurrentUser) as TLoggedInUser;
   const { id } = useParams();
   const { data, isLoading } = useGetSingleJobByIdQuery(id);
   const job = data?.data || {};
@@ -82,6 +88,10 @@ const JobDetails = () => {
     }
   };
 
+  const isApplied = job?.applications?.some(
+    (application) => application === user?._id,
+  );
+
   if (isLoading) return <LogoLoader />;
 
   return (
@@ -112,9 +122,10 @@ const JobDetails = () => {
           />
           <Button
             onClick={() => setIsApplyJobModalOpen(true)}
-            label="Apply Now"
+            label={isApplied ? "Applied" : "Apply Now"}
             rightIcon={ICONS.arrowRight}
             className="px-4 py-2 text-sm"
+            isDisabled={isApplied}
           />
         </div>
       </div>

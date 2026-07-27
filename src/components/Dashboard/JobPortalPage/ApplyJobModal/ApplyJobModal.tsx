@@ -96,7 +96,9 @@ const ApplyJobModal = ({
             label="CV/Resume Link"
             placeholder="Paste google drive or other link"
             error={errors.resume}
-            {...register("resume")}
+            {...register("resume", {
+              required: "CV/Resume link is required",
+            })}
           />
 
           <Textarea
@@ -137,6 +139,7 @@ const ApplyJobModal = ({
             className="w-full mt-2"
             rightIcon={!isLoading && ICONS.arrowRight}
             isDisabled={isLoading}
+            isLoading={isLoading}
           />
         </form>
       </div>

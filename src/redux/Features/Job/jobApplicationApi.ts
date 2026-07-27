@@ -44,7 +44,7 @@ const jobApplicationApi = baseApi.injectEndpoints({
                     credentials: "include",
                 };
             },
-            providesTags: ["food"],
+            providesTags: ["job", "application"],
         }),
 
         applyOnJob: builder.mutation<any, any>({
@@ -54,7 +54,7 @@ const jobApplicationApi = baseApi.injectEndpoints({
                 body: data,
                 credentials: "include",
             }),
-            invalidatesTags: ["application"],
+            invalidatesTags: ["job", "application"],
         }),
     }),
 });
