@@ -6,7 +6,10 @@ import toast from "react-hot-toast";
 import ApplyJobModal from "../ApplyJobModal/ApplyJobModal";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { useCurrentUser, type TLoggedInUser } from "../../../../redux/Features/Auth/authSlice";
+import {
+  useCurrentUser,
+  type TLoggedInUser,
+} from "../../../../redux/Features/Auth/authSlice";
 
 const JobCard = ({ job }: { job: TJob }) => {
   const user = useSelector(useCurrentUser) as TLoggedInUser;
@@ -79,7 +82,7 @@ const JobCard = ({ job }: { job: TJob }) => {
       <div className="bg-white rounded-xl border border-primary-80 p-3 xl:p-4 flex flex-col gap-4 relative">
         <div className="flex items-center gap-3">
           <div className="size-12.5 bg-neutral-30 border border-neutral-86 rounded-md flex items-center justify-center overflow-hidden">
-            {job?.hiringType === "company" && job?.company?.logo ? (
+            {job?.company?.logo ? (
               <img
                 src={job?.company?.logo}
                 alt={job?.company?.name}
@@ -87,9 +90,7 @@ const JobCard = ({ job }: { job: TJob }) => {
               />
             ) : (
               <span className="text-neutral-90 font-bold text-lg">
-                {job?.hiringType === "company"
-                  ? getInitials(job?.company?.name)
-                  : getInitials(job?.individual?.fullName)}
+                {getInitials(job?.company?.name)}
               </span>
             )}
           </div>
@@ -97,11 +98,7 @@ const JobCard = ({ job }: { job: TJob }) => {
           <div>
             <h5 className="text-neutral-90 text-lg font-bold">{job?.title}</h5>
             <div className="flex items-center gap-1">
-              <p className="text-neutral-50">
-                {job?.hiringType === "individual"
-                  ? job?.individual?.fullName
-                  : job?.company?.name}
-              </p>
+              <p className="text-neutral-50">{job?.company?.name}</p>
               <img src={ICONS.checkMark} alt="" className="size-4 mt-1" />
             </div>
           </div>

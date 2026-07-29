@@ -26,48 +26,6 @@ const JobDetails = () => {
   const job = data?.data || {};
   const [isApplyJobModalOpen, setIsApplyJobModalOpen] =
     useState<boolean>(false);
-  // Sample job data
-  const jobData = {
-    title: "Senior UI/UX Designer",
-    company: "Google",
-    location: "Bangladesh",
-    type: "Full-Time",
-    salary: "$80,000 - $120,000",
-    postedDate: "2 days ago",
-    description:
-      "We are looking for a creative and detail-oriented designer to join our team. You will work closely with product managers and developers to create intuitive and engaging user experiences.",
-    skills: [
-      "UI Design",
-      "Figma",
-      "UX Design",
-      "Prototyping",
-      "User Testing",
-      "UX Research",
-    ],
-    qualifications: [
-      "Bachelor's degree in Design, HCI, or a related field.",
-      "Proficiency in design tools such as Figma, Sketch, or Adobe Creative Suite.",
-      "5+ years of experience in UI/UX design.",
-      "Strong portfolio demonstrating design thinking.",
-    ],
-    responsibilities: [
-      "Design intuitive user interfaces",
-      "Create wireframes and prototypes",
-      "Conduct user research and usability testing",
-      "Improve usability and accessibility",
-      "Collaborate with cross-functional teams",
-    ],
-    companyInfo: {
-      name: "Google",
-      industry: "Technology, Information & Internet",
-      size: "10,000+ Employees",
-      founded: "1998",
-      headquarters: "California, USA",
-      website: "www.google.com",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent urna etiam laoreet pharetra arcu lacus. Ac amet tellus turpis quis porttitor vulputate nisl integer in.",
-    },
-  };
 
   const handleShare = async () => {
     try {
@@ -141,10 +99,10 @@ const JobDetails = () => {
           <JobDescription description={job?.description} />
 
           {/* Required Skills */}
-          <RequiredSkills skills={job?.requiredSkills} />
+          <RequiredSkills requiredSkills={job?.requiredSkills} />
 
           {/* Qualifications */}
-          <RequiredQualifications qualifications={jobData.qualifications} />
+          <RequiredQualifications qualifications={job?.qualifications} />
 
           {/* Responsibilities */}
           <JobResponsibilities responsibilities={job?.responsibilities} />
@@ -152,35 +110,16 @@ const JobDetails = () => {
           {/* Company Info (Mobile) */}
           <div className="lg:hidden">
             <CompanyInformation
-              hiringType={job?.hiringType}
-              companyInfo={job?.hiringType === "company" ? job?.company : null}
-              individualInfo={
-                job?.hiringType === "individual" ? job?.individual : null
-              }
+              companyInfo={job?.company}
             />
           </div>
         </div>
 
         {/* Right Column - Sidebar */}
-        <div className="w-full lg:w-[35%] space-y-6">
-          {/* Company Info (Desktop) */}
-          <div className="hidden lg:block">
-            <CompanyInformation
-              hiringType={job?.hiringType}
-              companyInfo={job?.hiringType === "company" ? job?.company : null}
-              individualInfo={
-                job?.hiringType === "individual" ? job?.individual : null
-              }
+        <div className="w-full lg:w-[35%] space-y-6 hidden lg:block">
+         <CompanyInformation
+              companyInfo={job?.company}
             />
-          </div>
-
-          {/* Job Sidebar */}
-          {/* <JobSidebar
-            type={jobData.type}
-            salary={jobData.salary}
-            postedDate={jobData.postedDate}
-            onApply={handleApply}
-          /> */}
         </div>
       </div>
 

@@ -7,6 +7,7 @@ import TextInput from "../../../Reusable/TextInput/TextInput";
 import Textarea from "../../../Reusable/TextArea/TextArea";
 import { useApplyOnJobMutation } from "../../../../redux/Features/Job/jobApplicationApi";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 type TFormData = {
   jobId: string;
@@ -68,7 +69,9 @@ const ApplyJobModal = ({
           <p className="text-sm text-neutral-50 font-medium mt-2 max-w-sm">
             We have received your application. Stay tuned for further updates.
           </p>
-          <Button label="Close" className="mt-6 px-8" onClick={handleClose} />
+          <Link to="/dashboard/my-applications">
+            <Button label="Vew Applications" className="mt-6 px-8" onClick={handleClose} />
+          </Link>
         </div>
       </Modal>
     );

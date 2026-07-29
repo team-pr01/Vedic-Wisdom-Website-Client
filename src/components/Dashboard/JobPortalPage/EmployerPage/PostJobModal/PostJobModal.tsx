@@ -19,7 +19,11 @@ export interface CompanyInfo {
   companyAddress: string;
   contactNumber: string;
   officialEmail: string;
-  tradeLicense: File | null;
+  website?: string;
+  facebook?: string;
+  instagram?: string;
+  linkedin?: string;
+  companyLogo: File | null;
 }
 
 export interface JobDetails {
@@ -28,6 +32,8 @@ export interface JobDetails {
   jobType: string;
   mode: string;
   country: string;
+  state: string;
+  city: string;
   area: string;
   educationLevel: string;
   minSalary: string;
@@ -37,25 +43,20 @@ export interface JobDetails {
   requiredSkills: string;
   applicationDeadline: string;
   vacancies: string;
-  requiredCertifications: string;
   termsAccepted: boolean;
 }
 
 export type FormData = CompanyInfo & JobDetails;
 
 const PostJobModal = ({ isModalOpen, setIsModalOpen }: PostJobModalProps) => {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [hiringType, setHiringType] = useState<"company" | "individual">(
-    "company",
-  );
+  const [currentStep, setCurrentStep] = useState(2);
+  const [companyLogo, setCompanyLogo] = useState<File | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const [country, setCountry] = useState<any>(null);
   const [state, setState] = useState<any>(null);
   const [city, setCity] = useState<any>(null);
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
-
-  const [tradeLicense, setTradeLicense] = useState<File | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     register,
@@ -64,6 +65,7 @@ const PostJobModal = ({ isModalOpen, setIsModalOpen }: PostJobModalProps) => {
     trigger,
     watch,
     setValue,
+    reset,
   } = useForm<FormData>({
     defaultValues: {
       hiringType: "company",
@@ -76,33 +78,29 @@ const PostJobModal = ({ isModalOpen, setIsModalOpen }: PostJobModalProps) => {
     },
   });
 
-  const totalSteps = 3;
+  const totalSteps = 2;
 
   const steps = [
     { number: 1, label: "Company Info" },
     { number: 2, label: "Job Details" },
   ];
 
-  const nextStep = async () => {
-    let isValid = false;
-
-    switch (currentStep) {
+  // Validate current step before proceeding
+  const validateStep = async (step: number): Promise<boolean> => {
+    switch (step) {
       case 1:
-        isValid = await trigger([
+        return await trigger([
           "companyName",
           "companyAddress",
           "contactNumber",
           "officialEmail",
         ]);
-        break;
       case 2:
-        isValid = await trigger([
+        return await trigger([
           "jobTitle",
           "paidType",
           "jobType",
           "mode",
-          "country",
-          "area",
           "minSalary",
           "maxSalary",
           "experienceLevel",
@@ -112,37 +110,54 @@ const PostJobModal = ({ isModalOpen, setIsModalOpen }: PostJobModalProps) => {
           "vacancies",
           "termsAccepted",
         ]);
-        break;
       default:
-        isValid = true;
+        return true;
     }
+  };
 
-    if (isValid && currentStep < totalSteps) {
+  const handleNextStep = async () => {
+    const isValid = await validateStep(currentStep);
+    if (isValid) {
       setCurrentStep(currentStep + 1);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
-  const prevStep = () => {
+  const handlePrevStep = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      console.log("Form Data:", { ...data, tradeLicense });
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      console.log("Form Data:", { ...data, companyLogo });
+      setIsSubmitted(true);
+      reset();
+      setCompanyLogo(null);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    } finally {
       setIsSubmitting(false);
-      setCurrentStep(3);
-    }, 1500);
+    }
   };
 
+  const handleClose = () => {
+    setIsModalOpen(false);
+    setTimeout(() => {
+      setIsSubmitted(false);
+      setCurrentStep(1);
+    }, 300);
+  };
+
+  // Success Content
   if (isSubmitted) {
     return (
-      <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
+      <Modal isModalOpen={isModalOpen} setIsModalOpen={handleClose}>
         <SuccessStep />
       </Modal>
     );
@@ -157,16 +172,14 @@ const PostJobModal = ({ isModalOpen, setIsModalOpen }: PostJobModalProps) => {
             errors={errors}
             watch={watch}
             setValue={setValue}
-            hiringType={hiringType}
-            setHiringType={setHiringType}
-            tradeLicense={tradeLicense}
-            setTradeLicense={setTradeLicense}
+            companyLogo={companyLogo}
+            setCompanyLogo={setCompanyLogo}
             handleFileUpload={(e) => {
               if (e.target.files && e.target.files[0]) {
-                setTradeLicense(e.target.files[0]);
+                setCompanyLogo(e.target.files[0]);
               }
             }}
-            removeFile={() => setTradeLicense(null)}
+            removeFile={() => setCompanyLogo(null)}
           />
         );
       case 2:
@@ -175,12 +188,13 @@ const PostJobModal = ({ isModalOpen, setIsModalOpen }: PostJobModalProps) => {
             register={register}
             errors={errors}
             watch={watch}
-            country={country}
+            setValue={setValue}
             setCountry={setCountry}
-            state={state}
             setState={setState}
-            city={city}
             setCity={setCity}
+            country={country}
+            state={state}
+            city={city}
           />
         );
       default:
@@ -192,9 +206,9 @@ const PostJobModal = ({ isModalOpen, setIsModalOpen }: PostJobModalProps) => {
     <Modal
       width="w-[90%] lg:w-[80%] xl:w-[60%] 2xl:w-[40%]"
       isModalOpen={isModalOpen}
-      setIsModalOpen={setIsModalOpen}
+      setIsModalOpen={handleClose}
     >
-      <div>
+      <div className="max-h-[80vh] overflow-y-auto custom-scrollbar">
         {/* Progress Steps */}
         <div className="flex items-center justify-center gap-5 mt-7 mb-6">
           {steps.map((step, index) => (
@@ -236,25 +250,35 @@ const PostJobModal = ({ isModalOpen, setIsModalOpen }: PostJobModalProps) => {
           {renderStep()}
 
           {/* Navigation Buttons */}
-          {currentStep !== 3 && (
-            <div className="flex items-center justify-end gap-3 mt-6 pt-4 border-t border-neutral-20">
-              <Button
-                type="button"
-                label="Previous"
-                variant="secondary"
-                onClick={prevStep}
-                className={`px-6 ${currentStep === 1 ? "invisible" : ""}`}
-              />
-              <Button
-                type={currentStep === 2 ? "submit" : "button"}
-                label={currentStep === 2 ? "Submit Job" : "Next"}
-                className="px-6"
-                onClick={currentStep === 1 ? nextStep : undefined}
-                rightIcon={ICONS.arrowRight}
-                isDisabled={isSubmitting}
-              />
+          <div className="flex items-center justify-between mt-6 pt-4 border-t border-neutral-20">
+            <Button
+              type="button"
+              label="Previous"
+              variant="secondary"
+              onClick={handlePrevStep}
+              className={`px-6 ${currentStep === 1 ? "invisible" : ""}`}
+              leftIcon={ICONS.arrowLeft}
+            />
+            <div className="flex gap-3">
+              {currentStep === totalSteps ? (
+                <Button
+                  type="submit"
+                  label={isSubmitting ? "Submitting..." : "Submit Job"}
+                  className="px-8"
+                  rightIcon={!isSubmitting && ICONS.arrowRight}
+                  isDisabled={isSubmitting}
+                />
+              ) : (
+                <Button
+                  type="button"
+                  label="Next"
+                  className="px-8"
+                  onClick={handleNextStep}
+                  rightIcon={ICONS.arrowRight}
+                />
+              )}
             </div>
-          )}
+          </div>
         </form>
       </div>
     </Modal>

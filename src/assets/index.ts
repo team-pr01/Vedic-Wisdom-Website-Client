@@ -114,6 +114,11 @@ import experience from "./icons/experience.svg";
 import company from "./icons/company.svg";
 import premiumCircle from "./icons/premium-circle.svg";
 import coin from "./icons/coin.svg";
+import file from "./icons/file.svg";
+import dislike from "./icons/dislike.svg";
+import like from "./icons/like.svg";
+import resetGray from "./icons/reset-gray.svg";
+import copy from "./icons/copy.svg";
 
 export const IMAGES = {
     logo,
@@ -232,4 +237,9 @@ export const ICONS = {
     company,
     premiumCircle,
     coin,
+    file,
+    dislike,
+    like,
+    resetGray,
+    copy
 };

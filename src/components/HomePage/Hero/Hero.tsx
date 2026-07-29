@@ -21,7 +21,7 @@ const Hero = () => {
           </p>
 
           <div className="flex items-center gap-6 mt-5">
-            <Link to="/signin">
+            <Link to="/dashboard">
               <Button
                 label="Explore Features"
                 variant="secondary"

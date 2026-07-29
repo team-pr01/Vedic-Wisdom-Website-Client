@@ -92,6 +92,11 @@ const MyProfile = () => {
       icon: ICONS.subscriptionPlans,
     },
     {
+      label: "My Applications (Job)",
+      link: "/dashboard/my-applications",
+      icon: ICONS.file,
+    },
+    {
       label: "Privacy Policy",
       path: "/privacy-policy",
       icon: ICONS.privacyPolicy,

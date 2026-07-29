@@ -1,103 +1,92 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   FaBuilding,
-  FaUser,
   FaPhone,
   FaEnvelope,
   FaMapMarkerAlt,
   FaGlobe,
-  FaFileAlt,
 } from "react-icons/fa";
 import { MdVerified } from "react-icons/md";
 
-interface CompanyInformationProps {
-  hiringType: "company" | "individual";
-  companyInfo?: {
+type TCompanyInformationProps = {
+  companyInfo: {
     name: string;
     logo?: string;
+
     location: {
       city: string;
       state: string;
       country: string;
     };
+
     description?: string;
+
     phoneNumber: string;
     email: string;
     website?: string;
+
     socialMedia?: {
       facebook?: string;
       instagram?: string;
       linkedin?: string;
     };
-    tradeLicense?: string;
   };
-  individualInfo?: {
-    fullName: string;
-    phoneNumber: string;
-    email: string;
-    address: string;
-    identityNumber?: string;
-    identityDocument?: string;
-  };
-}
+};
 
-const CompanyInformation: React.FC<CompanyInformationProps> = ({
-  hiringType,
+const CompanyInformation: React.FC<TCompanyInformationProps> = ({
   companyInfo,
-  individualInfo,
 }) => {
-  // Render Individual Info
-  if (hiringType === "individual") {
-    return (
-      <div className="bg-white border border-neutral-55 rounded-2xl p-6">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-12 h-12 rounded-xl bg-primary-10/10 flex items-center justify-center">
-            <FaUser className="text-primary-10 text-xl" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-lg font-bold text-neutral-90">
-                {individualInfo?.fullName}
-              </h3>
-              <MdVerified className="text-primary-10" />
-            </div>
-            <p className="text-sm text-neutral-50">Individual</p>
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          <div className="flex items-center gap-3 text-sm">
-            <FaPhone className="text-primary-10" />
-            <span className="text-neutral-50">
-              <span className="text-neutral-90 font-medium">
-                {individualInfo?.phoneNumber}
-              </span>
-            </span>
-          </div>
-          <div className="flex items-center gap-3 text-sm">
-            <FaEnvelope className="text-primary-10" />
-            <span className="text-neutral-50">
-              <span className="text-neutral-90 font-medium">
-                {individualInfo?.email}
-              </span>
-            </span>
-          </div>
-          <div className="flex items-center gap-3 text-sm">
-            <FaMapMarkerAlt className="text-primary-10" />
-            <span className="text-neutral-50">
-              <span className="text-neutral-90 font-medium">
-                {individualInfo?.address}
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Render Company Info
+  const contactInfo = [
+    {
+      id: "phone",
+      icon: FaPhone,
+      label: "Phone",
+      value: companyInfo?.phoneNumber,
+      render: (value: string) => (
+        <span className="text-neutral-90 font-medium">{value}</span>
+      ),
+    },
+    {
+      id: "email",
+      icon: FaEnvelope,
+      label: "Email",
+      value: companyInfo?.email,
+      render: (value: string) => (
+        <span className="text-neutral-90 font-medium">{value}</span>
+      ),
+    },
+    {
+      id: "location",
+      icon: FaMapMarkerAlt,
+      label: "Location",
+      value: companyInfo?.location,
+      render: (value: any) => (
+        <span className="text-neutral-90 font-medium">
+          {value?.city}, {value?.state}, {value?.country}
+        </span>
+      ),
+    },
+    {
+      id: "website",
+      icon: FaGlobe,
+      label: "Website",
+      value: companyInfo?.website,
+      condition: companyInfo?.website,
+      render: (value: string) => (
+        <a
+          href={`https://${value}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary-10 hover:underline font-medium"
+        >
+          {value}
+        </a>
+      ),
+    },
+  ];
   return (
     <div className="bg-white border border-neutral-55 rounded-2xl p-6">
-      <div className="flex items-center gap-3 mb-4">
+      <div className="flex items-center gap-3 mb-6">
         {companyInfo?.logo ? (
           <img
             src={companyInfo?.logo}
@@ -120,63 +109,24 @@ const CompanyInformation: React.FC<CompanyInformationProps> = ({
         </div>
       </div>
 
+      {/* Contact info */}
       <div className="space-y-3">
-        <div className="flex items-center gap-3 text-sm">
-          <FaPhone className="text-primary-10" />
-          <span className="text-neutral-50">
-            <span className="text-neutral-90 font-medium">
-              {companyInfo?.phoneNumber}
-            </span>
-          </span>
-        </div>
-        <div className="flex items-center gap-3 text-sm">
-          <FaEnvelope className="text-primary-10" />
-          <span className="text-neutral-50">
-            <span className="text-neutral-90 font-medium">
-              {companyInfo?.email}
-            </span>
-          </span>
-        </div>
-        <div className="flex items-center gap-3 text-sm">
-          <FaMapMarkerAlt className="text-primary-10" />
-          <span className="text-neutral-50">
-            <span className="text-neutral-90 font-medium">
-              {companyInfo?.location?.city}, {companyInfo?.location?.state},{" "}
-              {companyInfo?.location?.country}
-            </span>
-          </span>
-        </div>
-        {companyInfo?.website && (
-          <div className="flex items-center gap-3 text-sm">
-            <FaGlobe className="text-primary-10" />
-            <a
-              href={`https://${companyInfo?.website}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary-10 hover:underline font-medium"
-            >
-              {companyInfo?.website}
-            </a>
-          </div>
-        )}
-        {companyInfo?.tradeLicense && (
-          <div className="flex items-center gap-3 text-sm">
-            <FaFileAlt className="text-primary-10" />
-            <span className="text-neutral-50">
-              Trade License:{" "}
-              <span className="text-neutral-90 font-medium">
-                <a
-                  href={companyInfo?.tradeLicense}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary-10 hover:underline"
-                >
-                  View License
-                </a>
+        {contactInfo?.map((item: any) => {
+          if (item.condition === false || (!item.condition && !item.value)) {
+            return null;
+          }
+
+          const Icon = item.icon;
+
+          return (
+            <div key={item.id} className="flex items-center gap-3 text-sm">
+              <Icon className="text-primary-10" />
+              <span className="text-neutral-50">
+                {item.render(item?.value)}
               </span>
-            </span>
-          </div>
-        )}
+            </div>
+          );
+        })}
       </div>
 
       {companyInfo?.description && (
@@ -187,42 +137,42 @@ const CompanyInformation: React.FC<CompanyInformationProps> = ({
         </div>
       )}
 
+      {/* Social media */}
       {companyInfo?.socialMedia && (
         <div className="mt-4 pt-4 border-t border-neutral-20">
           <p className="text-sm font-medium text-neutral-90 mb-2">
             Social Media
           </p>
           <div className="flex gap-3">
-            {companyInfo?.socialMedia?.facebook && (
-              <a
-                href={companyInfo?.socialMedia?.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:opacity-80"
-              >
-                Facebook
-              </a>
-            )}
-            {companyInfo?.socialMedia?.instagram && (
-              <a
-                href={companyInfo?.socialMedia?.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-pink-600 hover:opacity-80"
-              >
-                Instagram
-              </a>
-            )}
-            {companyInfo?.socialMedia?.linkedin && (
-              <a
-                href={companyInfo?.socialMedia?.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-700 hover:opacity-80"
-              >
-                LinkedIn
-              </a>
-            )}
+            {[
+              {
+                platform: "Facebook",
+                url: companyInfo?.socialMedia?.facebook,
+                className: "text-blue-600 hover:opacity-80",
+              },
+              {
+                platform: "Instagram",
+                url: companyInfo?.socialMedia?.instagram,
+                className: "text-pink-600 hover:opacity-80",
+              },
+              {
+                platform: "LinkedIn",
+                url: companyInfo?.socialMedia?.linkedin,
+                className: "text-blue-700 hover:opacity-80",
+              },
+            ]
+              .filter((item) => item.url)
+              .map((item, index) => (
+                <a
+                  key={index}
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${item.className} hover:opacity-80 transition-colors`}
+                >
+                  {item.platform}
+                </a>
+              ))}
           </div>
         </div>
       )}

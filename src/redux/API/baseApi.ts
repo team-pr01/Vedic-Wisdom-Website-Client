@@ -57,6 +57,7 @@ export const baseApi = createApi({
     "food",
     "job",
     "application",
+    "rag",
     "project",
     "emergencies",
     "users",

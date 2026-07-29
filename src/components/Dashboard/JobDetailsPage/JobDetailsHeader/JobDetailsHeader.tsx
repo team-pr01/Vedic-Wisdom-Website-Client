@@ -27,7 +27,7 @@ const JobDetailsHeader = ({ job }: { job: TJob }) => {
     <div className="bg-gradient-hero border border-neutral-55 rounded-2xl p-6">
       <div className="flex items-center gap-3">
         <div className="size-12.5 bg-neutral-30 border border-neutral-86 rounded-md flex items-center justify-center overflow-hidden">
-          {job?.hiringType === "company" && job?.company?.logo ? (
+          {job?.company?.logo ? (
             <img
               src={job?.company?.logo}
               alt={job?.company?.name}
@@ -35,9 +35,7 @@ const JobDetailsHeader = ({ job }: { job: TJob }) => {
             />
           ) : (
             <span className="text-neutral-90 font-bold text-lg">
-              {job?.hiringType === "company"
-                ? getInitials(job?.company?.name)
-                : getInitials(job?.individual?.fullName)}
+              {getInitials(job?.company?.name)}
             </span>
           )}
         </div>
@@ -45,16 +43,12 @@ const JobDetailsHeader = ({ job }: { job: TJob }) => {
         <div>
           <div className="flex items-center gap-3">
             <h5 className="text-neutral-90 text-lg font-bold">{job?.title}</h5>
-          <div className="px-2 py-1 bg-neutral-70 rounded text-primary-10 text-sm w-fit capitalize">
-            {job?.workMode}
-          </div>
+            <div className="px-2 py-1 bg-neutral-70 rounded text-primary-10 text-sm w-fit capitalize">
+              {job?.workMode}
+            </div>
           </div>
           <div className="flex items-center gap-1">
-            <p className="text-neutral-50">
-              {job?.hiringType === "individual"
-                ? job?.individual?.fullName
-                : job?.company?.name}
-            </p>
+            <p className="text-neutral-50">{job?.company?.name}</p>
             <img src={ICONS.checkMark} alt="" className="size-4 mt-1" />
           </div>
         </div>
@@ -71,14 +65,10 @@ const JobDetailsHeader = ({ job }: { job: TJob }) => {
           {jobType}
         </span>
         <span className="w-px h-4 bg-neutral-10" />
-        {salary?.type === "paid" ? (
-          <p className="flex items-center gap-1.5">
-            <span className="font-bold">{salary?.currency}</span>{" "}
-            {salary?.minimum} - {salary?.maximum}
-          </p>
-        ) : (
-          <p className="flex items-center gap-1.5">Unpaid</p>
-        )}
+        <p className="flex items-center gap-1.5">
+          <span className="font-bold">{salary?.currency}</span>{" "}
+          {salary?.minimum} - {salary?.maximum}
+        </p>
         <span className="w-px h-4 bg-neutral-10" />
         <span className="flex items-center gap-1.5">
           <FaClock />

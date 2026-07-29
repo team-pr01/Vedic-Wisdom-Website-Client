@@ -9,6 +9,7 @@ interface JobDetailsStepProps {
   register: any;
   errors: any;
   watch: any;
+  setValue: any;
   setCountry: any;
   setState: any;
   setCity: any;
@@ -21,6 +22,7 @@ const JobDetailsStep = ({
   register,
   errors,
   watch,
+  setValue,
   setCountry,
   setState,
   setCity,
@@ -28,21 +30,40 @@ const JobDetailsStep = ({
   state,
   city,
 }: JobDetailsStepProps) => {
-  const countries = Country.getAllCountries();
 
   // States for location hierarchy
   const [states, setStates] = useState<any[]>([]);
   const [cities, setCities] = useState<any[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<any>(null);
-  const [selectedState, setSelectedState] = useState<any>(null);
+
+  const countries = Country.getAllCountries();
+  const countryOptions = countries.map((country) => ({
+    label: country?.name,
+    value: country?.isoCode,
+    isoCode: country?.isoCode,
+    countryData: country,
+  }));
+
+  const stateOptions = states.map((state) => ({
+    label: state?.name,
+    value: state?.isoCode,
+    isoCode: state?.isoCode,
+    stateData: state,
+  }));
+
+  const cityOptions = cities.map((city) => ({
+    label: city?.name,
+    value: city?.name,
+    cityData: city,
+  }));
 
   // Handle country selection
   const handleCountrySelect = (selected: any) => {
     setSelectedCountry(selected);
-    setSelectedState(null);
     setCities([]);
     setState(null);
     setCity(null);
+    setValue("country", selected?.label || "");
 
     if (selected?.isoCode) {
       const countryStates = State.getStatesOfCountry(selected.isoCode);
@@ -54,9 +75,9 @@ const JobDetailsStep = ({
 
   // Handle state selection
   const handleStateSelect = (selected: any) => {
-    setSelectedState(selected);
     setCities([]);
     setCity(null);
+    setValue("state", selected?.label || "");
 
     if (selected?.value && selectedCountry?.isoCode) {
       const stateCities = City.getCitiesOfState(
@@ -72,29 +93,9 @@ const JobDetailsStep = ({
   // Handle city selection
   const handleCitySelect = (selected: any) => {
     setCity(selected);
+    setValue("city", selected?.label || "");
   };
 
-  const countryOptions = countries.map((country) => ({
-    label: country?.name,
-    value: country?.isoCode,
-    isoCode: country?.isoCode,
-    countryData: country,
-  }));
-
-  // State options
-  const stateOptions = states.map((state) => ({
-    label: state?.name,
-    value: state?.isoCode,
-    isoCode: state?.isoCode,
-    stateData: state,
-  }));
-
-  // City options
-  const cityOptions = cities.map((city) => ({
-    label: city?.name,
-    value: city?.name,
-    cityData: city,
-  }));
   return (
     <div className="space-y-4">
       <div>
@@ -104,6 +105,7 @@ const JobDetailsStep = ({
         </p>
       </div>
 
+      {/* Job Title */}
       <TextInput
         label="Job Title"
         placeholder="Enter job title"
@@ -113,8 +115,8 @@ const JobDetailsStep = ({
         })}
       />
 
-      {/* Mode & Job Type */}
-      <div className="flex items-center gap-4 w-full">
+      {/* Mode & Job Type - Side by Side */}
+      <div className="flex gap-5">
         {/* Mode */}
         <div>
           <label className="text-neutral-10 text-sm font-medium block mb-2">
@@ -182,8 +184,8 @@ const JobDetailsStep = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-3">
-        {/* Country Dropdown */}
+      {/* Location Dropdowns */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <FilterDropdown
           label="Country"
           options={countryOptions}
@@ -193,7 +195,6 @@ const JobDetailsStep = ({
           placeholder="Select country"
         />
 
-        {/* State Dropdown*/}
         <FilterDropdown
           label="State"
           options={stateOptions}
@@ -203,7 +204,6 @@ const JobDetailsStep = ({
           placeholder="Select state"
         />
 
-        {/* City Dropdown*/}
         <FilterDropdown
           label="City"
           options={cityOptions}
@@ -215,14 +215,16 @@ const JobDetailsStep = ({
         />
       </div>
 
+      {/* Address */}
       <TextInput
-        label="Address"
+        label="Office Address"
         placeholder="Enter office address"
-        error={errors.educationLevel}
-        {...register("educationLevel")}
+        error={errors.address}
+        {...register("address")}
         isRequired={false}
       />
 
+      {/* Education Level */}
       <TextInput
         label="Education Level"
         placeholder="e.g. Bachelor's in Science"
@@ -233,22 +235,30 @@ const JobDetailsStep = ({
       />
 
       {/* Salary Range */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <TextInput
-          label="Minimum Salary (in BDT)"
+          label="Currency"
+          placeholder="e.g. BDT"
+          error={errors.currency}
+          {...register("currency", {
+            required: "Currency is required",
+          })}
+        />
+        <TextInput
+          label="Minimum Salary"
           placeholder="Min"
           type="number"
-          error={errors.minSalary}
-          {...register("minSalary", {
+          error={errors.minimum}
+          {...register("minimum", {
             required: "Minimum salary is required",
           })}
         />
         <TextInput
-          label="Maximum Salary (in BDT)"
+          label="Maximum Salary"
           placeholder="Max"
           type="number"
-          error={errors.maxSalary}
-          {...register("maxSalary", {
+          error={errors.maximum}
+          {...register("maximum", {
             required: "Maximum salary is required",
           })}
         />
@@ -259,7 +269,7 @@ const JobDetailsStep = ({
         <label className="text-neutral-10 text-sm font-medium block mb-2">
           Experience Level <span className="text-red-500">*</span>
         </label>
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
           {[
             { label: "Fresher (0-1 year)", value: "fresher" },
             { label: "Junior (1-3 years)", value: "junior" },
@@ -268,7 +278,11 @@ const JobDetailsStep = ({
           ].map((exp) => (
             <label
               key={exp.value}
-              className={`flex items-center gap-2 cursor-pointer transition-all duration-300`}
+              className={`flex items-center gap-2 p-2.5 rounded-lg border-2 cursor-pointer transition-all duration-300 ${
+                watch("experienceLevel") === exp.value
+                  ? "border-primary-10 bg-primary-10/10"
+                  : "border-neutral-20 hover:border-primary-10/50"
+              }`}
             >
               <input
                 type="radio"
@@ -289,10 +303,12 @@ const JobDetailsStep = ({
         )}
       </div>
 
+      {/* Job Description */}
       <Textarea
         label="Job Description"
         placeholder="Clearly describe the job role, responsibilities, and expectations..."
         error={errors.jobDescription}
+        rows={4}
         {...register("jobDescription", {
           required: "Job description is required",
           minLength: {
@@ -322,8 +338,8 @@ const JobDetailsStep = ({
         )}
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        {/* Application Deadline */}
+      {/* Application Deadline & Vacancies */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <TextInput
           label="Application Deadline"
           type="date"
@@ -333,7 +349,6 @@ const JobDetailsStep = ({
           })}
         />
 
-        {/* Number of Vacancies */}
         <TextInput
           label="Number of Vacancies"
           placeholder="01"
@@ -389,6 +404,11 @@ const JobDetailsStep = ({
           </span>
         )}
       </div>
+
+      <p className="text-xs text-neutral-40 bg-neutral-10/5 p-3 rounded-lg">
+        ⚠️ After deadline passes, this job will automatically show as "Closed"
+        on the platform.
+      </p>
     </div>
   );
 };
