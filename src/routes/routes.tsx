@@ -20,7 +20,7 @@ import BecomeAVendor from "../pages/DashboardPages/VedicShop/BecomeAVendor/Becom
 import Book from "../pages/DashboardPages/LearnAndExplore/Book/Book";
 import VendorDashboard from "../pages/DashboardPages/VedicShop/VendorDashboard/VendorDashboard";
 import AddProduct from "../pages/DashboardPages/VedicShop/AddProduct/AddProduct";
-import AiChatbot from "../pages/DashboardPages/AiChatbot/AiChatbot";
+import AiChatbot from "../pages/AiChatbotPages/AiChatbot/AiChatbot";
 import News from "../pages/DashboardPages/News/News";
 import NewsDetails from "../pages/DashboardPages/NewsDetails/NewsDetails";
 import MyReferrals from "../pages/DashboardPages/MyProfile/MyReferrals/MyReferrals";
@@ -42,6 +42,7 @@ import SanatanSthalDetails from "../pages/DashboardPages/Temple/SanatanSthalDeta
 import AddTemple from "../pages/DashboardPages/Temple/AddTemple/AddTemple";
 import BookDetails from "../pages/DashboardPages/LearnAndExplore/BookDetails/BookDetails";
 import MyApplications from "../pages/DashboardPages/JobPortal/MyApplications/MyApplications";
+import AiChatbotLayout from "../layouts/AiChatbotLayout/AiChatbotLayout";
 
 export const router = createBrowserRouter([
   {
@@ -68,6 +69,17 @@ export const router = createBrowserRouter([
       {
         path: "coin-transaction/success",
         element: <PaymentSuccess />,
+      },
+    ],
+  },
+  {
+    path: "/ai/chat",
+    element: <AiChatbotLayout />,
+    errorElement: <NotFound />,
+    children: [
+      {
+        path: "",
+        element: <AiChatbot />,
       },
     ],
   },
@@ -163,10 +175,6 @@ export const router = createBrowserRouter([
       {
         path: "vedic-shop/vendor/add-product",
         element: <AddProduct />,
-      },
-      {
-        path: "ai-chatbot",
-        element: <AiChatbot />,
       },
       {
         path: "news",

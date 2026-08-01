@@ -26,7 +26,7 @@ interface Message {
   isRegenerated?: boolean; // ✅ Track if this is a regenerated response
 }
 
-const AiChatbot = () => {
+const Test = () => {
   const [askQuestion, { isLoading }] = useAskQuestionMutation();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -523,4 +523,4 @@ const AiChatbot = () => {
   );
 };
 
-export default AiChatbot;
+export default Test;
