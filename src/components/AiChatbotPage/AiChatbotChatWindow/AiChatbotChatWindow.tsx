@@ -1,134 +1,665 @@
-import { FiBell, FiCopy, FiImage, FiInfo, FiMic, FiRotateCcw, FiSearch, FiSend, FiTrash2 } from "react-icons/fi";
+/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { GiSparkles } from "react-icons/gi";
+import { BiSend } from "react-icons/bi";
+import {
+  FaBookOpen,
+  FaExternalLinkAlt,
+  FaChevronDown,
+  FaChevronUp,
+} from "react-icons/fa";
+import { ICONS } from "../../../assets";
+import toast from "react-hot-toast";
+import AiChatbotHeader from "../AiChatbotHeader/AiChatbotHeader";
+import {
+  useCreateChatMutation,
+  useGetChatByIdQuery,
+  useRegenerateMessageMutation,
+  useSendMessageMutation,
+} from "../../../redux/Features/Rag/aiChatApi";
 
-const AiChatbotChatWindow = () => {
-    return (
-        <main className="flex-1 flex flex-col relative rounded-3xl bg-[#fafafa] overflow-hidden text-[#1C2542]">
-        {/* Header */}
-        <header className="h-20 bg-white border-b border-[#DEDEDE] flex items-center justify-between px-10">
-          <h2 className="font-bold text-xl text-[#1C2542]">Spiritual AI Assistant</h2>
+interface Message {
+  id: string;
+  text: string;
+  sender: "user" | "bot";
+  sources?: any[];
+  processingTime?: number;
+  confidence?: number;
+  liked?: boolean;
+  disliked?: boolean;
+  originalQuestion?: string;
+  isRegenerated?: boolean;
+}
 
-          <div className="flex items-center gap-5">
-            <div className="relative">
-              <FiSearch
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8F8F8F]"
-                size={16}
-              />
-              <input
-                type="text"
-                placeholder="Search conversations..."
-                className="bg-[#f3f3f3] border-none rounded-xl py-2.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-[#ffb72f] w-72 transition-all"
-              />
-            </div>
-            <button className="p-2.5 text-[#8F8F8F] bg-[#f6f6f6] rounded-xl hover:text-[#1a1f2c] transition-colors">
-              <FiBell size={20} />
-            </button>
-            <button className="p-2.5 text-[#8F8F8F] bg-[#f6f6f6] rounded-xl hover:text-[#1a1f2c] transition-colors">
-              <FiInfo size={20} />
-            </button>
-          </div>
-        </header>
+interface AiChatbotChatWindowProps {
+  chatId?: string; // ✅ Get chatId from URL params
+  onChatCreated?: (chatId: string) => void; // ✅ Callback when new chat is created
+}
 
-        {/* Scrollable Chat Area */}
-        <div className="flex-1 overflow-y-auto p-10 space-y-8 bg-[#fafafa]">
-          {/* Example Chat Output Card */}
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-3xl border border-[#DEDEDE] shadow-sm overflow-hidden">
-              <div className="flex items-center justify-between px-6 py-4 border-b border-[#f3f3f3]">
-                <div className="flex gap-6">
-                  <Tab label="HTML" />
-                  <Tab label="CSS" />
-                  <Tab label="JS" active />
-                </div>
-                <button className="flex items-center gap-2 text-xs text-[#8F8F8F] font-bold hover:text-[#1a1f2c] transition-colors uppercase tracking-wider">
-                  <FiCopy size={15} /> Copy code
-                </button>
-              </div>
-              <div className="p-8 bg-[#fbf6ee]/40 font-mono text-sm leading-relaxed text-[#1C2542]">
-                <p>
-                  <span className="text-blue-500">let</span> cancelButton =
-                  document.
-                  <span className="text-[#db940d]">getElementById</span>(
-                  <span className="text-green-600">"cancel-button"</span>);
-                </p>
-                <p>
-                  <span className="text-blue-500">let</span> sendButton =
-                  document.
-                  <span className="text-[#db940d]">getElementById</span>(
-                  <span className="text-green-600">"send-button"</span>);
-                </p>
-                <p className="my-2" />
-                <p>
-                  cancelButton.
-                  <span className="text-[#db940d]">addEventListener</span>(
-                  <span className="text-green-600">"click"</span>,{" "}
-                  <span className="text-blue-500">function</span>() {"{"}
-                </p>
-                <p className="pl-6 text-[#8F8F8F]">
-                  console.<span className="text-[#db940d]">log</span>(
-                  <span className="text-green-600">"Cancel clicked"</span>);
-                </p>
-                <p>{"}"});</p>
-              </div>
-            </div>
-            <div className="mt-6 flex gap-4 p-4 bg-[#fff0d4]/30 rounded-2xl border border-[#ffcf72]/20">
-              <FiInfo className="text-[#db940d] shrink-0 mt-1" size={20} />
-              <p className="text-[#535353] text-sm leading-relaxed">
-                Note: This is just an example of a simple JS form handler. In
-                production, ensure you add event delegation and proper cleanup
-                to avoid memory leaks.
-              </p>
-            </div>
-          </div>
-        </div>
+const AiChatbotChatWindow = ({
+  chatId,
+  onChatCreated,
+}: AiChatbotChatWindowProps) => {
+  // ========== RTK QUERY HOOKS ==========
+  const [createChat, { isLoading: isCreating }] = useCreateChatMutation();
+  const [sendMessage, { isLoading: isSending }] = useSendMessageMutation();
+  const [regenerateMessage, { isLoading: isRegeneratingApi }] =
+    useRegenerateMessageMutation();
 
-        {/* Footer Input Area */}
-        <footer className="p-8 bg-white border-t border-[#DEDEDE]">
-          <div className="max-w-4xl mx-auto flex flex-col items-center gap-5">
-            <button className="flex items-center gap-2 px-6 py-2.5 bg-white border border-[#DEDEDE] rounded-full text-sm font-bold text-[#535353] hover:bg-[#f6f6f6] shadow-sm transition-all active:scale-95">
-              <FiRotateCcw size={16} /> Regenerate response
-            </button>
+  // Fetch chat data if chatId exists
+  const {
+    data: chatData,
+    isLoading: isChatLoading,
+    refetch,
+  } = useGetChatByIdQuery(chatId || "", { skip: !chatId });
 
-            <div className="w-full relative">
-              <div className="flex items-center bg-[#f9f9f9] border border-[#DEDEDE] rounded-2xl p-2.5 shadow-inner focus-within:border-[#ffb72f] transition-colors">
-                <button className="p-2.5 text-[#8F8F8F] hover:text-[#1a1f2c]">
-                  <FiImage size={22} />
-                </button>
-                <button className="p-2.5 text-[#8F8F8F] hover:text-[#1a1f2c]">
-                  <FiMic size={22} />
-                </button>
-                <input
-                  type="text"
-                  placeholder="Type your message here..."
-                  className="flex-1 border-none focus:ring-0 px-4 text-base bg-transparent text-[#1C2542] placeholder-[#8F8F8F]"
-                />
-                <button className="bg-[#ffb72f] p-3.5 rounded-xl text-[#1a1f2c] hover:bg-[#db940d] transition-all shadow-md active:scale-95">
-                  <FiSend size={20} />
-                </button>
-              </div>
-            </div>
+  // ========== LOCAL STATE ==========
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [expandedSources, setExpandedSources] = useState<string | null>(null);
+  const [isRegenerating, setIsRegenerating] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [currentChatId, setCurrentChatId] = useState<string | null>(
+    chatId || null,
+  );
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-            <div className="flex items-center justify-between w-full px-2">
-              <p className="text-[11px] text-[#8F8F8F] font-medium italic">
-                AI can produce inaccurate information about people, places, or
-                facts.
-              </p>
-              <button className="flex items-center gap-2 text-[11px] text-[#8F8F8F] hover:text-red-500 font-bold transition-colors">
-                <FiTrash2 /> Clear History
-              </button>
-            </div>
-          </div>
-        </footer>
-      </main>
+  // ========== LOAD CHAT DATA WHEN chatId CHANGES ==========
+  useEffect(() => {
+    if (chatId) {
+      setCurrentChatId(chatId);
+    }
+  }, [chatId]);
+
+  useEffect(() => {
+    if (chatData?.data) {
+      // Transform backend messages to frontend format
+      const formattedMessages: Message[] = chatData.data.messages.map(
+        (msg: any, index: number) => ({
+          id: msg._id || Date.now().toString() + index,
+          text: msg.content,
+          sender: msg.role === "user" ? "user" : "bot",
+          sources: msg.sources || [],
+          processingTime: msg.metadata?.processingTime || 0,
+          confidence: msg.metadata?.confidence || 0,
+          liked: false,
+          disliked: false,
+          originalQuestion:
+            msg.role === "bot"
+              ? chatData.data.messages[index - 1]?.content
+              : undefined,
+          isRegenerated: msg.metadata?.isRegenerated || false,
+        }),
+      );
+      setMessages(formattedMessages);
+    }
+  }, [chatData]);
+
+  // ========== AUTO-SCROLL ==========
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [messages, isTyping]);
+
+  // ========== SEND MESSAGE ==========
+  const handleSend = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim() || isSending || isRegenerating || isCreating) return;
+
+    const question = input.trim();
+
+    // Check if user is trying to regenerate via text
+    const isRegenerateCommand =
+      question.toLowerCase().includes("regenerate") ||
+      question.toLowerCase().includes("again") ||
+      question.toLowerCase().includes("not correct");
+
+    if (isRegenerateCommand) {
+      const lastBotMessage = [...messages]
+        .reverse()
+        .find((msg) => msg.sender === "bot");
+      if (lastBotMessage && lastBotMessage.originalQuestion) {
+        await handleRegenerate(lastBotMessage.id);
+        setInput("");
+        return;
+      }
+    }
+
+    // If no chat exists, create one
+    if (!currentChatId) {
+      try {
+        const result = await createChat({
+          title: question.slice(0, 50) + (question.length > 50 ? "..." : ""),
+          initialMessage: question,
+        }).unwrap();
+
+        const newChatId = result.data?._id || result.chatId;
+        setCurrentChatId(newChatId);
+
+        // Notify parent to update URL
+        if (onChatCreated) {
+          onChatCreated(newChatId);
+        }
+
+        // Add messages
+        const userMessage: Message = {
+          id: Date.now().toString(),
+          text: question,
+          sender: "user",
+          originalQuestion: question,
+        };
+        setMessages((prev) => [...prev, userMessage]);
+
+        const botMessage: Message = {
+          id: Date.now().toString() + "-bot",
+          text:
+            result.data?.messages?.[result.data.messages.length - 1]?.content ||
+            result.answer ||
+            "Response received",
+          sender: "bot",
+          sources: result.data?.sources || [],
+          processingTime: 0,
+          confidence: 0,
+          liked: false,
+          disliked: false,
+          originalQuestion: question,
+        };
+        setMessages((prev) => [...prev, botMessage]);
+        setInput("");
+        return;
+      } catch (error: any) {
+        toast.error(error?.data?.message || "Failed to create chat");
+        return;
+      }
+    }
+
+    // Send message to existing chat
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      text: question,
+      sender: "user",
+      originalQuestion: question,
+    };
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
+    setIsTyping(true);
+
+    try {
+      const response = await sendMessage({
+        chatId: currentChatId,
+        message: question,
+        language: "en",
+      }).unwrap();
+
+      const botMessage: Message = {
+        id: Date.now().toString() + "-bot",
+        text:
+          response.data?.message?.content ||
+          response.message?.content ||
+          "Response received",
+        sender: "bot",
+        sources:
+          response.data?.message?.sources || response.message?.sources || [],
+        processingTime: response.data?.message?.metadata?.processingTime || 0,
+        confidence: response.data?.message?.metadata?.confidence || 0,
+        liked: false,
+        disliked: false,
+        originalQuestion: question,
+      };
+      setMessages((prev) => [...prev, botMessage]);
+
+      // Refetch chat data to update cache
+      refetch();
+    } catch (error: any) {
+      console.error("Error sending message:", error);
+      toast.error(error?.data?.message || "Failed to send message");
+
+      // Remove the user message if failed
+      setMessages((prev) => prev.slice(0, -1));
+    } finally {
+      setIsTyping(false);
+    }
+  };
+
+  // ========== REGENERATE ==========
+  const handleRegenerate = async (messageId: string) => {
+    const botMessage = messages.find((msg) => msg.id === messageId);
+    if (!botMessage) {
+      toast.error("Message not found");
+      return;
+    }
+
+    const originalQuestion = botMessage.originalQuestion;
+    if (!originalQuestion) {
+      toast.error("No original question found to regenerate");
+      return;
+    }
+
+    if (isRegenerating || isSending || !currentChatId) return;
+
+    setIsRegenerating(true);
+    setIsTyping(true);
+
+    try {
+      // Remove the last bot message
+      setMessages((prev) => {
+        const index = prev.findIndex((msg) => msg.id === messageId);
+        if (index !== -1) {
+          const newMessages = [...prev];
+          newMessages.splice(index, 1);
+          return newMessages;
+        }
+        return prev;
+      });
+
+      const response = await regenerateMessage({
+        chatId: currentChatId,
+      }).unwrap();
+
+      const newBotMessage: Message = {
+        id: Date.now().toString() + "-regen",
+        text:
+          response.data?.message?.content ||
+          response.message?.content ||
+          "Regenerated response",
+        sender: "bot",
+        sources:
+          response.data?.message?.sources || response.message?.sources || [],
+        processingTime: response.data?.message?.metadata?.processingTime || 0,
+        confidence: response.data?.message?.metadata?.confidence || 0,
+        liked: false,
+        disliked: false,
+        originalQuestion: originalQuestion,
+        isRegenerated: true,
+      };
+      setMessages((prev) => [...prev, newBotMessage]);
+      toast.success("Response regenerated");
+
+      // Refetch chat data
+      refetch();
+    } catch (error: any) {
+      console.error("Error regenerating:", error);
+      toast.error(error?.data?.message || "Failed to regenerate");
+
+      // Restore the removed message
+      setMessages((prev) => [...prev, botMessage]);
+    } finally {
+      setIsRegenerating(false);
+      setIsTyping(false);
+    }
+  };
+
+  // ========== LIKE / DISLIKE ==========
+  const handleLike = (messageId: string) => {
+    setMessages((prev) =>
+      prev.map((msg) =>
+        msg.id === messageId
+          ? { ...msg, liked: !msg.liked, disliked: false }
+          : msg,
+      ),
     );
+  };
+
+  const handleDislike = (messageId: string) => {
+    setMessages((prev) =>
+      prev.map((msg) =>
+        msg.id === messageId
+          ? { ...msg, disliked: !msg.disliked, liked: false }
+          : msg,
+      ),
+    );
+  };
+
+  // ========== SOURCE TOGGLE ==========
+  const toggleSources = (messageId: string) => {
+    setExpandedSources(expandedSources === messageId ? null : messageId);
+  };
+
+  // ========== COPY ==========
+  const handleCopy = async (text: string, messageId: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedId(messageId);
+      toast.success("Copied to clipboard!");
+      setTimeout(() => setCopiedId(null), 2000);
+    } catch (error: any) {
+      console.error("Copy failed:", error);
+      toast.error("Failed to copy");
+    }
+  };
+
+  // ========== FORMAT TIME ==========
+  const formatTime = (ms: number) => {
+    if (ms < 1000) return `${ms}ms`;
+    const seconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(seconds / 60);
+    if (minutes > 0) {
+      return `${minutes}m ${seconds % 60}s`;
+    }
+    return `${seconds}s`;
+  };
+
+  // ========== RENDER ==========
+  const isLoading = isSending || isRegenerating || isCreating || isChatLoading;
+
+  return (
+    <main className="flex-1 flex flex-col relative rounded-3xl bg-[#fafafa] overflow-hidden text-[#1C2542] font-Manrope">
+      {/* Header */}
+      <AiChatbotHeader chatTitle={chatData?.data?.title || "New Chat"} />
+
+      {/* Scrollable Chat Area */}
+      <div
+        ref={scrollRef}
+        className="flex-1 overflow-y-auto px-4 md:px-10 py-8 no-scrollbar space-y-6 scroll-smooth bg-[#fafafa]"
+      >
+        <AnimatePresence mode="popLayout">
+          {messages.length === 0 ? (
+            /* WELCOME STATE - Centered */
+            <motion.div
+              key="welcome"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="flex flex-col items-center justify-center min-h-[calc(100vh-300px)] text-center"
+            >
+              <div className="w-20 h-20 bg-white rounded-3xl shadow-xl shadow-orange-100 flex items-center justify-center mb-6 border border-orange-50">
+                <img src={ICONS.aiChatbot} alt="AI" className="w-12 h-12" />
+              </div>
+              <h1 className="text-3xl md:text-5xl font-bold text-slate-900 mb-4">
+                Your Guide to <br />{" "}
+                <span className="text-[#D9A241]">Vedic Knowledge</span>
+              </h1>
+              <p className="text-slate-500 max-w-md mx-auto leading-relaxed text-sm md:text-base">
+                Ask questions about scriptures, rituals, and spiritual wisdom.
+              </p>
+            </motion.div>
+          ) : (
+            /* CHAT MESSAGES */
+            <div className="max-w-[60%] mx-auto space-y-6">
+              {messages.map((msg, index) => {
+                const isLastBotMessage =
+                  msg.sender === "bot" &&
+                  index === messages.length - 1 &&
+                  messages[messages.length - 1]?.sender === "bot";
+
+                return (
+                  <motion.div
+                    key={msg.id}
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    layout
+                    className={`flex ${
+                      msg.sender === "user" ? "justify-end" : "justify-start"
+                    }`}
+                  >
+                    <div className="max-w-full">
+                      {/* Message Bubble */}
+                      <div
+                        className={`px-5 py-3.5 rounded-3xl shadow-sm transition-all text-sm md:text-base ${
+                          msg.sender === "user"
+                            ? "bg-[#F3E8D2] text-slate-800 rounded-tr-none border border-[#E8D5B5]"
+                            : "bg-white text-slate-700 rounded-tl-none border border-slate-100"
+                        }`}
+                      >
+                        <p className="leading-relaxed whitespace-pre-wrap">
+                          {msg.text}
+                        </p>
+                        {msg.isRegenerated && msg.sender === "bot" && (
+                          <span className="text-xs text-primary-10 mt-1 block">
+                            ✨ Regenerated
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Bot Message Meta Info */}
+                      {msg.sender === "bot" && (
+                        <div className="mt-2 space-y-2">
+                          {msg.sources && msg.sources.length > 0 && (
+                            <div className="bg-neutral-10/5 rounded-xl border border-neutral-20 overflow-hidden">
+                              <button
+                                onClick={() => toggleSources(msg.id)}
+                                className="w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-neutral-10/10 transition-colors"
+                              >
+                                <div className="flex items-center gap-2">
+                                  <FaBookOpen className="text-primary-10 text-sm" />
+                                  <span className="text-sm font-medium text-neutral-90">
+                                    View Sources ({msg.sources.length})
+                                  </span>
+                                </div>
+                                {expandedSources === msg.id ? (
+                                  <FaChevronUp className="text-neutral-40" />
+                                ) : (
+                                  <FaChevronDown className="text-neutral-40" />
+                                )}
+                              </button>
+
+                              {expandedSources === msg.id && (
+                                <div className="px-4 pb-3 space-y-2">
+                                  {msg.sources.map((source, idx) => (
+                                    <div
+                                      key={idx}
+                                      className="bg-white rounded-lg p-3 border border-neutral-20 hover:shadow-sm transition-shadow"
+                                    >
+                                      <div className="flex items-start justify-between">
+                                        <div className="flex-1">
+                                          <p className="text-sm font-medium text-neutral-90">
+                                            {source.title || "Source"}
+                                          </p>
+                                          <p className="text-xs text-neutral-60 mt-0.5">
+                                            {source.category || "General"} •
+                                            <span className="ml-1">
+                                              {source.source || "Unknown"}
+                                            </span>
+                                          </p>
+                                        </div>
+                                        {source.relevanceScore && (
+                                          <span className="text-xs bg-primary-10/10 text-primary-10 px-2 py-0.5 rounded-full whitespace-nowrap ml-2">
+                                            {(
+                                              source.relevanceScore * 100
+                                            ).toFixed(0)}
+                                            %
+                                          </span>
+                                        )}
+                                      </div>
+                                      <p className="text-xs text-neutral-50 mt-1.5 line-clamp-2">
+                                        {source.content?.slice(0, 150)}...
+                                      </p>
+                                      <a
+                                        href={source?.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-xs text-primary-10 hover:underline mt-1.5 flex items-center gap-1"
+                                      >
+                                        View Source
+                                        <FaExternalLinkAlt className="text-[10px]" />
+                                      </a>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          )}
+
+                          <div className="flex items-center gap-4 text-xs text-neutral-40 px-1 flex-wrap">
+                            {msg.processingTime && (
+                              <span className="flex items-center gap-1">
+                                <img src={ICONS.time} alt="" className="w-4" />
+                                {formatTime(msg.processingTime)}
+                              </span>
+                            )}
+
+                            <button
+                              onClick={() => handleCopy(msg.text, msg.id)}
+                              className="flex items-center gap-1 hover:text-primary-10 transition-colors"
+                              title="Copy response"
+                            >
+                              <img src={ICONS.copy} alt="" className="w-4" />
+                              <span className="hidden sm:inline">
+                                {copiedId === msg.id ? "Copied" : "Copy"}
+                              </span>
+                            </button>
+
+                            {/* Regenerate Button */}
+                            {isLastBotMessage && (
+                              <button
+                                onClick={() => handleRegenerate(msg.id)}
+                                disabled={isLoading}
+                                className={`flex items-center gap-1 hover:text-primary-10 transition-colors ${
+                                  isRegenerating
+                                    ? "opacity-50 cursor-not-allowed"
+                                    : ""
+                                }`}
+                                title="Regenerate response"
+                              >
+                                <img
+                                  src={ICONS.resetGray}
+                                  alt=""
+                                  className="w-4"
+                                />
+                                <span className="hidden sm:inline">
+                                  {isRegenerating
+                                    ? "Regenerating..."
+                                    : "Regenerate"}
+                                </span>
+                              </button>
+                            )}
+                            <div className="flex items-center">
+                              <button
+                                onClick={() => handleLike(msg.id)}
+                                className={`p-1.5 rounded-lg transition-all duration-200 ${
+                                  msg.liked
+                                    ? "bg-primary-10 text-white"
+                                    : "text-neutral-40 hover:bg-neutral-10/10"
+                                }`}
+                                title="Like"
+                              >
+                                <img src={ICONS.like} alt="" className="w-4" />
+                              </button>
+                              <button
+                                onClick={() => handleDislike(msg.id)}
+                                className={`p-1.5 rounded-lg transition-all duration-200 ${
+                                  msg.disliked
+                                    ? "bg-red-500 text-white"
+                                    : "text-neutral-40 hover:bg-neutral-10/10"
+                                }`}
+                                title="Dislike"
+                              >
+                                <img
+                                  src={ICONS.dislike}
+                                  alt=""
+                                  className="w-4"
+                                />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                );
+              })}
+
+              {/* Typing Indicator */}
+              {isTyping && (
+                <motion.div
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex justify-start"
+                >
+                  <div className="bg-white px-5 py-3 rounded-3xl rounded-tl-none border border-slate-100 shadow-sm flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                    <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                    <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
+                  </div>
+                </motion.div>
+              )}
+            </div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Input Area - Always at bottom */}
+      <div className="p-4 md:p-6 bg-gradient-to-t from-white via-white to-transparent pt-10 border-t border-neutral-20">
+        <form
+          onSubmit={handleSend}
+          className="relative max-w-4xl mx-auto bg-white rounded-[2.5rem] p-1.5 shadow-md border border-neutral-100 flex items-center gap-2 group transition-all focus-within:ring-4 focus-within:ring-[#D9A241]/10"
+        >
+          <div className="pl-5 text-[#D9A241]">
+            <GiSparkles size={22} className="animate-pulse" />
+          </div>
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder={isLoading ? "Thinking..." : "Ask me anything..."}
+            className="flex-1 py-3 md:py-4 bg-transparent outline-none text-base md:text-lg text-slate-700 placeholder:text-slate-400 disabled:opacity-60"
+            disabled={isLoading}
+          />
+          <button
+            type="submit"
+            disabled={!input.trim() || isLoading}
+            className={`p-3 md:p-4 rounded-full transition-all shadow-lg ${
+              input.trim() && !isLoading
+                ? "bg-[#D9A241] text-white hover:scale-105 active:scale-95 shadow-orange-200"
+                : "bg-slate-100 text-slate-300 cursor-not-allowed shadow-none"
+            }`}
+          >
+            <BiSend size={24} />
+          </button>
+        </form>
+        <p className="text-center text-[10px] tracking-[0.2em] text-neutral-50 mt-5 font-bold opacity-60">
+          Powered by Vedic Wisdom AI &bull; Smart Assistant
+        </p>
+      </div>
+
+      {/* CSS Utilities */}
+      <style>{`
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .animate-bounce {
+          animation: bounce 0.6s infinite;
+        }
+        @keyframes bounce {
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-4px);
+          }
+        }
+        .animate-spin {
+          animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
+    </main>
+  );
 };
 
 export default AiChatbotChatWindow;
-
-
-const Tab = ({ label, active = false }) => (
-  <button
-    className={`text-xs font-bold px-1 pb-2 transition-all tracking-widest uppercase ${active ? "text-[#1C2542] border-b-2 border-[#ffb72f]" : "text-[#8F8F8F] hover:text-[#535353]"}`}
-  >
-    {label}
-  </button>
-);

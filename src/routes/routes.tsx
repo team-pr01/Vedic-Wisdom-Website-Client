@@ -81,6 +81,10 @@ export const router = createBrowserRouter([
         path: "",
         element: <AiChatbot />,
       },
+      {
+        path: ":chatId",
+        element: <AiChatbot />,
+      },
     ],
   },
   {

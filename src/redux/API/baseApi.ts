@@ -58,6 +58,7 @@ export const baseApi = createApi({
     "job",
     "application",
     "rag",
+    "aiChat",
     "project",
     "emergencies",
     "users",

@@ -1,11 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FiLogOut } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ICONS, IMAGES } from "../../../assets";
 import Button from "../../Reusable/Button/Button";
+import { useGetMyChatHistoryQuery } from "../../../redux/Features/Rag/aiChatApi";
 
 const AiChatbotSidebar = () => {
+  const pathname = useLocation().pathname;
+  const { data } = useGetMyChatHistoryQuery({});
+  const chats = data?.data?.chats || [];
   return (
-    <aside className="w-72 bg-neutral-90 flex flex-col p-4 text-white">
+    <aside className="w-72 flex flex-col p-4 text-white">
       {/* Logo */}
       <Link to="/" className="bg-white rounded-2xl p-2">
         <img src={IMAGES.logo} alt="" className="mb-1" />
@@ -13,20 +18,29 @@ const AiChatbotSidebar = () => {
 
       {/* Sidebar Navigation */}
       <nav className="flex-1 space-y-1 overflow-y-auto custom-scrollbar mt-10">
-        <button className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-neutral-91 rounded-full text-white font-medium mb-6">
+        <Link
+          to={"/ai/chat"}
+          className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-neutral-91 rounded-full text-white font-medium mb-6"
+        >
           <img src={ICONS.plusWhite} alt="" className="w-5" />
           New Chat
-        </button>
+        </Link>
 
         {/* Recent History Section */}
-        <div className="mt-10 space-y-4">
+        <div className="mt-10 space-y-4 w-full">
           <p className="text-neutral-60 text-xs font-bold px-3">
             Recent History
           </p>
-          <div className="">
-            <HistoryItem title="Create welcome form" active />
-            <HistoryItem title="Setup Wi-Fi network" />
-            <HistoryItem title="Career productivity" />
+          <div className="flex flex-col">
+            {chats?.map((chat: any) => (
+              <Link
+                key={chat?._id}
+                to={`/ai/chat/${chat?._id}`}
+                className={`w-full text-left p-3 rounded-2xl transition-all text-sm border ${pathname === `/ai/chat/${chat?._id}` ? "bg-[#ffffff10] text-primary-20 border-neutral-50/50" : "text-neutral-60 border-transparent hover:bg-neutral-91"}`}
+              >
+                {chat?.title}
+              </Link>
+            ))}
           </div>
         </div>
       </nav>
@@ -54,7 +68,7 @@ const AiChatbotSidebar = () => {
           />
         </div>
 
-        <button className="flex items-center gap-3 px-4 py-3 text-[#8F8F8F] hover:text-white transition-colors w-full rounded-xl hover:bg-[#ffffff08]">
+        <button className="flex items-center gap-3 px-4 py-3 text-[#8F8F8F] hover:text-white transition-colors w-full rounded-xl hover:bg-[#ffffff08] mt-5">
           <FiLogOut size={18} />
           <span className="font-medium text-sm">Log out</span>
         </button>
@@ -65,10 +79,8 @@ const AiChatbotSidebar = () => {
 
 export default AiChatbotSidebar;
 
-const HistoryItem = ({ title, active = false }) => (
-  <button
-    className={`w-full text-left p-3 rounded-2xl transition-all text-sm border ${active ? "bg-[#ffffff10] text-primary-20 border-neutral-50/50" : "text-neutral-60 border-transparent hover:bg-neutral-91"}`}
-  >
-    {title}
-  </button>
-);
+
+// 20 people in a day
+// 600 people in a month
+// 7300 people in a year
+// 

@@ -120,6 +120,8 @@ import like from "./icons/like.svg";
 import resetGray from "./icons/reset-gray.svg";
 import copy from "./icons/copy.svg";
 import plusWhite from "./icons/plus-white.svg";
+import crown from "./icons/crown.svg";
+import shareGray from "./icons/share-gray.svg";
 
 export const IMAGES = {
     logo,
@@ -243,5 +245,7 @@ export const ICONS = {
     dislike,
     like,
     resetGray,
-    copy
+    copy,
+    crown,
+    shareGray,
 };

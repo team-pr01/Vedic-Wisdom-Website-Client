@@ -37,7 +37,7 @@ export const sidebarLinks: DashboardLink[] = [
   },
   {
     label: "AI Chatbot",
-    path: "/dashboard/ai-chatbot",
+    path: "/ai/chat",
     icon: <RiChatAi2Line className="w-5 h-5" />,
   },
   {
@@ -90,7 +90,7 @@ export const sidebarLinks: DashboardLink[] = [
     path: "/dashboard/consultancy",
     icon: <LuBriefcase className="w-5 h-5" />,
   },
-   {
+  {
     label: "Vedic Shop",
     path: "/dashboard/vedic-shop",
     icon: <LuShoppingBag className="w-5 h-5" />,
