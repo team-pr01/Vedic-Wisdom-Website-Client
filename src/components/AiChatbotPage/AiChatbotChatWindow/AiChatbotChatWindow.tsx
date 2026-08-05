@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity */
 /* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useRef, useEffect } from "react";
@@ -45,8 +46,7 @@ const AiChatbotChatWindow = ({
   // ========== RTK QUERY HOOKS ==========
   const [createChat, { isLoading: isCreating }] = useCreateChatMutation();
   const [sendMessage, { isLoading: isSending }] = useSendMessageMutation();
-  const [regenerateMessage, { isLoading: isRegeneratingApi }] =
-    useRegenerateMessageMutation();
+  const [regenerateMessage] = useRegenerateMessageMutation();
 
   // Fetch chat data if chatId exists
   const {
@@ -68,6 +68,17 @@ const AiChatbotChatWindow = ({
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // ========== LOAD CHAT DATA WHEN chatId CHANGES ==========
+
+  useEffect(() => {
+    if (!chatId) {
+      // ✅ Clear messages when no chat is selected (New Chat)
+      setMessages([]);
+      setCurrentChatId(null);
+    } else {
+      setCurrentChatId(chatId);
+    }
+  }, [chatId]);
+
   useEffect(() => {
     if (chatId) {
       setCurrentChatId(chatId);
@@ -135,6 +146,7 @@ const AiChatbotChatWindow = ({
     // If no chat exists, create one
     if (!currentChatId) {
       try {
+        setIsTyping(true);
         const result = await createChat({
           title: question.slice(0, 50) + (question.length > 50 ? "..." : ""),
           initialMessage: question,
@@ -173,10 +185,13 @@ const AiChatbotChatWindow = ({
         };
         setMessages((prev) => [...prev, botMessage]);
         setInput("");
+        setIsTyping(false);
         return;
       } catch (error: any) {
         toast.error(error?.data?.message || "Failed to create chat");
         return;
+      } finally {
+        setIsTyping(false);
       }
     }
 
@@ -352,7 +367,7 @@ const AiChatbotChatWindow = ({
   return (
     <main className="flex-1 flex flex-col relative rounded-3xl bg-[#fafafa] overflow-hidden text-[#1C2542] font-Manrope">
       {/* Header */}
-      <AiChatbotHeader chatTitle={chatData?.data?.title || "New Chat"} />
+      <AiChatbotHeader />
 
       {/* Scrollable Chat Area */}
       <div
@@ -383,7 +398,7 @@ const AiChatbotChatWindow = ({
           ) : (
             /* CHAT MESSAGES */
             <div className="max-w-[60%] mx-auto space-y-6">
-              {messages.map((msg, index) => {
+              {messages?.map((msg, index) => {
                 const isLastBotMessage =
                   msg.sender === "bot" &&
                   index === messages.length - 1 &&
@@ -453,20 +468,9 @@ const AiChatbotChatWindow = ({
                                             {source.title || "Source"}
                                           </p>
                                           <p className="text-xs text-neutral-60 mt-0.5">
-                                            {source.category || "General"} •
-                                            <span className="ml-1">
-                                              {source.source || "Unknown"}
-                                            </span>
+                                            {source.category || "General"}
                                           </p>
                                         </div>
-                                        {source.relevanceScore && (
-                                          <span className="text-xs bg-primary-10/10 text-primary-10 px-2 py-0.5 rounded-full whitespace-nowrap ml-2">
-                                            {(
-                                              source.relevanceScore * 100
-                                            ).toFixed(0)}
-                                            %
-                                          </span>
-                                        )}
                                       </div>
                                       <p className="text-xs text-neutral-50 mt-1.5 line-clamp-2">
                                         {source.content?.slice(0, 150)}...
@@ -605,13 +609,17 @@ const AiChatbotChatWindow = ({
           <button
             type="submit"
             disabled={!input.trim() || isLoading}
-            className={`p-3 md:p-4 rounded-full transition-all shadow-lg ${
+            className={`p-3 md:p-4 rounded-full transition-all shadow-lg flex items-center justify-center ${
               input.trim() && !isLoading
                 ? "bg-[#D9A241] text-white hover:scale-105 active:scale-95 shadow-orange-200"
                 : "bg-slate-100 text-slate-300 cursor-not-allowed shadow-none"
             }`}
           >
-            <BiSend size={24} />
+            {isLoading ? (
+              <div className="w-5 h-5 border-2 border-primary-10 border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <BiSend size={24} />
+            )}
           </button>
         </form>
         <p className="text-center text-[10px] tracking-[0.2em] text-neutral-50 mt-5 font-bold opacity-60">

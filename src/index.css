@@ -208,3 +208,70 @@ button:disabled {
   scrollbar-width: thin;
   scrollbar-color: #ccced1 #F3F4F6;
 }
+
+
+
+/* ========================================
+   AI CHATBOT SIDEBAR SCROLLBAR
+   Professional Minimalist Design
+   ======================================== */
+
+.ai-chatbot-sidebar-scrollbar {
+  /* For Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #D1D5DB transparent;
+}
+
+.ai-chatbot-sidebar-scrollbar::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+.ai-chatbot-sidebar-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.ai-chatbot-sidebar-scrollbar::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.ai-chatbot-sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #9ca3afba;
+}
+
+/* Hide scrollbar when not hovering (cleaner look) */
+.ai-chatbot-sidebar-scrollbar:not(:hover)::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+.ai-chatbot-sidebar-scrollbar:hover::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+}
+
+/* Active/Scrolling state */
+.ai-chatbot-sidebar-scrollbar:active::-webkit-scrollbar-thumb {
+  background: #9CA3AF;
+}
+
+/* Firefox */
+.ai-chatbot-sidebar-scrollbar {
+  scrollbar-color: #6e7074 transparent;
+  scrollbar-width: thin;
+}
+
+/* For Edge */
+.ai-chatbot-sidebar-scrollbar::-ms-scrollbar {
+  width: 3px;
+}
+
+.ai-chatbot-sidebar-scrollbar::-ms-scrollbar-track {
+  background: transparent;
+}
+
+.ai-chatbot-sidebar-scrollbar::-ms-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 10px;
+}

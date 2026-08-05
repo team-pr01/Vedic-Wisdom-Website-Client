@@ -9,6 +9,93 @@ const AiChatbotSidebar = () => {
   const pathname = useLocation().pathname;
   const { data } = useGetMyChatHistoryQuery({});
   const chats = data?.data?.chats || [];
+
+  // ========== GROUP CHATS BY DATE ==========
+  const groupChatsByDate = (chats: any[]) => {
+    const groups: { [key: string]: any[] } = {};
+
+    chats.forEach((chat) => {
+      const date = new Date(chat.createdAt);
+      const today = new Date();
+      const yesterday = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1);
+
+      let dateKey: string;
+
+      // Check if it's today
+      if (date.toDateString() === today.toDateString()) {
+        dateKey = "Today";
+      } 
+      // Check if it's yesterday
+      else if (date.toDateString() === yesterday.toDateString()) {
+        dateKey = "Yesterday";
+      } 
+      // Check if it's within the last 7 days
+      else {
+        const diffDays = Math.floor((today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+        if (diffDays < 7) {
+          // Get day name (Monday, Tuesday, etc.)
+          dateKey = date.toLocaleDateString('en-US', { weekday: 'long' });
+        } else {
+          // Format as "August 5, 2026"
+          dateKey = date.toLocaleDateString('en-US', { 
+            month: 'long', 
+            day: 'numeric', 
+            year: 'numeric' 
+          });
+        }
+      }
+
+      if (!groups[dateKey]) {
+        groups[dateKey] = [];
+      }
+      groups[dateKey].push(chat);
+    });
+
+    // Sort groups by date (newest first)
+    const dateOrder: { [key: string]: number } = {
+      'Today': 0,
+      'Yesterday': 1,
+    };
+
+    // Get sorted keys
+    const sortedKeys = Object.keys(groups).sort((a, b) => {
+      // If both are in dateOrder, use the order
+      if (dateOrder[a] !== undefined && dateOrder[b] !== undefined) {
+        return dateOrder[a] - dateOrder[b];
+      }
+      if (dateOrder[a] !== undefined) return -1;
+      if (dateOrder[b] !== undefined) return 1;
+
+      // For weekday names, sort by actual date
+      const dateA = groups[a][0]?.createdAt ? new Date(groups[a][0].createdAt) : new Date(0);
+      const dateB = groups[b][0]?.createdAt ? new Date(groups[b][0].createdAt) : new Date(0);
+      return dateB.getTime() - dateA.getTime();
+    });
+
+    return sortedKeys.map(key => ({
+      date: key,
+      chats: groups[key]
+    }));
+  };
+
+  const groupedChats = groupChatsByDate(chats);
+
+  // ========== FORMAT DATE HEADER ==========
+  const formatDateHeader = (dateKey: string): string => {
+    // If it's a day name (Monday, Tuesday, etc.)
+    const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    if (dayNames.includes(dateKey)) {
+      return dateKey;
+    }
+    // If it's "Today" or "Yesterday"
+    if (dateKey === 'Today' || dateKey === 'Yesterday') {
+      return dateKey;
+    }
+    // If it's a formatted date like "August 5, 2026"
+    return dateKey;
+  };
+
   return (
     <aside className="w-72 flex flex-col p-4 text-white">
       {/* Logo */}
@@ -17,7 +104,7 @@ const AiChatbotSidebar = () => {
       </Link>
 
       {/* Sidebar Navigation */}
-      <nav className="flex-1 space-y-1 overflow-y-auto custom-scrollbar mt-10">
+      <nav className="flex-1 space-y-1 overflow-y-auto ai-chatbot-sidebar-scrollbar mt-10">
         <Link
           to={"/ai/chat"}
           className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-neutral-91 rounded-full text-white font-medium mb-6"
@@ -26,22 +113,41 @@ const AiChatbotSidebar = () => {
           New Chat
         </Link>
 
-        {/* Recent History Section */}
-        <div className="mt-10 space-y-4 w-full">
-          <p className="text-neutral-60 text-xs font-bold px-3">
-            Recent History
-          </p>
-          <div className="flex flex-col">
-            {chats?.map((chat: any) => (
-              <Link
-                key={chat?._id}
-                to={`/ai/chat/${chat?._id}`}
-                className={`w-full text-left p-3 rounded-2xl transition-all text-sm border ${pathname === `/ai/chat/${chat?._id}` ? "bg-[#ffffff10] text-primary-20 border-neutral-50/50" : "text-neutral-60 border-transparent hover:bg-neutral-91"}`}
-              >
-                {chat?.title}
-              </Link>
-            ))}
-          </div>
+        {/* Recent History Section with Date Grouping */}
+        <div className="mt-10 space-y-6 w-full">
+          {groupedChats.length > 0 ? (
+            groupedChats.map((group) => (
+              <div key={group.date} className="space-y-2">
+                {/* Date Header */}
+                <p className="text-neutral-60 text-xs font-bold px-3">
+                  {formatDateHeader(group.date)}
+                </p>
+                
+                {/* Chats under this date */}
+                <div className="flex flex-col">
+                  {group.chats.map((chat: any) => (
+                    <Link
+                      key={chat?._id}
+                      to={`/ai/chat/${chat?._id}`}
+                      className={`w-full text-left px-3 py-2 rounded-2xl transition-all text-sm border ${
+                        pathname === `/ai/chat/${chat?._id}` 
+                          ? "bg-[#ffffff10] text-primary-20 border-neutral-50/50" 
+                          : "text-neutral-60 border-transparent hover:bg-neutral-91"
+                      }`}
+                    >
+                      {chat?.title?.length > 35 
+                        ? `${chat?.title?.slice(0, 35)}...` 
+                        : chat?.title}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-neutral-60 text-sm px-3 text-center py-8">
+              No chats yet. Start a new conversation!
+            </p>
+          )}
         </div>
       </nav>
 
@@ -78,9 +184,3 @@ const AiChatbotSidebar = () => {
 };
 
 export default AiChatbotSidebar;
-
-
-// 20 people in a day
-// 600 people in a month
-// 7300 people in a year
-// 
