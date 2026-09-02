@@ -12,12 +12,12 @@ import {
   LuBrain,
   LuGraduationCap,
   LuFolderOpen,
+  LuSettings,
 } from "react-icons/lu";
 
 import {
   MdOutlineHome,
   MdOutlineAudioFile,
-  MdOutlineWorkOutline,
   MdOutlinePerson,
 } from "react-icons/md";
 import { RiChatAi2Line } from "react-icons/ri";
@@ -96,11 +96,11 @@ export const sidebarLinks: DashboardLink[] = [
     icon: <LuShoppingBag className="w-5 h-5" />,
   },
 
-  {
-    label: "Yoga",
-    path: "/dashboard/yoga",
-    icon: <MdOutlineWorkOutline className="w-5 h-5" />,
-  },
+  // {
+  //   label: "Yoga",
+  //   path: "/dashboard/yoga",
+  //   icon: <MdOutlineWorkOutline className="w-5 h-5" />,
+  // },
   {
     label: "Learn & Explore",
     path: "/dashboard/learn-and-explore",
@@ -127,5 +127,10 @@ export const sidebarLinks: DashboardLink[] = [
         icon: <MdOutlineAudioFile className="w-5 h-5" />,
       },
     ],
+  },
+  {
+    label: "Settings",
+    path: "/dashboard/settings",
+    icon: <LuSettings className="w-5 h-5" />,
   },
 ];

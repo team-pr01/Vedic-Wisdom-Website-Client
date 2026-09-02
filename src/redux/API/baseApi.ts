@@ -12,6 +12,9 @@ const baseQuery = fetchBaseQuery({
   baseUrl: `${backendBaseUrl}/api/v1`,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
+    headers.set('Accept', 'application/json; charset=utf-8');
+    headers.set('Content-Type', 'application/json; charset=utf-8');
+
     const token = (getState() as RootState).auth.token;
 
     if (token) {

@@ -43,6 +43,7 @@ import AddTemple from "../pages/DashboardPages/Temple/AddTemple/AddTemple";
 import BookDetails from "../pages/DashboardPages/LearnAndExplore/BookDetails/BookDetails";
 import MyApplications from "../pages/DashboardPages/JobPortal/MyApplications/MyApplications";
 import AiChatbotLayout from "../layouts/AiChatbotLayout/AiChatbotLayout";
+import Settings from "../pages/DashboardPages/Settings/Settings";
 
 export const router = createBrowserRouter([
   {
@@ -227,6 +228,10 @@ export const router = createBrowserRouter([
       {
         path: "job-portal/employer/applications/:id",
         element: <AllApplications />,
+      },
+      {
+        path: "settings",
+        element: <Settings />,
       },
     ],
   },

@@ -13,6 +13,10 @@ export const chatApi = baseApi.injectEndpoints({
                 url: `/ai-chat`,
                 method: "POST",
                 body: data,
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Accept': 'application/json; charset=utf-8',
+                },
                 credentials: "include",
             }),
             invalidatesTags: ["aiChat"],
@@ -24,6 +28,9 @@ export const chatApi = baseApi.injectEndpoints({
                 url: `/ai-chat/my`,
                 method: "GET",
                 params,
+                headers: {
+                    'Accept': 'application/json; charset=utf-8',
+                },
                 credentials: "include",
             }),
             providesTags: ["aiChat"],
@@ -34,6 +41,9 @@ export const chatApi = baseApi.injectEndpoints({
             query: (chatId) => ({
                 url: `/ai-chat/${chatId}`,
                 method: "GET",
+                headers: {
+                    'Accept': 'application/json; charset=utf-8',
+                },
                 credentials: "include",
             }),
             providesTags: (result, error, id) => [{ type: "aiChat", id }],
@@ -78,6 +88,10 @@ export const chatApi = baseApi.injectEndpoints({
                 url: `/ai-chat/${chatId}/message`,
                 method: "POST",
                 body,
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Accept': 'application/json; charset=utf-8',
+                },
                 credentials: "include",
             }),
             invalidatesTags: (result) => [{ type: "aiChat", id: result?.chatId }],
@@ -89,6 +103,10 @@ export const chatApi = baseApi.injectEndpoints({
                 url: `/ai-chat/${chatId}/regenerate`,
                 method: "POST",
                 body: {},
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Accept': 'application/json; charset=utf-8',
+                },
                 credentials: "include",
             }),
             invalidatesTags: (result) => [{ type: "aiChat", id: result?.chatId }],

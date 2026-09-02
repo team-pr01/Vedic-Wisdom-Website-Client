@@ -57,6 +57,34 @@ const bookApi = baseApi.injectEndpoints({
       providesTags: ["book"],
     }),
 
+    getSingleVeda: builder.query({
+      query: ({
+        id,
+        field1,
+        field2,
+        field3,
+        field1Value,
+        field2Value,
+        field3Value,
+      }) => {
+        let url = `/book-text/filter?bookId=${id}`;
+
+        if (field1 && field1Value)
+          url += `&${field1}=${encodeURIComponent(field1Value)}`;
+        if (field2 && field2Value)
+          url += `&${field2}=${encodeURIComponent(field2Value)}`;
+        if (field3 && field3Value)
+          url += `&${field3}=${encodeURIComponent(field3Value)}`;
+
+        return {
+          url,
+          method: 'GET',
+          credentials: 'include',
+        };
+      },
+      providesTags: ['book'],
+    }),
+
     createBook: builder.mutation<any, any>({
       query: (data) => ({
         url: `/book/create-book`,
@@ -71,7 +99,7 @@ const bookApi = baseApi.injectEndpoints({
       any,
       { id: string }
     >({
-      query: ({id}) => ({
+      query: ({ id }) => ({
         url: `/book/delete/${id}`,
         method: "DELETE",
         credentials: "include",
@@ -94,6 +122,7 @@ const bookApi = baseApi.injectEndpoints({
 export const {
   useGetAllBooksQuery,
   useGetSingleBookQuery,
+  useGetSingleVedaQuery,
   useCreateBookMutation,
   useDeleteBookMutation,
   useUpdateBookMutation,

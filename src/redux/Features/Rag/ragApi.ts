@@ -8,6 +8,10 @@ const ragApi = baseApi.injectEndpoints({
                 url: `/vedic-knowledge/ask`,
                 method: "POST",
                 body: data,
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Accept': 'application/json; charset=utf-8',
+                },
                 credentials: "include",
             }),
             invalidatesTags: ["rag"],

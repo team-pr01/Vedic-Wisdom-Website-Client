@@ -34,6 +34,51 @@ interface Message {
   isRegenerated?: boolean;
 }
 
+const formatMarkdown = (text: string): string => {
+  if (!text) return text;
+
+  let formatted = text;
+
+  // Headers
+   formatted = formatted.replace(/^#### (.*$)/gim, '<h4 class="text-base font-semibold mt-3 mb-1.5">$1</h4>');
+  formatted = formatted.replace(/^### (.*$)/gim, '<h3 class="text-lg font-semibold mt-4 mb-2">$1</h3>');
+  formatted = formatted.replace(/^## (.*$)/gim, '<h2 class="text-xl font-semibold mt-5 mb-3">$1</h2>');
+  formatted = formatted.replace(/^# (.*$)/gim, '<h1 class="text-2xl font-bold mt-6 mb-4">$1</h1>');
+
+  // Bold
+  formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+  // Italic
+  formatted = formatted.replace(/\*(.*?)\*/g, '<em>$1</em>');
+
+  // Blockquotes
+  formatted = formatted.replace(/^> (.*$)/gim, '<blockquote class="border-l-4 border-primary-10 pl-4 my-2 italic">$1</blockquote>');
+
+  // Inline code
+  formatted = formatted.replace(/`(.*?)`/g, '<code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm font-mono">$1</code>');
+
+  // Bullet lists
+  formatted = formatted.replace(/^- (.*$)/gim, '<li>$1</li>');
+  formatted = formatted.replace(/^• (.*$)/gim, '<li>$1</li>');
+  
+  // Numbered lists
+  formatted = formatted.replace(/^\d+\. (.*$)/gim, '<li>$1</li>');
+
+  // Convert newlines to <br> for paragraphs (but not inside lists)
+  const parts = formatted.split('\n\n');
+  formatted = parts.map(p => {
+    if (p.includes('<li>')) {
+      return `<ul class="list-disc pl-5 my-2 space-y-1">${p}</ul>`;
+    }
+    if (p.includes('<h1') || p.includes('<h2') || p.includes('<h3') || p.includes('<blockquote')) {
+      return p;
+    }
+    return `<p class="leading-relaxed my-2">${p.replace(/\n/g, '<br />')}</p>`;
+  }).join('');
+
+  return formatted;
+};
+
 interface AiChatbotChatWindowProps {
   chatId?: string; // ✅ Get chatId from URL params
   onChatCreated?: (chatId: string) => void; // ✅ Callback when new chat is created
@@ -210,7 +255,6 @@ const AiChatbotChatWindow = ({
       const response = await sendMessage({
         chatId: currentChatId,
         message: question,
-        language: "en",
       }).unwrap();
 
       const botMessage: Message = {
@@ -398,193 +442,187 @@ const AiChatbotChatWindow = ({
           ) : (
             /* CHAT MESSAGES */
             <div className="max-w-[60%] mx-auto space-y-6">
-              {messages?.map((msg, index) => {
-                const isLastBotMessage =
-                  msg.sender === "bot" &&
-                  index === messages.length - 1 &&
-                  messages[messages.length - 1]?.sender === "bot";
+  {messages?.map((msg, index) => {
+    const isLastBotMessage =
+      msg.sender === "bot" &&
+      index === messages.length - 1 &&
+      messages[messages.length - 1]?.sender === "bot";
 
-                return (
-                  <motion.div
-                    key={msg.id}
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    layout
-                    className={`flex ${
-                      msg.sender === "user" ? "justify-end" : "justify-start"
-                    }`}
+    return (
+      <motion.div
+        key={msg.id}
+        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        layout
+        className={`flex ${
+          msg.sender === "user" ? "justify-end" : "justify-start"
+        }`}
+      >
+        <div className={`max-w-[85%] ${msg.sender === "user" ? "ml-auto" : "mr-auto"}`}>
+          {/* ========== MESSAGE BUBBLE ========== */}
+          <div
+            className={`px-5 py-3.5 rounded-3xl shadow-sm transition-all text-sm md:text-base ${
+              msg.sender === "user"
+                ? "bg-[#F3E8D2] text-slate-800 rounded-tr-none border border-[#E8D5B5]"
+                : "bg-white text-slate-700 rounded-tl-none border border-slate-100"
+            }`}
+          >
+            {/* ✅ Format message with proper markdown/HTML */}
+            <div 
+  className="leading-relaxed"
+  dangerouslySetInnerHTML={{ __html: formatMarkdown(msg.text) }}
+/>
+            
+            {msg.isRegenerated && msg.sender === "bot" && (
+              <span className="text-xs text-primary-10 mt-1 block">
+                ✨ Regenerated
+              </span>
+            )}
+          </div>
+
+          {/* ========== BOT MESSAGE META INFO ========== */}
+          {msg.sender === "bot" && (
+            <div className="mt-2 space-y-2">
+              {/* Sources */}
+              {msg.sources && msg.sources.length > 0 && (
+                <div className="bg-neutral-10/5 rounded-xl border border-neutral-20 overflow-hidden">
+                  <button
+                    onClick={() => toggleSources(msg.id)}
+                    className="w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-neutral-10/10 transition-colors"
                   >
-                    <div className="max-w-full">
-                      {/* Message Bubble */}
-                      <div
-                        className={`px-5 py-3.5 rounded-3xl shadow-sm transition-all text-sm md:text-base ${
-                          msg.sender === "user"
-                            ? "bg-[#F3E8D2] text-slate-800 rounded-tr-none border border-[#E8D5B5]"
-                            : "bg-white text-slate-700 rounded-tl-none border border-slate-100"
-                        }`}
-                      >
-                        <p className="leading-relaxed whitespace-pre-wrap">
-                          {msg.text}
-                        </p>
-                        {msg.isRegenerated && msg.sender === "bot" && (
-                          <span className="text-xs text-primary-10 mt-1 block">
-                            ✨ Regenerated
-                          </span>
-                        )}
-                      </div>
+                    <div className="flex items-center gap-2">
+                      <FaBookOpen className="text-primary-10 text-sm" />
+                      <span className="text-sm font-medium text-neutral-90">
+                        View Sources ({msg.sources.length})
+                      </span>
+                    </div>
+                    {expandedSources === msg.id ? (
+                      <FaChevronUp className="text-neutral-40" />
+                    ) : (
+                      <FaChevronDown className="text-neutral-40" />
+                    )}
+                  </button>
 
-                      {/* Bot Message Meta Info */}
-                      {msg.sender === "bot" && (
-                        <div className="mt-2 space-y-2">
-                          {msg.sources && msg.sources.length > 0 && (
-                            <div className="bg-neutral-10/5 rounded-xl border border-neutral-20 overflow-hidden">
-                              <button
-                                onClick={() => toggleSources(msg.id)}
-                                className="w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-neutral-10/10 transition-colors"
-                              >
-                                <div className="flex items-center gap-2">
-                                  <FaBookOpen className="text-primary-10 text-sm" />
-                                  <span className="text-sm font-medium text-neutral-90">
-                                    View Sources ({msg.sources.length})
-                                  </span>
-                                </div>
-                                {expandedSources === msg.id ? (
-                                  <FaChevronUp className="text-neutral-40" />
-                                ) : (
-                                  <FaChevronDown className="text-neutral-40" />
-                                )}
-                              </button>
-
-                              {expandedSources === msg.id && (
-                                <div className="px-4 pb-3 space-y-2">
-                                  {msg.sources.map((source, idx) => (
-                                    <div
-                                      key={idx}
-                                      className="bg-white rounded-lg p-3 border border-neutral-20 hover:shadow-sm transition-shadow"
-                                    >
-                                      <div className="flex items-start justify-between">
-                                        <div className="flex-1">
-                                          <p className="text-sm font-medium text-neutral-90">
-                                            {source.title || "Source"}
-                                          </p>
-                                          <p className="text-xs text-neutral-60 mt-0.5">
-                                            {source.category || "General"}
-                                          </p>
-                                        </div>
-                                      </div>
-                                      <p className="text-xs text-neutral-50 mt-1.5 line-clamp-2">
-                                        {source.content?.slice(0, 150)}...
-                                      </p>
-                                      <a
-                                        href={source?.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-xs text-primary-10 hover:underline mt-1.5 flex items-center gap-1"
-                                      >
-                                        View Source
-                                        <FaExternalLinkAlt className="text-[10px]" />
-                                      </a>
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                          )}
-
-                          <div className="flex items-center gap-4 text-xs text-neutral-40 px-1 flex-wrap">
-                            {msg.processingTime && (
-                              <span className="flex items-center gap-1">
-                                <img src={ICONS.time} alt="" className="w-4" />
-                                {formatTime(msg.processingTime)}
-                              </span>
-                            )}
-
-                            <button
-                              onClick={() => handleCopy(msg.text, msg.id)}
-                              className="flex items-center gap-1 hover:text-primary-10 transition-colors"
-                              title="Copy response"
-                            >
-                              <img src={ICONS.copy} alt="" className="w-4" />
-                              <span className="hidden sm:inline">
-                                {copiedId === msg.id ? "Copied" : "Copy"}
-                              </span>
-                            </button>
-
-                            {/* Regenerate Button */}
-                            {isLastBotMessage && (
-                              <button
-                                onClick={() => handleRegenerate(msg.id)}
-                                disabled={isLoading}
-                                className={`flex items-center gap-1 hover:text-primary-10 transition-colors ${
-                                  isRegenerating
-                                    ? "opacity-50 cursor-not-allowed"
-                                    : ""
-                                }`}
-                                title="Regenerate response"
-                              >
-                                <img
-                                  src={ICONS.resetGray}
-                                  alt=""
-                                  className="w-4"
-                                />
-                                <span className="hidden sm:inline">
-                                  {isRegenerating
-                                    ? "Regenerating..."
-                                    : "Regenerate"}
-                                </span>
-                              </button>
-                            )}
-                            <div className="flex items-center">
-                              <button
-                                onClick={() => handleLike(msg.id)}
-                                className={`p-1.5 rounded-lg transition-all duration-200 ${
-                                  msg.liked
-                                    ? "bg-primary-10 text-white"
-                                    : "text-neutral-40 hover:bg-neutral-10/10"
-                                }`}
-                                title="Like"
-                              >
-                                <img src={ICONS.like} alt="" className="w-4" />
-                              </button>
-                              <button
-                                onClick={() => handleDislike(msg.id)}
-                                className={`p-1.5 rounded-lg transition-all duration-200 ${
-                                  msg.disliked
-                                    ? "bg-red-500 text-white"
-                                    : "text-neutral-40 hover:bg-neutral-10/10"
-                                }`}
-                                title="Dislike"
-                              >
-                                <img
-                                  src={ICONS.dislike}
-                                  alt=""
-                                  className="w-4"
-                                />
-                              </button>
+                  {expandedSources === msg.id && (
+                    <div className="px-4 pb-3 space-y-2">
+                      {msg.sources.map((source, idx) => (
+                        <div
+                          key={idx}
+                          className="bg-white rounded-lg p-3 border border-neutral-20 hover:shadow-sm transition-shadow"
+                        >
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <p className="text-sm font-medium text-neutral-90">
+                                {source.title || "Source"}
+                              </p>
+                              <p className="text-xs text-neutral-60 mt-0.5">
+                                {source.category || "General"}
+                              </p>
                             </div>
                           </div>
+                          {source.url && (
+                            <a
+                              href={source.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs text-primary-10 hover:underline mt-1.5 flex items-center gap-1"
+                            >
+                              View Source
+                              <FaExternalLinkAlt className="text-[10px]" />
+                            </a>
+                          )}
                         </div>
-                      )}
+                      ))}
                     </div>
-                  </motion.div>
-                );
-              })}
-
-              {/* Typing Indicator */}
-              {isTyping && (
-                <motion.div
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex justify-start"
-                >
-                  <div className="bg-white px-5 py-3 rounded-3xl rounded-tl-none border border-slate-100 shadow-sm flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
-                    <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
-                    <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
-                  </div>
-                </motion.div>
+                  )}
+                </div>
               )}
+
+              {/* Actions */}
+              <div className="flex items-center gap-4 text-xs text-neutral-40 px-1 flex-wrap">
+                {msg.processingTime && (
+                  <span className="flex items-center gap-1">
+                    <img src={ICONS.time} alt="" className="w-4" />
+                    {formatTime(msg.processingTime)}
+                  </span>
+                )}
+
+                <button
+                  onClick={() => handleCopy(msg.text, msg.id)}
+                  className="flex items-center gap-1 hover:text-primary-10 transition-colors"
+                  title="Copy response"
+                >
+                  <img src={ICONS.copy} alt="" className="w-4" />
+                  <span className="hidden sm:inline">
+                    {copiedId === msg.id ? "Copied" : "Copy"}
+                  </span>
+                </button>
+
+                {/* Regenerate Button */}
+                {isLastBotMessage && (
+                  <button
+                    onClick={() => handleRegenerate(msg.id)}
+                    disabled={isLoading}
+                    className={`flex items-center gap-1 hover:text-primary-10 transition-colors ${
+                      isRegenerating ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                    title="Regenerate response"
+                  >
+                    <img src={ICONS.resetGray} alt="" className="w-4" />
+                    <span className="hidden sm:inline">
+                      {isRegenerating ? "Regenerating..." : "Regenerate"}
+                    </span>
+                  </button>
+                )}
+
+                {/* Like / Dislike */}
+                <div className="flex items-center">
+                  <button
+                    onClick={() => handleLike(msg.id)}
+                    className={`p-1.5 rounded-lg transition-all duration-200 ${
+                      msg.liked
+                        ? "bg-primary-10 text-white"
+                        : "text-neutral-40 hover:bg-neutral-10/10"
+                    }`}
+                    title="Like"
+                  >
+                    <img src={ICONS.like} alt="" className="w-4" />
+                  </button>
+                  <button
+                    onClick={() => handleDislike(msg.id)}
+                    className={`p-1.5 rounded-lg transition-all duration-200 ${
+                      msg.disliked
+                        ? "bg-red-500 text-white"
+                        : "text-neutral-40 hover:bg-neutral-10/10"
+                    }`}
+                    title="Dislike"
+                  >
+                    <img src={ICONS.dislike} alt="" className="w-4" />
+                  </button>
+                </div>
+              </div>
             </div>
+          )}
+        </div>
+      </motion.div>
+    );
+  })}
+
+  {/* Typing Indicator */}
+  {isTyping && (
+    <motion.div
+      initial={{ opacity: 0, y: 5 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex justify-start"
+    >
+      <div className="bg-white px-5 py-3 rounded-3xl rounded-tl-none border border-slate-100 shadow-sm flex items-center gap-1">
+        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+        <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
+      </div>
+    </motion.div>
+  )}
+</div>
           )}
         </AnimatePresence>
       </div>

@@ -97,7 +97,7 @@ const AiChatbotSidebar = () => {
   };
 
   return (
-    <aside className="w-72 flex flex-col p-4 text-white">
+    <aside className="hidden w-72 md:flex flex-col p-4 text-white">
       {/* Logo */}
       <Link to="/" className="bg-white rounded-2xl p-2">
         <img src={IMAGES.logo} alt="" className="mb-1" />
