@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, type ReactNode } from "react";
 import { FaUserEdit, FaEnvelope, FaLock, FaWhatsapp } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import DashboardHeading from "../../../components/Reusable/DashboardHeading/DashboardHeading";
@@ -7,7 +7,7 @@ import SettingItem from "../../../components/Dashboard/SettingsPage/SettingItem/
 
 type TSettingItemType = {
   id: string | number;
-  icon: React.ReactNode;
+  icon: ReactNode;
   title: string;
   description: string;
   onClick: () => void;
@@ -38,7 +38,7 @@ const Settings: React.FC = () => {
       title: "Change Personal Info",
       description: "Update your name, email, and phone number",
       onClick: () => {
-        navigate("/profile");
+        navigate("/dashboard/edit-profile");
       },
       hasAction: true,
       actionLabel: "Edit",
@@ -76,17 +76,14 @@ const Settings: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-neutral-86 p-6">
-      {/* Header */}
-      <div className="max-w-4xl mx-auto mb-8">
-        <DashboardHeading
-          title="Settings"
-          description="Manage your account settings and preferences"
-        />
-      </div>
+    <div className="min-h-screen max-w-4xl mx-auto">
+      <DashboardHeading
+        title="Settings"
+        description="Manage your account settings and preferences"
+      />
 
       {/* Settings Grid */}
-      <div className="max-w-4xl mx-auto space-y-4">
+      <div className="max-w-4xl mx-auto space-y-4 mt-8">
         {settingsItems.map((item) => (
           <SettingItem
             key={item.id}

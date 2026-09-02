@@ -149,11 +149,13 @@ const MyProfile = () => {
             </div>
           </div>
 
-          <Button
-            leftIcon={ICONS.editProfile}
-            label="Edit Profile"
-            className="shrink-0"
-          />
+          <Link to="/dashboard/edit-profile">
+            <Button
+              leftIcon={ICONS.editProfile}
+              label="Edit Profile"
+              className="shrink-0"
+            />
+          </Link>
         </div>
 
         <div className="border-t border-neutral-50/20 my-4" />

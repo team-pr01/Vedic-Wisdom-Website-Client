@@ -44,6 +44,7 @@ import BookDetails from "../pages/DashboardPages/LearnAndExplore/BookDetails/Boo
 import MyApplications from "../pages/DashboardPages/JobPortal/MyApplications/MyApplications";
 import AiChatbotLayout from "../layouts/AiChatbotLayout/AiChatbotLayout";
 import Settings from "../pages/DashboardPages/Settings/Settings";
+import EditProfile from "../pages/DashboardPages/MyProfile/EditProfile/EditProfile";
 
 export const router = createBrowserRouter([
   {
@@ -100,6 +101,10 @@ export const router = createBrowserRouter([
       {
         path: "my-profile",
         element: <MyProfile />,
+      },
+      {
+        path: "edit-profile",
+        element: <EditProfile />,
       },
       {
         path: "my-referrals",
