@@ -5,34 +5,38 @@ import { baseApi } from "../../API/baseApi";
 
 export const chatApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        // ========== CHAT CRUD ==========
 
-        // Create new chat
-        createChat: builder.mutation<any, { title?: string; initialMessage?: string; category?: string }>({
-            query: (data) => ({
-                url: `/ai-chat`,
-                method: "POST",
-                body: data,
-                headers: {
-                    'Content-Type': 'application/json; charset=utf-8',
-                    'Accept': 'application/json; charset=utf-8',
-                },
-                credentials: "include",
-            }),
-            invalidatesTags: ["aiChat"],
-        }),
+        getMyChatHistory: builder.query({
+            query: ({
+                keyword,
+                limit,
+                page,
+                skip,
+            }: {
+                keyword?: string;
+                limit?: number;
+                page?: number;
+                skip?: number;
+            } = {}) => {
+                const params = new URLSearchParams();
 
-        // Get all user chats
-        getMyChatHistory: builder.query<any, { page?: number; limit?: number; search?: string; category?: string; sortBy?: string }>({
-            query: (params) => ({
-                url: `/ai-chat/my`,
-                method: "GET",
-                params,
-                headers: {
-                    'Accept': 'application/json; charset=utf-8',
-                },
-                credentials: "include",
-            }),
+                // Handle keyword - skip if "All"
+                if (keyword) {
+                    params.append("keyword", keyword);
+                }
+                if (typeof limit === "number") params.append("limit", limit.toString());
+                if (typeof page === "number") params.append("page", page.toString());
+                if (typeof skip === "number") params.append("skip", skip.toString());
+
+                return {
+                    url: `/ai-chat/my?${params.toString()}`,
+                    method: "GET",
+                    headers: {
+                        'Accept': 'application/json; charset=utf-8',
+                    },
+                    credentials: "include",
+                };
+            },
             providesTags: ["aiChat"],
         }),
 
@@ -46,7 +50,7 @@ export const chatApi = baseApi.injectEndpoints({
                 },
                 credentials: "include",
             }),
-            providesTags: (result, error, id) => [{ type: "aiChat", id }],
+            providesTags: ["aiChat"],
         }),
 
         // Update chat title
@@ -83,11 +87,11 @@ export const chatApi = baseApi.injectEndpoints({
         // ========== CHAT MESSAGING ==========
 
         // Send message in chat
-        sendMessage: builder.mutation<any, { chatId: string; message: string; language?: string; category?: string }>({
-            query: ({ chatId, ...body }) => ({
-                url: `/ai-chat/${chatId}/message`,
+        sendMessage: builder.mutation<any, any>({
+            query: (data) => ({
+                url: `/ai-chat/ask`,
                 method: "POST",
-                body,
+                body: data,
                 headers: {
                     'Content-Type': 'application/json; charset=utf-8',
                     'Accept': 'application/json; charset=utf-8',
@@ -98,29 +102,28 @@ export const chatApi = baseApi.injectEndpoints({
         }),
 
         // Regenerate last message
-        regenerateMessage: builder.mutation<any, { chatId: string }>({
-            query: ({ chatId }) => ({
-                url: `/ai-chat/${chatId}/regenerate`,
-                method: "POST",
-                body: {},
-                headers: {
-                    'Content-Type': 'application/json; charset=utf-8',
-                    'Accept': 'application/json; charset=utf-8',
-                },
-                credentials: "include",
-            }),
-            invalidatesTags: (result) => [{ type: "aiChat", id: result?.chatId }],
-        }),
+        // regenerateMessage: builder.mutation<any, { chatId: string }>({
+        //     query: ({ chatId }) => ({
+        //         url: `/ai-chat/${chatId}/regenerate`,
+        //         method: "POST",
+        //         body: {},
+        //         headers: {
+        //             'Content-Type': 'application/json; charset=utf-8',
+        //             'Accept': 'application/json; charset=utf-8',
+        //         },
+        //         credentials: "include",
+        //     }),
+        //     invalidatesTags: (result) => [{ type: "aiChat", id: result?.chatId }],
+        // }),
     }),
 });
 
 export const {
-    useCreateChatMutation,
     useGetMyChatHistoryQuery,
     useGetChatByIdQuery,
     useUpdateChatTitleMutation,
     useDeleteChatMutation,
     useDeleteAllChatsMutation,
     useSendMessageMutation,
-    useRegenerateMessageMutation,
+    // useRegenerateMessageMutation,
 } = chatApi;

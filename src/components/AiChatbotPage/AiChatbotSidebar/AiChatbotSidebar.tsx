@@ -8,7 +8,7 @@ import { useGetMyChatHistoryQuery } from "../../../redux/Features/Rag/aiChatApi"
 const AiChatbotSidebar = () => {
   const pathname = useLocation().pathname;
   const { data } = useGetMyChatHistoryQuery({});
-  const chats = data?.data?.chats || [];
+  const chats = data?.data?.data || [];
 
   // ========== GROUP CHATS BY DATE ==========
   const groupChatsByDate = (chats: any[]) => {
