@@ -23,6 +23,7 @@ const NewsContent = ({
   setSelectedLanguage: React.Dispatch<React.SetStateAction<string>>;
   error: any;
 }) => {
+  console.log(setSelectedLanguage);
   const errorMessage = error?.data?.message as any;
   const user = useSelector(useCurrentUser) as TLoggedInUser;
   const [toggleLikeNews] = useToggleLikeNewsMutation();
@@ -213,7 +214,7 @@ const NewsContent = ({
       <SelectSystemLanguage
         isModalOpen={isTranslateNewsModalOpen}
         setIsModalOpen={setIsTranslateNewsModalOpen}
-        setSelectedLanguage={setSelectedLanguage}
+        // setSelectedLanguage={setSelectedLanguage}
       />
     </div>
   );

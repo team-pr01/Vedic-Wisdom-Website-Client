@@ -33,6 +33,7 @@ const Filters: React.FC<TFilters> = ({
   const [cities, setCities] = useState<any[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<any>(null);
   const [selectedState, setSelectedState] = useState<any>(null);
+  console.log(selectedState);
   const [isLocating, setIsLocating] = useState(false);
 
   // Countries

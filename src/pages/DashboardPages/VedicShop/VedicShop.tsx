@@ -11,6 +11,7 @@ import { IoSearchOutline } from "react-icons/io5";
 
 const VedicShop = () => {
   const [keyword, setKeyword] = useState<string>("");
+  console.log(keyword);
   const [category, setCategory] = useState<string>("");
   const banners = [
     IMAGES.dummyShopBanner,

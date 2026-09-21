@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   logout,
   setUser,
-  useCurrentUser,
 } from "../../../redux/Features/Auth/authSlice";
 import { IMAGES } from "../../../assets";
 import { sidebarLinks } from "./sidebarLinks";
@@ -22,7 +20,6 @@ export interface DashboardLink {
 }
 
 const Sidebar = () => {
-  const user = useSelector(useCurrentUser) as any;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();

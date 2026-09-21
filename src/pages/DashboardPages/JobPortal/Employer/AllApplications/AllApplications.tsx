@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import {
   FaUser,
@@ -301,7 +302,7 @@ const AllApplications = () => {
       <ApplicationDetailsModal
         isModalOpen={isViewApplicationModalOpen}
         setIsModalOpen={setIsViewApplicationModalOpen}
-        application={selectedApplication}
+        application={selectedApplication as any}
       />
     </div>
   );

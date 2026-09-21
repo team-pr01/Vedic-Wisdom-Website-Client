@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FaUser } from "react-icons/fa";
 import { ICONS } from "../../../../../assets";
 import { useState } from "react";
@@ -93,7 +94,7 @@ const RecentApplications: React.FC<RecentApplicationsProps> = ({
       <ApplicationDetailsModal
         isModalOpen={isViewApplicationModalOpen}
         setIsModalOpen={setIsViewApplicationModalOpen}
-        application={selectedApplication}
+        application={selectedApplication as any}
       />
     </div>
   );

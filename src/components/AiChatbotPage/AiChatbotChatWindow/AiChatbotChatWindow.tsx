@@ -242,7 +242,7 @@ const AiChatbotChatWindow = ({ chatId }: AiChatbotChatWindowProps) => {
         className="flex-1 overflow-y-auto px-4 md:px-10 py-8 no-scrollbar space-y-6 scroll-smooth bg-neutral-30"
       >
         <AnimatePresence mode="popLayout">
-          {isLoading ? (
+          {isChatLoading ? (
             /* LOADING SKELETON - Check first */
             <ChatMessagesSkeleton />
           ) : messages.length === 0 ? (

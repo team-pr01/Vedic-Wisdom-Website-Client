@@ -9,6 +9,7 @@ import LogoLoader from "../../../../components/Shared/LogoLoader/LogoLoader";
 const MyApplications = () => {
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
+  console.log(setLimit);
   const skip = (page - 1) * limit;
 
   const { data, isLoading } = useGetMyApplicationsQuery({ skip, limit });

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/immutability */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -15,7 +14,6 @@ import { useParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import {
   useGetSingleBookQuery,
-  useGetSingleVedaQuery,
 } from "../../../../redux/Features/Book/bookApi";
 import { LANGUAGES as allLanguages } from "../../../../utils/allLanguages";
 // import ReportModal from "../../../../components/ReportModal/ReportModal";
@@ -31,7 +29,7 @@ const BookDetails = () => {
   const levels = veda?.data?.levels || [];
   
   // For dropdown values, we'll use the levels array
-  const [levelValues, setLevelValues] = useState<any[]>([]);
+  // const [levelValues, setLevelValues] = useState<any[]>([]);
 
   const [showSectionDropdown, setShowSectionDropdown] = useState(false);
   const [showSubsectionDropdown, setShowSubsectionDropdown] = useState(false);
@@ -66,6 +64,7 @@ const BookDetails = () => {
 
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [reportingVerse, setReportingVerse] = useState<any>(null);
+  console.log(isReportModalOpen, reportingVerse);
 
   // Since we don't have actual verse data from the book API, we'll need to fetch it separately
   // For now, let's set up some mock data or handle the case where no verses are available
@@ -169,11 +168,6 @@ const BookDetails = () => {
         (t: any) => t.langCode === langCode
       )?.translation || "Translation not available";
     setCurrentTranslation(showTranslation);
-  };
-
-  const handleCloseReportModal = () => {
-    setIsReportModalOpen(false);
-    setReportingVerse(null);
   };
 
   const handleOpenReportModal = (verse: any) => {

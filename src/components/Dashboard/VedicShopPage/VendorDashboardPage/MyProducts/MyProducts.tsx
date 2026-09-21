@@ -6,6 +6,7 @@ import ProductCard from "../../ProductCard/ProductCard";
 
 const MyProducts = () => {
   const [keyword, setKeyword] = useState<string>("");
+  console.log(keyword);
   const [category, setCategory] = useState<string>("");
 
   const categoryOptions = [

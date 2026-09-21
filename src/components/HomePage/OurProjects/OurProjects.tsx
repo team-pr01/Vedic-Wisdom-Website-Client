@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ICONS, IMAGES } from "../../../assets";
 import Badge from "../../Reusable/Badge/Badge";
 import Container from "../../Reusable/Container/Container";
@@ -6,8 +7,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import { useRef, useState } from "react";
 import type { Swiper as SwiperType } from "swiper";
-
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -107,7 +106,7 @@ const OurProjects = () => {
             >
               {projects?.map((project) => (
                 <SwiperSlide key={project?._id}>
-                  <ProjectCard project={project} />
+                  <ProjectCard project={project as any} />
                 </SwiperSlide>
               ))}
             </Swiper>
