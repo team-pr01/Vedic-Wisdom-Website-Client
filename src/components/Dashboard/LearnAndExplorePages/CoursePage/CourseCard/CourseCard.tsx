@@ -1,5 +1,6 @@
 import { ICONS, IMAGES } from "../../../../../assets";
 import type { TCourse } from "../../../../../types/course.type";
+import { normalizeUrl } from "../../../../../utils/normalizeUrl";
 import Button from "../../../../Reusable/Button/Button";
 
 const CourseCard = ({ course }: { course: TCourse }) => {
@@ -13,7 +14,11 @@ const CourseCard = ({ course }: { course: TCourse }) => {
       <div className="p-5">
         <h4 className="text-neutral-90 font-bold">{course?.title}</h4>
 
-        <a href={course?.courseUrl} target="_blank">
+        <a
+          href={normalizeUrl(course?.courseUrl)}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <Button
             variant="secondary"
             label="View Details"

@@ -64,7 +64,7 @@ const VastuShastra = () => {
 
       {isLoading ? (
         <div className="grid grid-cols-4 gap-5">
-          {[1, 2, 3, 4]?.map((_, index) => (
+          {[1, 2, 3, 4,5]?.map((_, index) => (
             <VastuShastraVideoCardSkeleton key={index} />
           ))}
         </div>

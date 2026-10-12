@@ -1,6 +1,5 @@
 import { ICONS } from "../../../../assets";
 import type { TVastu } from "../../../../types/vastu.type";
-import Button from "../../../Reusable/Button/Button";
 
 const VastuShastraVideoCard = ({ vastu }: { vastu: TVastu }) => {
   return (
@@ -31,12 +30,6 @@ const VastuShastraVideoCard = ({ vastu }: { vastu: TVastu }) => {
             <p className="text-neutral-50 text-sm">{vastu?.category}</p>
           </div>
         </div>
-
-        <Button
-          variant="secondary"
-          label="Watch Video"
-          className="mt-4 w-full"
-        />
       </div>
     </div>
   );

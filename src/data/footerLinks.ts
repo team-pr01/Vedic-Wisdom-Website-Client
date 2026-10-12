@@ -50,8 +50,7 @@ export const footerLinks: FooterSection[] = [
         links: [
             { label: "Terms & Conditions", path: "/terms-and-conditions" },
             { label: "Privacy Policy", path: "/privacy-policy" },
-            { label: "Refund Policy", path: "/refund-policy" },
-            { label: "Disclaimer", path: "/disclaimer" }
+            { label: "Refund Policy", path: "/refund-policy" }
         ]
     }
 ];

@@ -1,4 +1,4 @@
-import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
 import { MdVerified } from "react-icons/md";
 import { FiClock } from "react-icons/fi";
 import { HiOutlineUserGroup } from "react-icons/hi";
@@ -12,26 +12,6 @@ const ConsultantCard = ({ consultant }: { consultant: TConsultant }) => {
     useState<boolean>(false);
   const [selectedConsultant, setSelectedConsultant] =
     useState<TConsultant | null>(null);
-  const renderStars = (rating: number) => {
-    const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(<FaStar key={`full-${i}`} className="text-yellow-400" />);
-    }
-
-    if (hasHalfStar) {
-      stars.push(<FaStarHalfAlt key="half" className="text-yellow-400" />);
-    }
-
-    const remainingStars = 5 - stars.length;
-    for (let i = 0; i < remainingStars; i++) {
-      stars.push(<FaRegStar key={`empty-${i}`} className="text-yellow-400" />);
-    }
-
-    return stars;
-  };
 
   return (
     <>
@@ -62,14 +42,25 @@ const ConsultantCard = ({ consultant }: { consultant: TConsultant }) => {
               <p className="text-primary-10 text-sm font-medium capitalize">
                 {consultant?.category} Expert
               </p>
-              <div className="flex items-center gap-1 mt-1">
-                <span className="text-sm font-semibold text-neutral-90">
-                  {consultant?.rating}
-                </span>
-                <div className="flex items-center gap-0.5">
-                  {renderStars(consultant?.rating)}
-                </div>
+              <div className="flex flex-wrap items-center gap-2 mt-3">
+                {consultant?.specialties?.map((speciality) => (
+                  <div
+                    key={speciality}
+                    className="px-2 py-1 rounded bg-primary-50 text-neutral-5 text-[10px] text-center"
+                  >
+                    <span>{speciality}</span>
+                  </div>
+                ))}
               </div>
+            </div>
+
+            <div className="flex items-center gap-1 mt-1">
+              <div className="flex items-center gap-0.5">
+                <FaStar className="text-yellow-400" />
+              </div>
+              <span className="text-sm font-semibold text-neutral-90">
+                {consultant?.rating}
+              </span>
             </div>
           </div>
 

@@ -11,19 +11,18 @@ import {
 } from "../../../../redux/Features/Auth/authSlice";
 import { useToggleLikeNewsMutation } from "../../../../redux/Features/News/newsApi";
 import { useState, useEffect } from "react";
-import SelectSystemLanguage from "../../../Shared/SelectSystemLanguage/SelectSystemLanguage";
 import { toast } from "react-hot-toast";
+import ChangeNewsLanguage from "../ChangeNewsLanguage/ChangeNewsLanguage";
 
 const NewsContent = ({
   news,
-  setSelectedLanguage,
+  setSelectedLanguageCode,
   error,
 }: {
   news: TNews;
-  setSelectedLanguage: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedLanguageCode: React.Dispatch<React.SetStateAction<string | null>>;
   error: any;
 }) => {
-  console.log(setSelectedLanguage);
   const errorMessage = error?.data?.message as any;
   const user = useSelector(useCurrentUser) as TLoggedInUser;
   const [toggleLikeNews] = useToggleLikeNewsMutation();
@@ -35,6 +34,7 @@ const NewsContent = ({
   const [isTranslateNewsModalOpen, setIsTranslateNewsModalOpen] =
     useState<boolean>(false);
   const [translationError, setTranslationError] = useState<string>("");
+ 
 
   // Handle translation error
   useEffect(() => {
@@ -211,10 +211,10 @@ const NewsContent = ({
         </div>
       )}
 
-      <SelectSystemLanguage
+      <ChangeNewsLanguage
         isModalOpen={isTranslateNewsModalOpen}
         setIsModalOpen={setIsTranslateNewsModalOpen}
-        // setSelectedLanguage={setSelectedLanguage}
+        setSelectedLanguageCode={setSelectedLanguageCode}
       />
     </div>
   );

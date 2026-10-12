@@ -12,17 +12,19 @@ import LogoLoader from "../../../components/Shared/LogoLoader/LogoLoader";
 
 const NewsDetails = () => {
   const { id } = useParams();
-  const [selectedLanguage, setSelectedLanguage] = useState<string>("en");
-  const { data, isLoading, isFetching, error } = useGetSingleNewsQuery({
+  const [selectedLanguageCode, setSelectedLanguageCode] = useState<
+    string | null
+  >("en");
+  const { data, isLoading, error } = useGetSingleNewsQuery({
     id,
-    languageCode: selectedLanguage,
+    languageCode: selectedLanguageCode,
   });
   const news = data?.data || {};
   const { data: trendingNews } = useGetAllTrendingNewsQuery({});
   const allTrendingNews =
     trendingNews?.data?.data?.filter((news: TNews) => news?._id !== id) || [];
 
-  if (isLoading || isFetching) {
+  if (isLoading) {
     return <LogoLoader />;
   }
   return (
@@ -47,7 +49,7 @@ const NewsDetails = () => {
         <div className="space-y-5 w-[60%]">
           <NewsContent
             news={news}
-            setSelectedLanguage={setSelectedLanguage}
+            setSelectedLanguageCode={setSelectedLanguageCode}
             error={error}
           />
         </div>

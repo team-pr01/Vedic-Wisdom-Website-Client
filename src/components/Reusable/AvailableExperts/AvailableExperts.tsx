@@ -22,7 +22,7 @@ const AvailableExperts = ({
           Available {areaOfExpertise} Experts
         </h4>
         <Link
-          to={"/dashboard/experts"}
+          to={"/dashboard/consultancy"}
           className="text-primary-70 flex items-center gap-2 hover:underline"
         >
           View All
