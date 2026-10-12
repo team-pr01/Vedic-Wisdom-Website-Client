@@ -21,13 +21,14 @@ import {
 } from "react-icons/fa";
 
 const MyProfile = () => {
-  const [isDepositCoinModalOpen, setIsDepositCoinModalOpen] = useState(false);
+  const [isDepositCoinModalOpen, setIsDepositCoinModalOpen] = useState<boolean>(false);
   const [isTranslateNewsModalOpen, setIsTranslateNewsModalOpen] =
-    useState(false);
+    useState<boolean>(false);
+    
   const [
     isDeleteAccountConfirmationModalOpen,
     setIsDeleteAccountConfirmationModalOpen,
-  ] = useState(false);
+  ] = useState<boolean>(false);
 
   const { data } = useGetMeQuery({});
   const myProfile = data?.data || {};
@@ -98,20 +99,21 @@ const MyProfile = () => {
     },
     {
       label: "Privacy Policy",
-      path: "/privacy-policy",
+      link: "/privacy-policy",
       icon: ICONS.privacyPolicy,
     },
     {
       label: "Terms and Conditions",
-      path: "/terms-and-conditions",
+      link: "/terms-and-conditions",
       icon: ICONS.termsAndConditions,
     },
     {
       label: "Account Settings",
-      path: "/dashboard/account-settings",
+      link: "/dashboard/settings",
       icon: ICONS.accountSettings,
     },
   ];
+
   return (
     <div className="font-Manrope">
       <h2 className="heading-dashboard">My Profile</h2>

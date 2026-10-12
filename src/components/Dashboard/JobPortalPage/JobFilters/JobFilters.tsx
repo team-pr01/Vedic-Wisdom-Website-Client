@@ -36,7 +36,7 @@ const JobFilters: React.FC<TJobFilters> = ({
   jobType = "all",
   mode = "all",
   experienceLevel = [],
-  jobCategory = [],
+  // jobCategory = [],
 }) => {
   // States for location hierarchy
   const [states, setStates] = useState<any[]>([]);
@@ -81,43 +81,43 @@ const JobFilters: React.FC<TJobFilters> = ({
   ];
 
   // Job Category Options
-  const jobCategoryOptions = [
-    { label: "Accounting & Finance", value: "accountingFinance" },
-    { label: "Administrative & Office", value: "administrativeOffice" },
-    { label: "Advertising & Marketing", value: "advertisingMarketing" },
-    { label: "Art & Creative", value: "artCreative" },
-    { label: "Banking & Financial Services", value: "bankingFinancial" },
-    { label: "Business Development", value: "businessDevelopment" },
-    { label: "Consultancy", value: "consultancy" },
-    { label: "Customer Service", value: "customerService" },
-    { label: "Data Science & Analytics", value: "dataScienceAnalytics" },
-    { label: "Education & Training", value: "educationTraining" },
-    { label: "Engineering", value: "engineering" },
-    { label: "Entertainment & Media", value: "entertainmentMedia" },
-    { label: "Government & Public Sector", value: "governmentPublic" },
-    { label: "Healthcare & Wellness", value: "healthcareWellness" },
-    { label: "Hospitality & Tourism", value: "hospitalityTourism" },
-    { label: "Human Resources", value: "humanResources" },
-    { label: "Information Technology", value: "informationTechnology" },
-    { label: "Legal & Compliance", value: "legalCompliance" },
-    { label: "Logistics & Supply Chain", value: "logisticsSupplyChain" },
-    { label: "Manufacturing", value: "manufacturing" },
-    { label: "Media & Communications", value: "mediaCommunications" },
-    { label: "Non-Profit & NGO", value: "nonProfitNgo" },
-    { label: "Project Management", value: "projectManagement" },
-    { label: "Real Estate", value: "realEstate" },
-    { label: "Research & Development", value: "researchDevelopment" },
-    { label: "Retail", value: "retail" },
-    { label: "Sales", value: "sales" },
-    { label: "Software Development", value: "softwareDevelopment" },
-    { label: "Sports & Fitness", value: "sportsFitness" },
-    { label: "Spiritual & Wellness", value: "spiritualWellness" },
-    { label: "Technology", value: "technology" },
-    { label: "Travel & Tourism", value: "travelTourism" },
-    { label: "UX/UI Design", value: "uxUiDesign" },
-    { label: "Writing & Editing", value: "writingEditing" },
-    { label: "Other", value: "other" },
-  ];
+  // const jobCategoryOptions = [
+  //   { label: "Accounting & Finance", value: "accountingFinance" },
+  //   { label: "Administrative & Office", value: "administrativeOffice" },
+  //   { label: "Advertising & Marketing", value: "advertisingMarketing" },
+  //   { label: "Art & Creative", value: "artCreative" },
+  //   { label: "Banking & Financial Services", value: "bankingFinancial" },
+  //   { label: "Business Development", value: "businessDevelopment" },
+  //   { label: "Consultancy", value: "consultancy" },
+  //   { label: "Customer Service", value: "customerService" },
+  //   { label: "Data Science & Analytics", value: "dataScienceAnalytics" },
+  //   { label: "Education & Training", value: "educationTraining" },
+  //   { label: "Engineering", value: "engineering" },
+  //   { label: "Entertainment & Media", value: "entertainmentMedia" },
+  //   { label: "Government & Public Sector", value: "governmentPublic" },
+  //   { label: "Healthcare & Wellness", value: "healthcareWellness" },
+  //   { label: "Hospitality & Tourism", value: "hospitalityTourism" },
+  //   { label: "Human Resources", value: "humanResources" },
+  //   { label: "Information Technology", value: "informationTechnology" },
+  //   { label: "Legal & Compliance", value: "legalCompliance" },
+  //   { label: "Logistics & Supply Chain", value: "logisticsSupplyChain" },
+  //   { label: "Manufacturing", value: "manufacturing" },
+  //   { label: "Media & Communications", value: "mediaCommunications" },
+  //   { label: "Non-Profit & NGO", value: "nonProfitNgo" },
+  //   { label: "Project Management", value: "projectManagement" },
+  //   { label: "Real Estate", value: "realEstate" },
+  //   { label: "Research & Development", value: "researchDevelopment" },
+  //   { label: "Retail", value: "retail" },
+  //   { label: "Sales", value: "sales" },
+  //   { label: "Software Development", value: "softwareDevelopment" },
+  //   { label: "Sports & Fitness", value: "sportsFitness" },
+  //   { label: "Spiritual & Wellness", value: "spiritualWellness" },
+  //   { label: "Technology", value: "technology" },
+  //   { label: "Travel & Tourism", value: "travelTourism" },
+  //   { label: "UX/UI Design", value: "uxUiDesign" },
+  //   { label: "Writing & Editing", value: "writingEditing" },
+  //   { label: "Other", value: "other" },
+  // ];
 
   // Handle country selection
   const handleCountrySelect = (selected: any) => {
@@ -165,13 +165,13 @@ const JobFilters: React.FC<TJobFilters> = ({
   };
 
   // Handle checkbox change for job category
-  const handleJobCategoryChange = (value: string) => {
-    const currentSelection = jobCategory || [];
-    const newSelection = currentSelection.includes(value)
-      ? currentSelection.filter((item: string) => item !== value)
-      : [...currentSelection, value];
-    setJobCategory(newSelection);
-  };
+  // const handleJobCategoryChange = (value: string) => {
+  //   const currentSelection = jobCategory || [];
+  //   const newSelection = currentSelection.includes(value)
+  //     ? currentSelection.filter((item: string) => item !== value)
+  //     : [...currentSelection, value];
+  //   setJobCategory(newSelection);
+  // };
 
   // State options
   const stateOptions = states.map((state) => ({
@@ -285,7 +285,7 @@ const JobFilters: React.FC<TJobFilters> = ({
         </div>
 
         {/* Job Category - Checkboxes */}
-        <div>
+        {/* <div>
           <label className="text-neutral-10 text-sm font-medium block mb-2">
             Job Category
           </label>
@@ -307,7 +307,7 @@ const JobFilters: React.FC<TJobFilters> = ({
               </label>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Location Filters */}
         <div className="border-t border-neutral-20 pt-4 mt-4">

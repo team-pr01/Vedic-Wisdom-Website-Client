@@ -23,10 +23,21 @@ const userApi = baseApi.injectEndpoints({
             invalidatesTags: ["user"],
         }),
 
+        deleteAccount: builder.mutation({
+            query: (data) => ({
+                url: `/user/delete-account`,
+                method: "PATCH",
+                body: data,
+                credentials: "include",
+            }),
+            invalidatesTags: ["user"],
+        }),
+
     }),
 });
 
 export const {
     useGetMeQuery,
-    useUpdateProfileMutation
+    useUpdateProfileMutation,
+    useDeleteAccountMutation
 } = userApi;

@@ -1,12 +1,22 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaCamera } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "react-phone-number-input/style.css";
 import PhoneInput, { parsePhoneNumber } from "react-phone-number-input";
+import toast from "react-hot-toast";
+
 import TextInput from "../../../../components/Reusable/TextInput/TextInput";
 import Button from "../../../../components/Reusable/Button/Button";
 import DashboardHeading from "../../../../components/Reusable/DashboardHeading/DashboardHeading";
+import {
+  useGetMeQuery,
+  useUpdateProfileMutation,
+} from "../../../../redux/Features/User/userApi";
+import LogoLoader from "../../../../components/Shared/LogoLoader/LogoLoader";
 
 type TEditProfileFormData = {
   fullName: string;
@@ -17,17 +27,19 @@ type TEditProfileFormData = {
   city: string;
   state: string;
   country: string;
-  zipCode: string;
+  pinCode: string;
 };
 
 const EditProfile: React.FC = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [phone, setPhone] = useState<string | undefined>("+1 234 567 890");
-  const [countryCode, setCountryCode] = useState<string>("1");
-  const [imagePreview, setImagePreview] = useState<string | null>(
-    "https://ui-avatars.com/api/?name=John+Doe&size=128&background=F2E4C9&color=785A00",
-  );
+  const { data, isLoading: isProfileLoading } = useGetMeQuery({});
+
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+
+  const [phone, setPhone] = useState<string | undefined>();
+  const [countryCode, setCountryCode] = useState("");
+  const [profilePicture, setProfilePicture] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const {
     register,
@@ -35,49 +47,108 @@ const EditProfile: React.FC = () => {
     handleSubmit,
     setValue,
     clearErrors,
+    reset,
   } = useForm<TEditProfileFormData>({
     defaultValues: {
-      fullName: "John Doe",
-      email: "john.doe@example.com",
-      phoneNumber: "+1 234 567 890",
-      countryCode: "1",
-      address: "123 Main Street",
-      city: "New York",
-      state: "NY",
-      country: "United States",
-      zipCode: "10001",
+      fullName: "",
+      email: "",
+      phoneNumber: "",
+      countryCode: "",
+      address: "",
+      city: "",
+      state: "",
+      country: "",
+      pinCode: "",
     },
   });
 
+  // Setting default values
+  useEffect(() => {
+    const myProfile = data?.data || {};
+    if (!myProfile) return;
+
+    reset({
+      fullName: myProfile.name || "",
+      email: myProfile.email || "",
+      phoneNumber: myProfile.phoneNumber || "",
+      countryCode: myProfile.countryCode || "",
+      address: myProfile.address || "",
+      city: myProfile.city || "",
+      state: myProfile.state || "",
+      country: myProfile.country || "",
+      pinCode: myProfile.pinCode || "",
+    });
+
+    // Construct the international number for PhoneInput.
+    const callingCode = myProfile.countryCode
+      ? `+${myProfile.countryCode.replace(/^\+/, "")}`
+      : "";
+
+    const phoneNumber = myProfile.phoneNumber || "";
+
+    setCountryCode(myProfile.countryCode || "");
+
+    setPhone(
+      phoneNumber.startsWith("+")
+        ? phoneNumber
+        : phoneNumber
+          ? `${callingCode} ${phoneNumber}`
+          : undefined,
+    );
+
+    setImagePreview(
+      myProfile.profilePicture ||
+        `https://ui-avatars.com/api/?name=${encodeURIComponent(
+          myProfile.name || "User",
+        )}&size=128&background=F2E4C9&color=785A00`,
+    );
+  }, [data?.data, reset]);
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select a valid image.");
+      e.target.value = "";
+      return;
     }
+
+    setProfilePicture(file);
+
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setImagePreview(reader.result as string);
+    };
+
+    reader.readAsDataURL(file);
   };
 
   const handlePhoneChange = (value: string | undefined) => {
     setPhone(value);
-    setValue("phoneNumber", value || "");
+    setValue("phoneNumber", value || "", {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
 
     if (value) {
-      try {
-        const parsed = parsePhoneNumber(value);
-        if (parsed) {
-          const code = parsed.countryCallingCode;
-          setCountryCode(code);
-          setValue("countryCode", code);
-        }
-      } catch (error) {
-        console.log("Error parsing phone number:", error);
+      const parsed = parsePhoneNumber(value);
+
+      if (parsed) {
+        const code = parsed.countryCallingCode;
+
+        setCountryCode(code);
+        setValue("countryCode", code, {
+          shouldDirty: true,
+        });
       }
     } else {
       setCountryCode("");
-      setValue("countryCode", "");
+      setValue("countryCode", "", {
+        shouldDirty: true,
+      });
     }
 
     if (value) {
@@ -85,22 +156,46 @@ const EditProfile: React.FC = () => {
     }
   };
 
-  const onSubmit = async (data: TEditProfileFormData) => {
-    setIsLoading(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("Profile updated:", {
-      ...data,
-      countryCode,
-      profileImage: imagePreview,
-    });
-    setIsLoading(false);
-    navigate("/settings");
+  const handleUpdateProfile = async (data: TEditProfileFormData) => {
+    try {
+      const formData = new FormData();
+
+      // Map frontend field names to backend schema fields.
+      formData.append("name", data.fullName.trim());
+      formData.append("email", data.email.trim());
+      formData.append("phoneNumber", data.phoneNumber);
+      formData.append("countryCode", countryCode);
+      formData.append("address", data.address.trim());
+      formData.append("city", data.city.trim());
+      formData.append("state", data.state.trim());
+      formData.append("country", data.country.trim());
+      formData.append("pinCode", data.pinCode.trim());
+
+      // Upload the actual image file, not the preview URL.
+      if (profilePicture) {
+        formData.append("file", profilePicture);
+      }
+
+      const response = await updateProfile(formData).unwrap();
+
+      toast.success(response?.message || "Profile updated successfully.");
+
+      navigate(-1);
+    } catch (error: any) {
+      const message =
+        error?.data?.message || error?.message || "Failed to update profile.";
+
+      toast.error(message);
+    }
   };
 
   const handleCancel = () => {
-    navigate("/settings");
+    navigate(-1);
   };
+
+  if (isProfileLoading) {
+    return <LogoLoader />;
+  }
 
   return (
     <div>
@@ -110,12 +205,11 @@ const EditProfile: React.FC = () => {
           description="Update your personal information"
         />
 
-        {/* Form */}
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(handleUpdateProfile)}
           className="p-8 border border-primary-50 bg-neutral-45 shadow-hero-user-community-box font-Manrope rounded-4xl mt-8"
         >
-          {/* Profile Picture Section */}
+          {/* Profile Picture */}
           <div className="flex flex-col items-center mb-8">
             <div className="relative">
               <div className="w-32 h-32 rounded-full bg-primary-50 border-4 border-primary-30 overflow-hidden flex items-center justify-center">
@@ -129,11 +223,13 @@ const EditProfile: React.FC = () => {
                   <FaCamera className="w-12 h-12 text-primary-30" />
                 )}
               </div>
+
               <label
                 htmlFor="profileImage"
                 className="absolute bottom-0 right-0 bg-primary-30 text-white p-2.5 rounded-full cursor-pointer hover:bg-primary-10 transition-colors shadow-button"
               >
                 <FaCamera className="w-4 h-4" />
+
                 <input
                   type="file"
                   id="profileImage"
@@ -143,13 +239,15 @@ const EditProfile: React.FC = () => {
                 />
               </label>
             </div>
+
             <p className="text-sm text-neutral-50 font-Manrope mt-3">
               Click the camera icon to change profile picture
             </p>
           </div>
 
+          {/* Other fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {/* Full Name */}
+            {/* Name */}
             <TextInput
               label="Full Name"
               placeholder="Enter your full name"
@@ -172,13 +270,15 @@ const EditProfile: React.FC = () => {
                   message: "Invalid email address",
                 },
               })}
+              isDisabled={true}
             />
 
-            {/* Phone Number */}
+            {/* Phone */}
             <div className="flex flex-col gap-1.5">
               <label className="text-neutral-40 text-sm font-medium">
                 Phone Number <span className="text-red-500">*</span>
               </label>
+
               <PhoneInput
                 international
                 defaultCountry="US"
@@ -188,8 +288,15 @@ const EditProfile: React.FC = () => {
                   errors.phoneNumber ? "border-red-500" : "border-neutral-55"
                 }`}
                 placeholder="Enter phone number"
-                required
               />
+
+              <input
+                type="hidden"
+                {...register("phoneNumber", {
+                  required: "Phone number is required",
+                })}
+              />
+
               {errors.phoneNumber && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.phoneNumber.message}
@@ -237,22 +344,18 @@ const EditProfile: React.FC = () => {
               })}
             />
 
-            {/* Zip Code */}
+            {/* Pin/Zip Code: not present in the supplied backend schema */}
             <TextInput
-              label="Zip Code"
-              placeholder="Enter your zip code"
-              error={errors.zipCode}
-              {...register("zipCode", {
-                required: "Zip code is required",
-                pattern: {
-                  value: /^[0-9]{5}(?:-[0-9]{4})?$/,
-                  message: "Invalid zip code format",
-                },
+              label="Pin/Zip Code"
+              placeholder="Enter your pin/zip code"
+              error={errors.pinCode}
+              {...register("pinCode", {
+                required: "Pin/Zip code is required",
               })}
             />
           </div>
 
-          {/* Action Buttons */}
+          {/* Actions */}
           <div className="flex justify-end gap-4 mt-8">
             <Button
               label="Cancel"
@@ -260,6 +363,7 @@ const EditProfile: React.FC = () => {
               onClick={handleCancel}
               variant="secondary"
             />
+
             <Button
               label="Save Changes"
               type="submit"

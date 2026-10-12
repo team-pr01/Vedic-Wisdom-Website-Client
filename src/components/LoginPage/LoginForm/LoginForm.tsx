@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../../redux/Features/Auth/authApi";
 import { setUser } from "../../../redux/Features/Auth/authSlice";
+import toast from "react-hot-toast";
 
 type TFormData = {
   email: string;
@@ -57,7 +58,7 @@ const LoginForm = () => {
         navigate("/dashboard");
       }
     } catch (error: any) {
-      console.log(error);
+      toast.error(error?.data?.message || "Login failed. Please try again.");
     }
   };
 

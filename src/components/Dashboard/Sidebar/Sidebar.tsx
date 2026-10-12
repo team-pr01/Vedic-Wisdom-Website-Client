@@ -29,7 +29,7 @@ const Sidebar = () => {
     dispatch(setUser({ user: null, token: null }));
     dispatch(logout());
     localStorage.clear();
-    navigate("/signin");
+    navigate("/login");
   };
 
   const toggleExpand = (label: string) => {

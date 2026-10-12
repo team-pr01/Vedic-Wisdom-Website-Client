@@ -62,7 +62,11 @@ const JobDetailsHeader = ({ job }: { job: TJob }) => {
         <span className="w-px h-4 bg-neutral-10" />
         <span className="flex items-center gap-1.5 capitalize">
           <FaBriefcase />
-          {jobType}
+          {jobType === "fullTime"
+            ? "Full Time"
+            : job?.jobType === "partTime"
+              ? "Part Time"
+              : job?.jobType}
         </span>
         <span className="w-px h-4 bg-neutral-10" />
         <p className="flex items-center gap-1.5">

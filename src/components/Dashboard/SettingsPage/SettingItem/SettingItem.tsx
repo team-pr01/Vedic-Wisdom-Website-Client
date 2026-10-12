@@ -1,77 +1,82 @@
-import React from "react";
-import { FaCheckCircle, FaChevronRight, FaPaperPlane } from "react-icons/fa";
+import type { ReactNode } from "react";
+import { FaChevronRight } from "react-icons/fa";
 
-type TSettingsItemProps = {
-  icon: React.ReactNode;
+type TSettingItemProps = {
+  icon: ReactNode;
   title: string;
   description: string;
-  onClick?: () => void;
-  actionLabel?: string;
+  onClick: () => void;
   hasAction?: boolean;
+  actionLabel?: string;
   status?: "pending" | "completed" | "default";
   badge?: string;
+  iconClassName?: string;
+  variant?: "default" | "danger";
 };
 
-const SettingItem: React.FC<TSettingsItemProps> = ({
+const SettingItem: React.FC<TSettingItemProps> = ({
   icon,
   title,
   description,
   onClick,
-  actionLabel = "Update",
-  hasAction = false,
-  status = "default",
+  hasAction,
+  actionLabel,
   badge,
+  iconClassName,
+  variant = "default",
 }) => {
-  const statusColors = {
-    pending: "text-accent-35 bg-accent-25",
-    completed: "text-green-600 bg-green-50",
-    default: "text-neutral-50 bg-neutral-20",
-  };
+  const isDanger = variant === "danger";
 
-  const statusIcons = {
-    pending: <FaPaperPlane className="w-3 h-3" />,
-    completed: <FaCheckCircle className="w-3 h-3" />,
-    default: null,
-  };
   return (
     <div
-      className="flex items-center justify-between p-5 bg-white rounded-xl border border-neutral-75 hover:shadow-md transition-all duration-200 cursor-pointer group"
       onClick={onClick}
+      className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all duration-300 ${
+        isDanger
+          ? "border-red-200 bg-red-50/50 hover:bg-red-50 hover:border-red-300"
+          : "border-neutral-20 bg-white hover:bg-neutral-10/5 hover:shadow-md"
+      }`}
     >
-      <div className="flex items-center gap-4 flex-1">
-        <div className="w-12 h-12 rounded-full bg-primary-50 flex items-center justify-center text-primary-30 group-hover:scale-110 transition-transform duration-200">
+      <div className="flex items-center gap-4">
+        <div
+          className={`p-3 rounded-xl ${
+            isDanger ? "bg-red-100" : "bg-primary-10/10"
+          } ${iconClassName || ""}`}
+        >
           {icon}
         </div>
-        <div className="flex-1">
+        <div>
           <div className="flex items-center gap-2">
-            <h3 className="font-Manrope font-semibold text-neutral-10 text-base">
+            <h4
+              className={`font-semibold ${
+                isDanger ? "text-red-600" : "text-neutral-90"
+              }`}
+            >
               {title}
-            </h3>
+            </h4>
             {badge && (
-              <span className="text-xs bg-primary-30 text-white px-2 py-0.5 rounded-full font-Manrope">
+              <span className="text-[10px] px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full font-medium">
                 {badge}
               </span>
             )}
           </div>
-          <p className="font-Manrope text-neutral-50 text-sm">{description}</p>
+          <p className="text-sm text-neutral-60 mt-0.5">{description}</p>
         </div>
       </div>
-      <div className="flex items-center gap-3">
-        {status !== "default" && (
+
+      {hasAction && (
+        <div className="flex items-center gap-2">
           <span
-            className={`px-2.5 py-1 rounded-full text-xs font-Manrope flex items-center gap-1.5 ${statusColors[status]}`}
+            className={`text-sm font-medium ${
+              isDanger ? "text-red-600" : "text-primary-10"
+            }`}
           >
-            {statusIcons[status]}
-            {status === "pending" ? "Pending" : "Completed"}
-          </span>
-        )}
-        {hasAction && (
-          <span className="text-primary-30 font-Manrope text-sm font-medium group-hover:underline">
             {actionLabel}
           </span>
-        )}
-        <FaChevronRight className="w-4 h-4 text-neutral-60 group-hover:text-primary-30 transition-colors" />
-      </div>
+          <FaChevronRight
+            className={`text-xs ${isDanger ? "text-red-400" : "text-neutral-40"}`}
+          />
+        </div>
+      )}
     </div>
   );
 };

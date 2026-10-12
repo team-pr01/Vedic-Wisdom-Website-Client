@@ -37,10 +37,20 @@ const jobApplicationApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["job", "application"],
         }),
+
+        withdrawApplication: builder.mutation<any, any>({
+            query: (id) => ({
+                url: `/application/withdraw/${id}`,
+                method: "PATCH",
+                credentials: "include",
+            }),
+            invalidatesTags: ["job", "application"],
+        }),
     }),
 });
 
 export const {
     useGetMyApplicationsQuery,
-    useApplyOnJobMutation
+    useApplyOnJobMutation,
+    useWithdrawApplicationMutation,
 } = jobApplicationApi;

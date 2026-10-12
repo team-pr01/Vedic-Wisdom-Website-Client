@@ -1,9 +1,10 @@
 import React, { useState, type ReactNode } from "react";
-import { FaUserEdit, FaEnvelope, FaLock, FaWhatsapp } from "react-icons/fa";
+import { FaUserEdit, FaEnvelope, FaLock, FaWhatsapp, FaTrashAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import DashboardHeading from "../../../components/Reusable/DashboardHeading/DashboardHeading";
 import ChangePassword from "../../../components/Dashboard/SettingsPage/ChangePassword/ChangePassword";
 import SettingItem from "../../../components/Dashboard/SettingsPage/SettingItem/SettingItem";
+import DeleteAccountConfirmation from "../../../components/Dashboard/MyProfilePage/DeleteAccountConfirmation/DeleteAccountConfirmation";
 
 type TSettingItemType = {
   id: string | number;
@@ -16,12 +17,18 @@ type TSettingItemType = {
   status?: "pending" | "completed" | "default";
   badge?: string;
   iconClassName?: string;
+  variant?: "default" | "danger";
 };
 
 const Settings: React.FC = () => {
   const navigate = useNavigate();
   const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
     useState<boolean>(false);
+
+  const [
+    isDeleteAccountConfirmationModalOpen,
+    setIsDeleteAccountConfirmationModalOpen,
+  ] = useState<boolean>(false);
 
   const handleWhatsApp = () => {
     window.open("https://wa.me/1234567890", "_blank");
@@ -34,7 +41,7 @@ const Settings: React.FC = () => {
   const settingsItems: TSettingItemType[] = [
     {
       id: 1,
-      icon: <FaUserEdit className="w-5 h-5" />,
+      icon: <FaUserEdit className="w-5 h-5 text-primary-10" />,
       title: "Change Personal Info",
       description: "Update your name, email, and phone number",
       onClick: () => {
@@ -46,7 +53,7 @@ const Settings: React.FC = () => {
     },
     {
       id: 2,
-      icon: <FaLock className="w-5 h-5" />,
+      icon: <FaLock className="w-5 h-5 text-primary-10" />,
       title: "Change Password",
       description: "Update your password to keep your account secure",
       onClick: () => setIsChangePasswordModalOpen(true),
@@ -56,7 +63,7 @@ const Settings: React.FC = () => {
     },
     {
       id: 3,
-      icon: <FaEnvelope className="w-5 h-5" />,
+      icon: <FaEnvelope className="w-5 h-5 text-primary-10" />,
       title: "Email Us",
       description: "Send us an email for support or inquiries",
       onClick: handleEmailUs,
@@ -72,6 +79,17 @@ const Settings: React.FC = () => {
       hasAction: true,
       actionLabel: "Chat",
       iconClassName: "text-green-500",
+    },
+    {
+      id: 5,
+      icon: <FaTrashAlt className="w-5 h-5 text-red-500" />,
+      title: "Delete Account",
+      description: "Permanently delete your account and all associated data",
+      onClick: () => setIsDeleteAccountConfirmationModalOpen(true),
+      hasAction: true,
+      actionLabel: "Delete",
+      iconClassName: "text-red-500",
+      variant: "danger",
     },
   ];
 
@@ -95,6 +113,8 @@ const Settings: React.FC = () => {
             actionLabel={item.actionLabel}
             status={item.status}
             badge={item.badge}
+            iconClassName={item.iconClassName}
+            variant={item.variant}
           />
         ))}
       </div>
@@ -103,6 +123,12 @@ const Settings: React.FC = () => {
       <ChangePassword
         isModalOpen={isChangePasswordModalOpen}
         setIsModalOpen={setIsChangePasswordModalOpen}
+      />
+
+      {/* Delete Account Confirmation Modal */}
+      <DeleteAccountConfirmation
+        isModalOpen={isDeleteAccountConfirmationModalOpen}
+        setIsModalOpen={setIsDeleteAccountConfirmationModalOpen}
       />
     </div>
   );

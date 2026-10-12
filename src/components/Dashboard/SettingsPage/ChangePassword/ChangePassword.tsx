@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from "react-hook-form";
 import Button from "../../../Reusable/Button/Button";
 import Modal from "../../../Reusable/Modal/Modal";
 import PasswordInput from "../../../Reusable/PasswordInput/PasswordInput";
 import { useState } from "react";
+import { useChangePasswordMutation } from "../../../../redux/Features/Auth/authApi";
+import toast from "react-hot-toast";
 
 type TFormData = {
   currentPassword: string;
@@ -19,6 +22,8 @@ const ChangePassword = ({
   isModalOpen,
   setIsModalOpen,
 }: ChangePasswordProps) => {
+  const [changePassword] = useChangePasswordMutation();
+
   const {
     register,
     formState: { errors },
@@ -58,25 +63,47 @@ const ChangePassword = ({
   const handleChangePassword = async (data: TFormData) => {
     setIsLoading(true);
     try {
-      // Add your API call here to change password
-      console.log("Password change data:", data);
+      const payload = {
+        currentPassword: data.currentPassword,
+        newPassword: data.newPassword,
+      };
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await changePassword(payload).unwrap();
 
-      // Reset form and close modal on success
-      reset();
-      setIsModalOpen(false);
+      if (response?.success) {
+        toast.success("Password changed successfully");
+        reset();
+        setIsModalOpen(false);
+      }
+    } catch (error: any) {
+      const errorMessage =
+        error?.data?.message || "Failed to change password";
 
-      // You can add a success toast/notification here
-      alert("Password changed successfully!");
-    } catch (error) {
-      console.error("Error changing password:", error);
-      // Handle error - you can set errors using setError
-      setError("currentPassword", {
-        type: "manual",
-        message: "Current password is incorrect",
-      });
+      // Check if error is about current password
+      if (
+        errorMessage.toLowerCase().includes("current") ||
+        errorMessage.toLowerCase().includes("incorrect") ||
+        errorMessage.toLowerCase().includes("wrong")
+      ) {
+        setError("currentPassword", {
+          type: "manual",
+          message: errorMessage,
+        });
+      } else if (
+        errorMessage.toLowerCase().includes("new") ||
+        errorMessage.toLowerCase().includes("same")
+      ) {
+        setError("newPassword", {
+          type: "manual",
+          message: errorMessage,
+        });
+      } else {
+        // Default to current password error
+        setError("currentPassword", {
+          type: "manual",
+          message: errorMessage,
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -115,6 +142,7 @@ const ChangePassword = ({
                 value: 8,
                 message: "Password must be at least 8 characters",
               },
+              onChange: () => clearErrors("currentPassword"),
             })}
             isPasswordVisible={isCurrentPasswordVisible}
             setIsPasswordVisible={setIsCurrentPasswordVisible}
@@ -136,6 +164,7 @@ const ChangePassword = ({
                 message:
                   "Password must contain at least one letter and one number",
               },
+              onChange: () => clearErrors("newPassword"),
             })}
             isPasswordVisible={isNewPasswordVisible}
             setIsPasswordVisible={setIsNewPasswordVisible}
@@ -149,6 +178,7 @@ const ChangePassword = ({
             {...register("confirmPassword", {
               required: "Please confirm your password",
               validate: validateConfirmPassword,
+              onChange: () => clearErrors("confirmPassword"),
             })}
             isPasswordVisible={isConfirmNewPasswordVisible}
             setIsPasswordVisible={setIsConfirmNewPasswordVisible}

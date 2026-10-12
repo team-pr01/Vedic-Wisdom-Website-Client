@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { FaUser, FaClock } from "react-icons/fa";
-import { useGetMyApplicationsQuery } from "../../../../redux/Features/Job/jobApplicationApi";
+import {
+  useGetMyApplicationsQuery,
+  useWithdrawApplicationMutation,
+} from "../../../../redux/Features/Job/jobApplicationApi";
 import { formatDate } from "../../../../utils/formatDate";
 import { Link } from "react-router-dom";
 import LogoLoader from "../../../../components/Shared/LogoLoader/LogoLoader";
@@ -12,9 +15,12 @@ const MyApplications = () => {
   console.log(setLimit);
   const skip = (page - 1) * limit;
 
+  const [withdrawApplication, { isLoading: isWithdrawing }] =
+    useWithdrawApplicationMutation();
   const { data, isLoading } = useGetMyApplicationsQuery({ skip, limit });
   const applications = data?.data?.applications || [];
   const meta = data?.data?.meta || {};
+  console.log(data);
 
   const getStatusConfig = (status: string) => {
     switch (status) {
@@ -74,8 +80,11 @@ const MyApplications = () => {
   };
 
   const handleWithdraw = (applicationId: string) => {
-    // Implement withdraw logic
-    console.log("Withdraw application:", applicationId);
+    try {
+      withdrawApplication(applicationId);
+    } catch (error) {
+      console.error("Error withdrawing application:", error);
+    }
   };
 
   const goToPage = (newPage: number) => {
@@ -91,8 +100,8 @@ const MyApplications = () => {
   return (
     <div>
       <h2 className="text-xl font-semibold text-neutral-10 mb-4">
-        My Applications ({meta?.total < 10 ? 0 : ""}
-        {meta?.total || 0})
+        My Applications ({meta?.filteredTotal < 10 ? 0 : ""}
+        {meta?.filteredTotal || 0})
       </h2>
 
       <div className="mt-4 bg-white border border-neutral-20 rounded-2xl overflow-hidden">
@@ -171,14 +180,13 @@ const MyApplications = () => {
                       </td>
                       <td className="px-4 py-4 text-right">
                         <div className="flex items-center justify-end gap-2">
-                          {isWithdrawable && (
-                            <button
-                              onClick={() => handleWithdraw(app._id)}
-                              className="px-3 py-1.5 font-medium text-accent-40 hover:bg-red-50 rounded-lg transition-colors"
-                            >
-                              Withdraw Application
-                            </button>
-                          )}
+                          <button
+                            onClick={() => handleWithdraw(app._id)}
+                            disabled={isWithdrawing || !isWithdrawable}
+                            className="px-3 py-1.5 font-medium text-accent-40 disabled:text-gray-400 hover:bg-red-50 disabled:bg-gray-100 rounded-lg transition-colors"
+                          >
+                            Withdraw Application
+                          </button>
                         </div>
                       </td>
                     </tr>
