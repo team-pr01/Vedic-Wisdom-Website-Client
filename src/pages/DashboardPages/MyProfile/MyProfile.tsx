@@ -21,10 +21,11 @@ import {
 } from "react-icons/fa";
 
 const MyProfile = () => {
-  const [isDepositCoinModalOpen, setIsDepositCoinModalOpen] = useState<boolean>(false);
+  const [isDepositCoinModalOpen, setIsDepositCoinModalOpen] =
+    useState<boolean>(false);
   const [isTranslateNewsModalOpen, setIsTranslateNewsModalOpen] =
     useState<boolean>(false);
-    
+
   const [
     isDeleteAccountConfirmationModalOpen,
     setIsDeleteAccountConfirmationModalOpen,
@@ -63,7 +64,7 @@ const MyProfile = () => {
   const generalLinks = [
     {
       label: "Referral List",
-      path: "/dashboard/referral-list",
+      link: `/dashboard/my-referrals?referralCode=${myProfile?.referralCode || ""}`,
       icon: ICONS.referralList,
     },
     {
