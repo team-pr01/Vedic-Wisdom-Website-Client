@@ -45,6 +45,9 @@ import MyApplications from "../pages/DashboardPages/JobPortal/MyApplications/MyA
 import AiChatbotLayout from "../layouts/AiChatbotLayout/AiChatbotLayout";
 import Settings from "../pages/DashboardPages/Settings/Settings";
 import EditProfile from "../pages/DashboardPages/MyProfile/EditProfile/EditProfile";
+import TermsAndConditions from "../pages/Legal/TermsAndConditions/TermsAndConditions";
+import PrivacyPolicy from "../pages/Legal/PrivacyPolicy/PrivacyPolicy";
+import RefundPolicy from "../pages/Legal/RefundPolicy/RefundPolicy";
 
 export const router = createBrowserRouter([
   {
@@ -72,6 +75,9 @@ export const router = createBrowserRouter([
         path: "coin-transaction/success",
         element: <PaymentSuccess />,
       },
+      { path: "/terms-and-conditions", element: <TermsAndConditions /> },
+      { path: "/privacy-policy", element: <PrivacyPolicy /> },
+      { path: "/refund-policy", element: <RefundPolicy /> },
     ],
   },
   {
