@@ -27,7 +27,6 @@ const DepositCoin = ({ isModalOpen, setIsModalOpen }: DepositCoinProps) => {
   const COIN_RATE = 5;
 
   const handleInitiatePayment = async () => {
-    // ✅ Fix: Check selectedPackage, not setSelectedPackage
     if (!selectedPackage) {
       toast.error("Please select a coin package");
       return;
@@ -40,7 +39,6 @@ const DepositCoin = ({ isModalOpen, setIsModalOpen }: DepositCoinProps) => {
       const response = await initiatePayment(payload).unwrap();
       
       if (response?.success) {
-        // ✅ Redirect to SSL Commerz payment page
         if (response?.data?.paymentUrl) {
           window.location.href = response.data.paymentUrl;
         } else {

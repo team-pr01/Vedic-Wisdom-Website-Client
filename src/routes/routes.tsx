@@ -68,11 +68,11 @@ export const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "coin-transaction/fail",
+        path: "payment/fail",
         element: <PaymentFailed />,
       },
       {
-        path: "coin-transaction/success",
+        path: "payment/success",
         element: <PaymentSuccess />,
       },
       { path: "/terms-and-conditions", element: <TermsAndConditions /> },

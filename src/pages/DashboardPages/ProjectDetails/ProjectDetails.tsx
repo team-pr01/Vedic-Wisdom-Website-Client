@@ -85,12 +85,18 @@ const ProjectDetails = () => {
             currency={project?.currency}
             amountNeeded={project?.amountNeeded || 0}
             amountRaised={project?.amountRaised || 0}
+            projectId={id as string}
           />
 
           {/* Recent Donors Card */}
-          <RecentDonors currency={project?.currency} donors={project?.donors || []} />
+          <RecentDonors
+            currency={project?.currency}
+            donors={project?.donors || []}
+          />
         </div>
       </div>
+
+     
     </div>
   );
 };
