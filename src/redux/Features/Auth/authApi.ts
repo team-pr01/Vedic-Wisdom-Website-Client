@@ -2,6 +2,15 @@ import { baseApi } from "../../API/baseApi";
 
 const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    socialLogin: builder.mutation({
+      query: (data) => ({
+        url: "/auth/social-login",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["users"],
+    }),
+
     login: builder.mutation({
       query: (userInfo) => ({
         url: "/auth/login",
@@ -83,6 +92,7 @@ const authApi = baseApi.injectEndpoints({
 });
 
 export const {
+  useSocialLoginMutation,
   useLoginMutation,
   useSignupMutation,
   useForgotPasswordMutation,

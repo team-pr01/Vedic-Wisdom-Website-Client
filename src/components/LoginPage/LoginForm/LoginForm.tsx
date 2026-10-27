@@ -12,9 +12,13 @@ import VerifyOtp from "../VerifyOtp/VerifyOtp";
 import ResetPassword from "../ResetPassword/ResetPassword";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../../../redux/Features/Auth/authApi";
+import {
+  useLoginMutation,
+  useSocialLoginMutation,
+} from "../../../redux/Features/Auth/authApi";
 import { setUser } from "../../../redux/Features/Auth/authSlice";
 import toast from "react-hot-toast";
+import { GoogleLogin } from "@react-oauth/google";
 
 type TFormData = {
   email: string;
@@ -24,6 +28,7 @@ type TFormData = {
 type TModalType = "forgotPassword" | "verifyOtp" | "resetPassword";
 
 const LoginForm = () => {
+  const [socialLogin] = useSocialLoginMutation();
   const [login, { isLoading }] = useLoginMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,12 +36,56 @@ const LoginForm = () => {
   const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] =
     useState<boolean>(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+  const [isSocialLoading, setIsSocialLoading] = useState<boolean>(false);
 
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm<TFormData>();
+
+  // Capture referral code from URL if present
+  const referralCode =
+    new URLSearchParams(window.location.search).get("referralCode") ||
+    undefined;
+
+  // 🔁 Shared handler for all social providers (Google, Apple, etc.)
+  const handleSocialAuth = async (
+    idToken: string,
+    provider: "google" | "apple",
+  ) => {
+    setIsSocialLoading(true);
+    try {
+      const response = await socialLogin({
+        idToken,
+        provider,
+        referralCode,
+      }).unwrap();
+
+      if (response?.success) {
+        dispatch(
+          setUser({
+            user: response?.data?.user,
+            token: response?.data?.accessToken,
+          }),
+        );
+        navigate("/dashboard");
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || `${provider} login failed.`);
+    } finally {
+      setIsSocialLoading(false);
+    }
+  };
+
+  // ✅ Google success handler
+  const handleGoogleSuccess = (credentialResponse: any) => {
+    if (!credentialResponse?.credential) {
+      toast.error("Failed to get Google credentials");
+      return;
+    }
+    handleSocialAuth(credentialResponse.credential, "google");
+  };
 
   const handleLogin = async (data: TFormData) => {
     try {
@@ -46,15 +95,12 @@ const LoginForm = () => {
       };
       const response = await login(payload).unwrap();
       if (response?.success) {
-        const accessToken = response?.data?.accessToken;
-        const user = response?.data?.user;
         dispatch(
           setUser({
-            user: user,
-            token: accessToken,
+            user: response?.data?.user,
+            token: response?.data?.accessToken,
           }),
         );
-
         navigate("/dashboard");
       }
     } catch (error: any) {
@@ -62,7 +108,6 @@ const LoginForm = () => {
     }
   };
 
-  // Modal content based on modalType
   const getModalContent = () => {
     switch (modalType) {
       case "forgotPassword":
@@ -91,11 +136,7 @@ const LoginForm = () => {
           ),
         };
       default:
-        return {
-          title: "",
-          description: "",
-          component: null,
-        };
+        return { title: "", description: "", component: null };
     }
   };
 
@@ -182,12 +223,47 @@ const LoginForm = () => {
           <p className="text-neutral-50 font-medium">OR</p>
           <div className="bg-neutral-75 h-px w-full"></div>
         </div>
-        <button className="flex items-center justify-center gap-3 text-neutral-10 font-semibold text-lg py-3.5 px-6 rounded-[9px] border border-neutral-55 bg-white w-full mt-2">
-          <img src={ICONS.google} alt="" className="size-6" />
-          <span>Continue with Google</span>
-        </button>
-        <button className="flex items-center justify-center gap-3 text-neutral-10 font-semibold text-lg py-3.5 px-6 rounded-[9px] border border-neutral-55 bg-white w-full">
-          <img src={ICONS.apple} alt="" className="size-6" />
+
+        {/* Google Sign-In */}
+        <div className="relative w-full h-[60px]">
+          {/* Custom Button (Visual only) */}
+          <button
+            type="button"
+            className="absolute inset-0 flex items-center justify-center gap-3 text-neutral-10 font-semibold text-lg py-3.5 px-6 rounded-[9px] border border-neutral-55 bg-white w-full pointer-events-none"
+          >
+            <img src={ICONS.google} alt="Google" className="size-6" />
+            <span>Continue with Google</span>
+          </button>
+
+          {/* Invisible Google Iframe Overlay */}
+          <div className="absolute inset-0 opacity-0 cursor-pointer [&>div]:!w-full [&>div]:!h-full [&>div>div]:!w-full [&>div>div]:!h-full">
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => toast.error("Google login failed")}
+              type="standard"
+              theme="outline"
+              size="large"
+              text="continue_with"
+              shape="rectangular"
+              width="380"
+            />
+          </div>
+
+          {/* Loading Spinner Overlay */}
+          {isSocialLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/80 rounded-[9px] z-10">
+              <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-10"></span>
+            </div>
+          )}
+        </div>
+
+        {/* 🍎 Apple Sign-In (Placeholder for future) */}
+        <button
+          type="button"
+          onClick={() => toast("Apple Sign-In coming soon", { icon: "🍎" })}
+          className="flex items-center justify-center gap-3 text-neutral-10 font-semibold text-lg py-3.5 px-6 rounded-[9px] border border-neutral-55 bg-white w-full"
+        >
+          <img src={ICONS.apple} alt="Apple" className="size-6" />
           <span>Continue with Apple</span>
         </button>
       </div>

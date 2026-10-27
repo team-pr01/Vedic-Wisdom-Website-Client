@@ -11,9 +11,14 @@ import { Link, useNavigate } from "react-router-dom";
 import PhoneInput, { parsePhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { ICONS } from "../../../assets";
-import { useSignupMutation } from "../../../redux/Features/Auth/authApi";
+import {
+  useSignupMutation,
+  useSocialLoginMutation,
+} from "../../../redux/Features/Auth/authApi";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../redux/Features/Auth/authSlice";
+import { GoogleLogin } from "@react-oauth/google";
+import toast from "react-hot-toast";
 
 type TFormData = {
   role: string;
@@ -27,12 +32,14 @@ type TFormData = {
 
 const SignupForm = () => {
   const [signup, { isLoading }] = useSignupMutation();
+  const [socialLogin] = useSocialLoginMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [phone, setPhone] = useState<string | undefined>("");
   const [countryCode, setCountryCode] = useState<string>("");
+  const [isSocialLoading, setIsSocialLoading] = useState<boolean>(false);
 
   const {
     register,
@@ -42,9 +49,13 @@ const SignupForm = () => {
     clearErrors,
     watch,
   } = useForm<TFormData>();
+
   const [fieldErrors, setFieldErrors] = useState<any>({
     role: "",
   });
+
+  // Watch referralCode so we can pass it to Google Sign-In if they filled it out
+  const watchedReferralCode = watch("referralCode");
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAgreeToTerms(e.target.checked);
@@ -109,27 +120,57 @@ const SignupForm = () => {
             token: accessToken,
           }),
         );
-
         navigate("/dashboard");
       }
     } catch (error: any) {
       console.log(error);
+      toast.error(error?.data?.message || "Signup failed. Please try again.");
     }
   };
 
+  // ✅ Shared handler for social auth
+  const handleSocialAuth = async (
+    idToken: string,
+    provider: "google" | "apple",
+  ) => {
+    setIsSocialLoading(true);
+    try {
+      const response = await socialLogin({
+        idToken,
+        provider,
+        // Pass the referral code if they typed one in the form
+        referralCode: watchedReferralCode || undefined,
+      }).unwrap();
+
+      if (response?.success) {
+        dispatch(
+          setUser({
+            user: response?.data?.user,
+            token: response?.data?.accessToken,
+          }),
+        );
+        navigate("/dashboard");
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || `${provider} login failed.`);
+    } finally {
+      setIsSocialLoading(false);
+    }
+  };
+
+  // ✅ Google Success Handler
+  const handleGoogleSuccess = (credentialResponse: any) => {
+    if (!credentialResponse?.credential) {
+      toast.error("Failed to get Google credentials");
+      return;
+    }
+    handleSocialAuth(credentialResponse.credential, "google");
+  };
+
   const roles = [
-    {
-      label: "User",
-      value: "user",
-    },
-    {
-      label: "Temple",
-      value: "temple",
-    },
-    {
-      label: "Organization",
-      value: "organization",
-    },
+    { label: "User", value: "user" },
+    { label: "Temple", value: "temple" },
+    { label: "Organization", value: "organization" },
   ];
 
   return (
@@ -228,6 +269,7 @@ const SignupForm = () => {
           isPasswordVisible={isPasswordVisible}
           setIsPasswordVisible={setIsPasswordVisible}
         />
+
         <TextInput
           label="Referral Code (Optional)"
           placeholder="Enter your Referral Code"
@@ -294,12 +336,46 @@ const SignupForm = () => {
           <p className="text-neutral-50 font-medium">OR</p>
           <div className="bg-neutral-75 h-px w-full"></div>
         </div>
-        <button className="flex items-center justify-center gap-3 text-neutral-10 font-semibold text-lg py-3.5 px-6 rounded-[9px] border border-neutral-55 bg-white w-full mt-2">
-          <img src={ICONS.google} alt="" className="size-6" />
-          <span>Continue with Google</span>
-        </button>
-        <button className="flex items-center justify-center gap-3 text-neutral-10 font-semibold text-lg py-3.5 px-6 rounded-[9px] border border-neutral-55 bg-white w-full">
-          <img src={ICONS.apple} alt="" className="size-6" />
+
+        {/* Google Sign-In */}
+        <div className="relative w-full h-[56px] group">
+          <button
+            type="button"
+            className="absolute inset-0 flex items-center justify-center gap-3 text-neutral-10 font-semibold text-lg py-3.5 px-6 rounded-[9px] border border-neutral-55 bg-white w-full pointer-events-none"
+          >
+            <img src={ICONS.google} alt="Google" className="size-6" />
+            <span>Continue with Google</span>
+          </button>
+
+          {/* Invisible Google Iframe overlay */}
+          <div className="absolute inset-0 opacity-0 overflow-hidden cursor-pointer [&>div]:!w-full [&>div]:!h-full [&>div>div]:!w-full [&>div>div]:!h-full">
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => toast.error("Google login failed")}
+              type="standard"
+              theme="outline"
+              size="large"
+              text="continue_with"
+              shape="rectangular"
+              width="380"
+            />
+          </div>
+
+          {/* 3. Loading Overlay */}
+          {isSocialLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/80 rounded-[9px] z-10">
+              <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-10"></span>
+            </div>
+          )}
+        </div>
+
+        {/* Apple Sign-In */}
+        <button
+          type="button"
+          onClick={() => toast("Apple Sign-In coming soon", { icon: "🍎" })}
+          className="flex items-center justify-center gap-3 text-neutral-10 font-semibold text-lg py-3.5 px-6 rounded-[9px] border border-neutral-55 bg-white w-full"
+        >
+          <img src={ICONS.apple} alt="Apple" className="size-6" />
           <span>Continue with Apple</span>
         </button>
       </div>

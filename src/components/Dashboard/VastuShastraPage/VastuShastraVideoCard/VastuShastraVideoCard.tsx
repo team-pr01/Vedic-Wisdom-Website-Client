@@ -27,7 +27,7 @@ const VastuShastraVideoCard = ({ vastu }: { vastu: TVastu }) => {
           </div>
           <div className="flex items-center gap-2 ">
             <img src={ICONS.category} alt="" className="size-4" />
-            <p className="text-neutral-50 text-sm">{vastu?.category}</p>
+            <p className="text-neutral-50 text-sm capitalize">{vastu?.category}</p>
           </div>
         </div>
       </div>
