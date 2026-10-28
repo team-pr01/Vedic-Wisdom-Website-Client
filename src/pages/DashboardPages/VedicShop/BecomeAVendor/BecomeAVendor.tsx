@@ -8,15 +8,16 @@ import { FaTimes } from "react-icons/fa";
 import { ICONS, IMAGES } from "../../../../assets";
 import SellerInstructions from "../../../../components/Dashboard/VedicShopPage/BecomeAVendorPage/SellerInstructions/SellerInstructions";
 import Modal from "../../../../components/Reusable/Modal/Modal";
+import { useBecomeAVendorMutation } from "../../../../redux/Features/Shop/Vendor/vendorApi";
 
 type TFormData = {
   name: string;
   shopName: string;
   phoneNumber: string;
   email: string;
-  documentUrls: string[];
   businessAddress: string;
   description: string;
+  shopUrl: string;
 };
 
 const BecomeAVendor = () => {
@@ -24,12 +25,15 @@ const BecomeAVendor = () => {
   const [documents, setDocuments] = useState<File[]>([]);
   const [documentError, setDocumentError] = useState<string>("");
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
+
   const {
     register,
     formState: { errors },
     handleSubmit,
-    setValue,
+    reset,
   } = useForm<TFormData>();
+
+  const [becomeAVendor, { isLoading }] = useBecomeAVendorMutation();
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAgreeToTerms(e.target.checked);
@@ -46,27 +50,40 @@ const BecomeAVendor = () => {
       }
 
       setDocumentError("");
-      const updatedFiles = [...documents, ...files];
-      setDocuments(updatedFiles);
-
-      // Convert to URLs
-      const fileUrls = updatedFiles.map((file) => URL.createObjectURL(file));
-      setValue("documentUrls", fileUrls);
+      setDocuments([...documents, ...files]);
     }
   };
 
   const removeDocument = (index: number) => {
-    const updatedFiles = documents.filter((_, i) => i !== index);
-    setDocuments(updatedFiles);
-
-    // Update URLs
-    const fileUrls = updatedFiles.map((file) => URL.createObjectURL(file));
-    setValue("documentUrls", fileUrls);
+    setDocuments(documents.filter((_, i) => i !== index));
   };
 
-  const onSubmit = (data: TFormData) => {
-    console.log("Form Data:", data);
-    console.log("Documents:", documents);
+  const onSubmit = async (data: TFormData) => {
+    try {
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("shopName", data.shopName);
+      formData.append("phoneNumber", data.phoneNumber);
+      formData.append("email", data.email);
+      formData.append("businessAddress", data.businessAddress);
+      formData.append("description", data.description);
+      formData.append("shopUrl", data.shopUrl);
+
+      documents.forEach((file) => {
+        formData.append("files", file);
+      });
+
+      const response = await becomeAVendor(formData).unwrap();
+
+      if (response?.success) {
+        setIsSuccess(true);
+        reset();
+        setDocuments([]);
+        setAgreeToTerms(false);
+      }
+    } catch (error) {
+      console.error("Failed to submit vendor request:", error);
+    }
   };
 
   return (
@@ -98,6 +115,16 @@ const BecomeAVendor = () => {
             })}
           />
 
+          {/* Shop URL */}
+          <TextInput
+            label="Shop URL"
+            placeholder="Enter your shop URL (e.g. my-vedic-shop)"
+            error={errors.shopUrl}
+            {...register("shopUrl", {
+              required: "Shop URL is required",
+            })}
+          />
+
           {/* Phone Number */}
           <TextInput
             label="Phone Number"
@@ -106,10 +133,6 @@ const BecomeAVendor = () => {
             error={errors.phoneNumber}
             {...register("phoneNumber", {
               required: "Phone number is required",
-              pattern: {
-                value: /^[0-9]{10}$/,
-                message: "Please enter a valid phone number",
-              },
             })}
           />
 
@@ -190,7 +213,11 @@ const BecomeAVendor = () => {
                   <img src={ICONS.upload} alt="" />
                   <p className="text-neutral-90 font-bold mt-2">Browse File</p>
                   <p className="text-neutral-60 text-xs mt-2">
-                    Supported formats: PNG, JPG, JPEG, PDF <br /> Max size: 5MB
+                    Supported formats: PNG, JPG, JPEG, PDF, Max size: 5MB
+                  </p>
+                  <p className="text-primary-10 text-xs mt-2">
+                    It can be your shop license, business registration
+                    document, National ID or any other relevant document.
                   </p>
                 </label>
               </div>
@@ -267,10 +294,10 @@ const BecomeAVendor = () => {
           </div>
 
           <Button
-            label="Submit"
+            label={isLoading ? "Submitting..." : "Submit"}
             className="w-full mt-3"
             type="submit"
-            isDisabled={!agreeToTerms || documents.length === 0}
+            isDisabled={!agreeToTerms || documents.length === 0 || isLoading}
           />
         </form>
       </div>
@@ -286,7 +313,7 @@ const BecomeAVendor = () => {
             Vendor Request Submitted
           </h2>
           <p className="text-sm text-neutral-50 font-medium mt-2">
-            Your application is under admin review.You will be notified once
+            Your application is under admin review. You will be notified once
             approved.
           </p>
         </div>

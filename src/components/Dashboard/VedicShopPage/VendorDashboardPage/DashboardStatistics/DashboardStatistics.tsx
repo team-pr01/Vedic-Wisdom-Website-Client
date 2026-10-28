@@ -2,42 +2,59 @@ import { FaBox, FaCheckCircle, FaClock, FaEye } from "react-icons/fa";
 import { ICONS, IMAGES } from "../../../../../assets";
 import Button from "../../../../Reusable/Button/Button";
 import { Link } from "react-router-dom";
+import { useGetMyStatsQuery } from "../../../../../redux/Features/Shop/Vendor/vendorApi";
 
 const DashboardStatistics = () => {
+  const { data } = useGetMyStatsQuery({});
+
+  const totalProducts = data?.data?.totalProductsCount || 0;
+  const approvedProducts = data?.data?.approvedProducts || 0;
+  const pendingProducts = data?.data?.pendingProducts || 0;
+  const totalClicks = data?.data?.totalClicks || 0;
+
+  const approvedPercent = totalProducts
+    ? Math.round((approvedProducts / totalProducts) * 100)
+    : 0;
+
   const stats = [
     {
       id: 1,
       title: "Total Products",
-      value: "12",
+      value: totalProducts,
       icon: <FaBox className="text-primary-10" />,
-      change: "+2 this month",
-      changeType: "positive",
+      change: `${approvedProducts} approved · ${pendingProducts} pending`,
+      changeType: "neutral",
     },
     {
       id: 2,
       title: "Approved Products",
-      value: "8",
+      value: approvedProducts,
       icon: <FaCheckCircle className="text-green-500" />,
-      change: "80% approved",
+      change: totalProducts
+        ? `${approvedPercent}% of total products`
+        : "No products yet",
       changeType: "positive",
     },
     {
       id: 3,
       title: "Pending Products",
-      value: "4",
+      value: pendingProducts,
       icon: <FaClock className="text-yellow-500" />,
-      change: "Waiting for review",
-      changeType: "neutral",
+      change: pendingProducts > 0 ? "Waiting for review" : "Nothing pending",
+      changeType: pendingProducts > 0 ? "neutral" : "positive",
     },
     {
       id: 4,
       title: "Total Clicks",
-      value: "9",
+      value: totalClicks,
       icon: <FaEye className="text-blue-500" />,
-      change: "+3 this week",
-      changeType: "positive",
+      change: totalProducts
+        ? `Avg. ~${Math.round(totalClicks / totalProducts)} clicks per product`
+        : "No data yet",
+      changeType: "neutral",
     },
   ];
+
   return (
     <div className="flex gap-8 mt-8">
       {/* Left side banner */}
@@ -111,12 +128,15 @@ const DashboardStatistics = () => {
 
         {/* Add New Product Button */}
         <div className="flex justify-end">
-          <Link to={`/dashboard/vedic-shop/vendor/add-product`} className="w-full">
-          <Button
-            label="Add New Product"
+          <Link
+            to={`/dashboard/vedic-shop/vendor/add-product`}
             className="w-full"
-            rightIcon={ICONS.plus}
-          />
+          >
+            <Button
+              label="Add New Product"
+              className="w-full"
+              rightIcon={ICONS.plus}
+            />
           </Link>
         </div>
       </div>
