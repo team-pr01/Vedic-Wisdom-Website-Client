@@ -1,23 +1,51 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "../../API/baseApi";
 
 const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllProducts: builder.query<any, { keyword?: string; category?: string }>(
-      {
-        query: ({ keyword = "", category }) => {
-          let queryStr = `?keyword=${encodeURIComponent(keyword)}`;
-          if (category) {
-            queryStr += `&category=${encodeURIComponent(category)}`;
-          }
-          return {
-            url: `/product${queryStr}`,
-            method: "GET",
-            credentials: "include",
-          };
-        },
-        providesTags: ["product"],
-      }
-    ),
+    getAllProducts: builder.query({
+      query: ({
+        keyword,
+        limit,
+        page,
+        skip,
+        category,
+      }: {
+        keyword?: string;
+        limit?: number;
+        page?: number;
+        skip?: number;
+        category?: string;
+      } = {}) => {
+        const params = new URLSearchParams();
+
+        // Handle keyword - skip if "All"
+        if (keyword && keyword !== "All") {
+          params.append("keyword", keyword);
+        }
+
+        // Handle limit
+        if (typeof limit === "number") params.append("limit", limit.toString());
+
+        // Handle page
+        if (typeof page === "number") params.append("page", page.toString());
+
+        // Handle skip
+        if (typeof skip === "number") params.append("skip", skip.toString());
+
+        // Handle category - skip if "All" or empty
+        if (category && category !== "All") {
+          params.append("category", category);
+        }
+
+        return {
+          url: `/product?${params.toString()}`,
+          method: "GET",
+          credentials: "include",
+        };
+      },
+      providesTags: ["food"],
+    }),
 
     getSingleProduct: builder.query({
       query: (id) => ({
@@ -48,8 +76,8 @@ const productApi = baseApi.injectEndpoints({
       invalidatesTags: ["product"],
     }),
 
-    deleteProduct: builder.mutation<any,  any >({
-      query: (id ) => ({
+    deleteProduct: builder.mutation<any, any>({
+      query: (id) => ({
         url: `/product/delete/${id}`,
         method: "DELETE",
         credentials: "include",

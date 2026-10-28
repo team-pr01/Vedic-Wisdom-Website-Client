@@ -6,13 +6,36 @@ import ProductCard from "../../../components/Dashboard/VedicShopPage/ProductCard
 import ProductImageCarousel from "../../../components/Reusable/ProductImageCarousel/ProductImageCarousel";
 import { Link } from "react-router-dom";
 import FilterDropdown from "../../../components/Dashboard/SanathanSthalPage/Filters/FilterDropdown";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
+import { useGetAllProductsQuery } from "../../../redux/Features/Product/productApi";
+import type { TProduct } from "../../../types/product.type";
+import ProductCardSkeleton from "../../../components/SkeletonLoaders/ProductCardSkeleton/ProductCardSkeleton";
+import { useCategories } from "../../../hooks/useCategories";
 
 const VedicShop = () => {
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [keyword, setKeyword] = useState<string>("");
-  console.log(keyword);
-  const [category, setCategory] = useState<string>("");
+  const [category, setCategory] = useState<any>({ label: "", value: "" });
+  console.log(category);
+
+  // Debounce: update `keyword` 500ms after the user stops typing
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setKeyword(searchTerm);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  const { data, isLoading, isFetching } = useGetAllProductsQuery({
+    keyword,
+    category: category?.value,
+  });
+
+  const products = data?.data?.data || [];
+  const showSkeletons = isLoading || isFetching;
+
   const banners = [
     IMAGES.dummyShopBanner,
     IMAGES.dummyShopBanner,
@@ -20,35 +43,18 @@ const VedicShop = () => {
     IMAGES.dummyShopBanner,
   ];
 
-  const categoryOptions = [
-    { label: "All Temples", value: "all" },
-    { label: "Ganesh Temple", value: "ganesh" },
-    { label: "Durga Temple", value: "durga" },
-    { label: "Shiva Temple", value: "shiva" },
-    { label: "Vishnu Temple", value: "vishnu" },
-    { label: "Krishna Temple", value: "krishna" },
-    { label: "Hanuman Temple", value: "hanuman" },
-    { label: "Saraswati Temple", value: "saraswati" },
-    { label: "Lakshmi Temple", value: "lakshmi" },
-    { label: "Kali Temple", value: "kali" },
-    { label: "Ram Temple", value: "ram" },
-    { label: "Sita Temple", value: "sita" },
-    { label: "Radha Krishna Temple", value: "radha-krishna" },
-    { label: "Jagannath Temple", value: "jagannath" },
-    { label: "Venkateswara Temple", value: "venkateswara" },
-    { label: "Murugan Temple", value: "murugan" },
-    { label: "Ayyappa Temple", value: "ayyappa" },
-    { label: "Sai Baba Temple", value: "sai-baba" },
-    { label: "Mata Temple", value: "mata" },
-    { label: "Navagraha Temple", value: "navagraha" },
-    { label: "Panchayatana Temple", value: "panchayatana" },
-    { label: "Ashram", value: "ashram" },
-    { label: "Gurudwara", value: "gurudwara" },
-  ];
-
   const handleCategorySelect = (selected: any) => {
     setCategory(selected);
   };
+
+  const { categories } = useCategories({
+    areaName: "product",
+  });
+
+  const categoryOptions = categories.map((category) => ({
+    label: category,
+    value: category,
+  }));
 
   return (
     <div className="font-Manrope">
@@ -73,7 +79,7 @@ const VedicShop = () => {
         </div>
 
         {/* CTA Card Section (30%) */}
-        <div className="w-full lg:w-[30%] bg-[#fffbf2] border border-[#fef3d1] p-8 flex flex-col items-center justify-between rounded-2xl text-center min-h-[450px] shadow-sm">
+        <div className="w-full lg:w-[30%] bg-[#fffbf2] border border-[#fef3d1] p-8 flex flex-col items-center justify-between rounded-2xl text-center min-h-112 shadow-sm">
           <div>
             <h4 className="text-[#1a1a3d] font-bold text-2xl mb-3">
               Sell with us
@@ -101,7 +107,8 @@ const VedicShop = () => {
         <div className="relative w-full">
           <IoSearchOutline className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
           <input
-            onChange={(e) => setKeyword(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            value={searchTerm}
             type="text"
             className="w-full pl-10 pr-4 py-3.5 rounded-lg border leading-4.5 focus:outline-none focus:border-primary-10 transition duration-300 bg-white border-neutral-55"
             placeholder="Search by product name..."
@@ -118,14 +125,13 @@ const VedicShop = () => {
       </div>
 
       <div className="grid grid-cols-5 gap-4 mt-6">
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
+        {showSkeletons
+          ? Array.from({ length: 4 }).map((_, i) => (
+              <ProductCardSkeleton key={`skeleton-${i}`} />
+            ))
+          : products.map((product: TProduct) => (
+              <ProductCard key={product?._id} product={product} />
+            ))}
       </div>
     </div>
   );
