@@ -19,7 +19,6 @@ import ProductDetails from "../pages/DashboardPages/VedicShop/ProductDetails/Pro
 import BecomeAVendor from "../pages/DashboardPages/VedicShop/BecomeAVendor/BecomeAVendor";
 import Book from "../pages/DashboardPages/LearnAndExplore/Book/Book";
 import VendorDashboard from "../pages/DashboardPages/VedicShop/VendorDashboard/VendorDashboard";
-import AddProduct from "../pages/DashboardPages/VedicShop/AddProduct/AddProduct";
 import AiChatbot from "../pages/AiChatbotPages/AiChatbot/AiChatbot";
 import News from "../pages/DashboardPages/News/News";
 import NewsDetails from "../pages/DashboardPages/NewsDetails/NewsDetails";
@@ -48,6 +47,7 @@ import EditProfile from "../pages/DashboardPages/MyProfile/EditProfile/EditProfi
 import TermsAndConditions from "../pages/Legal/TermsAndConditions/TermsAndConditions";
 import PrivacyPolicy from "../pages/Legal/PrivacyPolicy/PrivacyPolicy";
 import RefundPolicy from "../pages/Legal/RefundPolicy/RefundPolicy";
+import AddOrEditProduct from "../components/Dashboard/VedicShopPage/VendorDashboardPage/AddProductPage/AddProductForm/AddProductForm";
 
 export const router = createBrowserRouter([
   {
@@ -189,8 +189,12 @@ export const router = createBrowserRouter([
         element: <VendorDashboard />,
       },
       {
-        path: "vedic-shop/vendor/add-product",
-        element: <AddProduct />,
+        path: "vedic-shop/vendor/product/add",
+        element: <AddOrEditProduct />,
+      },
+      {
+        path: "vedic-shop/vendor/product/edit/:id",
+        element: <AddOrEditProduct />,
       },
       {
         path: "news",

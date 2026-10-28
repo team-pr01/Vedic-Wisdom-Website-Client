@@ -3,40 +3,35 @@ import { IoSearchOutline } from "react-icons/io5";
 import FilterDropdown from "../../../SanathanSthalPage/Filters/FilterDropdown";
 import { useState } from "react";
 import ProductCard from "../../ProductCard/ProductCard";
+import { useGetMyProductsQuery } from "../../../../../redux/Features/Product/productApi";
+import ProductCardSkeleton from "../../../../SkeletonLoaders/ProductCardSkeleton/ProductCardSkeleton";
+import type { TProduct } from "../../../../../types/product.type";
+import { useCategories } from "../../../../../hooks/useCategories";
 
 const MyProducts = () => {
   const [keyword, setKeyword] = useState<string>("");
-  console.log(keyword);
-  const [category, setCategory] = useState<string>("");
+  const [category, setCategory] = useState<any>({ label: "", value: "" });
 
-  const categoryOptions = [
-    { label: "All Temples", value: "all" },
-    { label: "Ganesh Temple", value: "ganesh" },
-    { label: "Durga Temple", value: "durga" },
-    { label: "Shiva Temple", value: "shiva" },
-    { label: "Vishnu Temple", value: "vishnu" },
-    { label: "Krishna Temple", value: "krishna" },
-    { label: "Hanuman Temple", value: "hanuman" },
-    { label: "Saraswati Temple", value: "saraswati" },
-    { label: "Lakshmi Temple", value: "lakshmi" },
-    { label: "Kali Temple", value: "kali" },
-    { label: "Ram Temple", value: "ram" },
-    { label: "Sita Temple", value: "sita" },
-    { label: "Radha Krishna Temple", value: "radha-krishna" },
-    { label: "Jagannath Temple", value: "jagannath" },
-    { label: "Venkateswara Temple", value: "venkateswara" },
-    { label: "Murugan Temple", value: "murugan" },
-    { label: "Ayyappa Temple", value: "ayyappa" },
-    { label: "Sai Baba Temple", value: "sai-baba" },
-    { label: "Mata Temple", value: "mata" },
-    { label: "Navagraha Temple", value: "navagraha" },
-    { label: "Panchayatana Temple", value: "panchayatana" },
-    { label: "Ashram", value: "ashram" },
-    { label: "Gurudwara", value: "gurudwara" },
-  ];
+  const { data, isLoading, isFetching } = useGetMyProductsQuery({
+    keyword,
+    category: category?.value,
+  });
+  const products = data?.data?.data || [];
+
   const handleCategorySelect = (selected: any) => {
     setCategory(selected);
   };
+
+    const { categories } = useCategories({
+      areaName: "product",
+    });
+  
+    const categoryOptions = categories.map((category) => ({
+      label: category,
+      value: category,
+    }));
+
+  const showSkeletons = isLoading || isFetching;
   return (
     <div className="font-Manrope mt-16">
       <div className="flex items-center justify-between">
@@ -63,14 +58,13 @@ const MyProducts = () => {
       </div>
 
       <div className="grid grid-cols-5 gap-4 mt-6">
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
+        {showSkeletons
+          ? Array.from({ length: 4 }).map((_, i) => (
+              <ProductCardSkeleton key={`skeleton-${i}`} />
+            ))
+          : products?.map((product: TProduct) => (
+              <ProductCard key={product?._id} product={product} />
+            ))}
       </div>
     </div>
   );

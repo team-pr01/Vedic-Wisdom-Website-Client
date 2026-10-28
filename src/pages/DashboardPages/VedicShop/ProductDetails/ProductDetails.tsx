@@ -5,6 +5,8 @@ import ProductImageCarousel from "../../../../components/Reusable/ProductImageCa
 import { useParams } from "react-router-dom";
 import { useGetSingleProductQuery } from "../../../../redux/Features/Product/productApi";
 import LogoLoader from "../../../../components/Shared/LogoLoader/LogoLoader";
+import DOMPurify from "dompurify";
+import { descriptionSanitizeConfig } from "@amitdhoju/tiptap-ui";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -63,7 +65,23 @@ const ProductDetails = () => {
           <p className="text-neutral-10 font-semibold mt-4">
             About the product
           </p>
-          <p className="text-neutral-50 mt-1">{product?.description}</p>
+          <div
+            className="text-neutral-50 mt-1 
+    [&>p]:mb-4 [&>p]:leading-relaxed
+    [&>ul]:list-disc [&>ul]:pl-5 [&>ul]:mb-4 [&>ul]:space-y-1
+    [&>ol]:list-decimal [&>ol]:pl-5 [&>ol]:mb-4 [&>ol]:space-y-1
+    [&>h1]:text-2xl [&>h1]:font-bold [&>h1]:mb-3 [&>h1]:mt-6
+    [&>h2]:text-xl [&>h2]:font-bold [&>h2]:mb-3 [&>h2]:mt-5
+    [&>h3]:text-lg [&>h3]:font-bold [&>h3]:mb-2 [&>h3]:mt-4
+    [&>a]:text-primary-10 [&>a]:underline
+    [&>strong]:font-bold [&>em]:italic"
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(
+                product.description,
+                descriptionSanitizeConfig,
+              ),
+            }}
+          />
 
           <div className="flex items-center gap-3 mt-6">
             {/* <Button

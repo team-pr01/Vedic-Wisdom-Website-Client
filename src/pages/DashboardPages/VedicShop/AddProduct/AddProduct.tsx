@@ -1,4 +1,4 @@
-import AddProductForm from "../../../../components/Dashboard/VedicShopPage/VendorDashboardPage/AddProductPage/AddProductForm/AddProductForm";
+import AddOrEditProduct from "../../../../components/Dashboard/VedicShopPage/VendorDashboardPage/AddProductPage/AddProductForm/AddProductForm";
 import ProductAddingGuidelines from "../../../../components/Dashboard/VedicShopPage/VendorDashboardPage/AddProductPage/ProductAddingGuidelines/ProductAddingGuidelines";
 
 const AddProduct = () => {
@@ -6,7 +6,7 @@ const AddProduct = () => {
     <div className="font-Manrope flex gap-10">
       <div className="w-[60%]">
         {" "}
-        <AddProductForm />
+        <AddOrEditProduct />
       </div>
       <div className="w-[40%]">
         <ProductAddingGuidelines />

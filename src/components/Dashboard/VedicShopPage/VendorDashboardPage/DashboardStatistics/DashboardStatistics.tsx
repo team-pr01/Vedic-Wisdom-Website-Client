@@ -129,7 +129,7 @@ const DashboardStatistics = () => {
         {/* Add New Product Button */}
         <div className="flex justify-end">
           <Link
-            to={`/dashboard/vedic-shop/vendor/add-product`}
+            to={`/dashboard/vedic-shop/vendor/product/add`}
             className="w-full"
           >
             <Button
