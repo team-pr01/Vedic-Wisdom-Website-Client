@@ -5,7 +5,7 @@ import type { TProduct } from "../../../../types/product.type";
 
 const ProductCard = ({product}:{product:TProduct}) => {
   return (
-    <Link to={`/dashboard/vedic-shop/${1}`} className="space-y-2 font-Manrope">
+    <Link to={`/dashboard/vedic-shop/${product?._id}`} className="space-y-2 font-Manrope">
       <img
         src={product?.imageUrls[0]}
         alt=""

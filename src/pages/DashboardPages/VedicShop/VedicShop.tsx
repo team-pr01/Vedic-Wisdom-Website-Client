@@ -17,7 +17,6 @@ const VedicShop = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [keyword, setKeyword] = useState<string>("");
   const [category, setCategory] = useState<any>({ label: "", value: "" });
-  console.log(category);
 
   // Debounce: update `keyword` 500ms after the user stops typing
   useEffect(() => {
@@ -129,7 +128,7 @@ const VedicShop = () => {
           ? Array.from({ length: 4 }).map((_, i) => (
               <ProductCardSkeleton key={`skeleton-${i}`} />
             ))
-          : products.map((product: TProduct) => (
+          : products?.map((product: TProduct) => (
               <ProductCard key={product?._id} product={product} />
             ))}
       </div>
