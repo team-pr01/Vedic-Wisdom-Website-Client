@@ -6,10 +6,34 @@ import { Link } from "react-router-dom";
 import { useGetAllShopBannersQuery } from "../../../../redux/Features/Shop/ShopBanner/shopBannerApi";
 import type { TShopBanner } from "../../../../types/shopBanner.type";
 
-
 const ShopBanners = () => {
-  const { data } = useGetAllShopBannersQuery();
+  const { data, isLoading } = useGetAllShopBannersQuery();
   const shopBanners = data?.data || [];
+
+  // 1. Show Skeleton if loading
+  if (isLoading) {
+    return (
+      <div className="animate-pulse">
+        {/* Skeleton for the main image carousel */}
+        <div className="h-64 md:h-80 lg:h-112.5 w-full rounded-2xl bg-neutral-200 shadow-sm" />
+        
+        {/* Skeleton for the custom dots */}
+        <div className="w-full flex justify-center mt-5 gap-1.5">
+          <div className="w-8 h-[3px] rounded-full bg-neutral-300" />
+          <div className="w-2 h-[3px] rounded-full bg-neutral-300" />
+          <div className="w-2 h-[3px] rounded-full bg-neutral-300" />
+          <div className="w-2 h-[3px] rounded-full bg-neutral-300" />
+        </div>
+      </div>
+    );
+  }
+
+  // Optional: Don't render anything if no banners are found and not loading
+  if (shopBanners.length === 0) {
+    return null; 
+  }
+
+  // 2. Render actual carousel
   return (
     <div>
       <div className="h-64 md:h-80 lg:h-112.5 rounded-2xl overflow-hidden shadow-sm">
@@ -28,7 +52,7 @@ const ShopBanners = () => {
           loop={true}
           className="w-full h-full"
         >
-          {shopBanners?.map((banner: TShopBanner) => (
+          {shopBanners.map((banner: TShopBanner) => (
             <SwiperSlide key={banner?._id}>
               <Link target="_blank" to={banner?.link || "#"}>
                 <img

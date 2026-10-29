@@ -23,6 +23,7 @@ type TFormData = {
   basePrice: number;
   discountedPrice?: number;
   rating?: number;
+  link: string;
   soldCount?: number;
 };
 
@@ -76,6 +77,7 @@ const AddOrEditProduct = () => {
       priceCurrency: product.priceCurrency || "৳",
       basePrice: product.basePrice ?? 0,
       discountedPrice: product.discountedPrice ?? undefined,
+      link: product.link || "",
       rating: product.rating ?? undefined,
       soldCount: product.soldCount ?? undefined,
     });
@@ -124,6 +126,7 @@ const AddOrEditProduct = () => {
       formData.append("description", data.description);
       formData.append("priceCurrency", data.priceCurrency);
       formData.append("basePrice", String(data.basePrice));
+      formData.append("link", data.link);
 
       if (data.discountedPrice !== undefined && data.discountedPrice !== null) {
         formData.append("discountedPrice", String(data.discountedPrice));
@@ -146,7 +149,7 @@ const AddOrEditProduct = () => {
 
         const response = await updateProduct({ id, data: formData }).unwrap();
         if (response?.success) {
-          navigate("/dashboard/vedic-shop/vendor/dashboard")
+          navigate("/dashboard/vedic-shop/vendor/dashboard");
         }
       } else {
         const response = await addProduct(formData).unwrap();
@@ -155,13 +158,13 @@ const AddOrEditProduct = () => {
           setImages([]);
           setExistingImages([]);
           setAgreeToTerms(false);
-          navigate("/dashboard/vedic-shop/vendor/dashboard")
+          navigate("/dashboard/vedic-shop/vendor/dashboard");
         }
       }
     } catch (error) {
       console.error(
         `Failed to ${isEditMode ? "update" : "add"} product:`,
-        error
+        error,
       );
     }
   };
@@ -215,13 +218,13 @@ const AddOrEditProduct = () => {
 
         {/* Description - key={id} forces re-mount if navigating from add to edit */}
         <RichTextField
-    key={isDataLoaded ? "loaded" : "loading"} // <--- THIS IS THE TRICK
-    control={control}
-    name="description"
-    label="Description"
-    placeholder="Describe your product and its spiritual significance."
-    error={errors.description}
-  />
+          key={isDataLoaded ? "loaded" : "loading"} // <--- THIS IS THE TRICK
+          control={control}
+          name="description"
+          label="Description"
+          placeholder="Describe your product and its spiritual significance."
+          error={errors.description}
+        />
 
         {/* Price row */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -282,6 +285,13 @@ const AddOrEditProduct = () => {
             })}
           />
         </div>
+
+        <TextInput
+            label="Product Link"
+            placeholder="e.g https://example.com"
+            error={errors.link}
+            {...register("link", { required: "Product link is required" })}
+          />
 
         {/* Images */}
         <div className="flex flex-col gap-1.5">
@@ -424,8 +434,8 @@ const AddOrEditProduct = () => {
                 ? "Updating Product..."
                 : "Adding Product..."
               : isEditMode
-              ? "Update Product"
-              : "Add Product"
+                ? "Update Product"
+                : "Add Product"
           }
           className="w-full mt-4"
           type="submit"

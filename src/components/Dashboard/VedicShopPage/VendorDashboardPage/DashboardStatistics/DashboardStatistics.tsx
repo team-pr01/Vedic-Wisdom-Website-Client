@@ -10,7 +10,7 @@ const DashboardStatistics = () => {
   const totalProducts = data?.data?.totalProductsCount || 0;
   const approvedProducts = data?.data?.approvedProducts || 0;
   const pendingProducts = data?.data?.pendingProducts || 0;
-  const totalClicks = data?.data?.totalClicks || 0;
+  const totalClicks = data?.data?.totalClicksCount || 0;
 
   const approvedPercent = totalProducts
     ? Math.round((approvedProducts / totalProducts) * 100)

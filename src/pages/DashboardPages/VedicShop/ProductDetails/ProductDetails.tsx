@@ -112,9 +112,9 @@ const ProductDetails = () => {
             }}
           />
 
-          <div className="flex items-center gap-3 mt-6">
+          <a href={product?.link} target="_blank" className="flex items-center gap-3 mt-6">
             <Button label="Buy Now" className="w-full" />
-          </div>
+          </a>
         </div>
       </div>
     </div>
