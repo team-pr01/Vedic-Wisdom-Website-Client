@@ -63,7 +63,7 @@ const MyProducts = () => {
               <ProductCardSkeleton key={`skeleton-${i}`} />
             ))
           : products?.map((product: TProduct) => (
-              <ProductCard key={product?._id} product={product} />
+              <ProductCard key={product?._id} product={product} isVendor={true} />
             ))}
       </div>
     </div>

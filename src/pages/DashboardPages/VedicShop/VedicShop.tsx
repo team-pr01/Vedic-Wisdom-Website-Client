@@ -12,8 +12,12 @@ import { useGetAllProductsQuery } from "../../../redux/Features/Product/productA
 import type { TProduct } from "../../../types/product.type";
 import ProductCardSkeleton from "../../../components/SkeletonLoaders/ProductCardSkeleton/ProductCardSkeleton";
 import { useCategories } from "../../../hooks/useCategories";
+import { useGetMeQuery } from "../../../redux/Features/User/userApi";
 
 const VedicShop = () => {
+  const { data:profile } = useGetMeQuery({});
+    const myProfile = profile?.data || {};
+
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [keyword, setKeyword] = useState<string>("");
   const [category, setCategory] = useState<any>({ label: "", value: "" });
@@ -62,13 +66,22 @@ const VedicShop = () => {
         <DashboardHeading
           title="Vedic Products"
           description="Discover Products That Inspire Your Spiritual Journey"
-        />
+        />        {
+          myProfile?.isVendor ?
+          <Link to={"/dashboard/vedic-shop/vendor/dashboard"}>
+          <Button
+            label="Go to Dashboard"
+            className="bg-[#f2c94c] hover:bg-[#e0b83d] text-black border-none shadow-md px-6 py-3 font-semibold rounded-lg text-sm"
+          />
+        </Link>
+        :
         <Link to={"/dashboard/vedic-shop/become-a-vendor"}>
           <Button
             label="Become a Vendor"
             className="bg-[#f2c94c] hover:bg-[#e0b83d] text-black border-none shadow-md px-6 py-3 font-semibold rounded-lg text-sm"
           />
         </Link>
+        }
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8">
