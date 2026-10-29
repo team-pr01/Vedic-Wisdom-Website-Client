@@ -1,37 +1,55 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IoSearchOutline } from "react-icons/io5";
 import FilterDropdown from "../../../SanathanSthalPage/Filters/FilterDropdown";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProductCard from "../../ProductCard/ProductCard";
 import { useGetMyProductsQuery } from "../../../../../redux/Features/Product/productApi";
 import ProductCardSkeleton from "../../../../SkeletonLoaders/ProductCardSkeleton/ProductCardSkeleton";
 import type { TProduct } from "../../../../../types/product.type";
 import { useCategories } from "../../../../../hooks/useCategories";
+import EmptyState from "../../../../Reusable/EmptyState/EmptyState";
+import Button from "../../../../Reusable/Button/Button"; // Adjust path if needed
+
+const LIMIT = 10;
 
 const MyProducts = () => {
   const [keyword, setKeyword] = useState<string>("");
   const [category, setCategory] = useState<any>({ label: "", value: "" });
+  
+  // State for pagination
+  const [page, setPage] = useState<number>(1);
+  const skip = (page - 1) * LIMIT;
+
+  useEffect(() => {
+    setPage(1);
+  }, [keyword, category]);
 
   const { data, isLoading, isFetching } = useGetMyProductsQuery({
     keyword,
     category: category?.value,
+    skip,
+    limit: LIMIT,
   });
+
   const products = data?.data?.data || [];
+  const meta = data?.data?.meta;
 
   const handleCategorySelect = (selected: any) => {
     setCategory(selected);
   };
 
-    const { categories } = useCategories({
-      areaName: "product",
-    });
-  
-    const categoryOptions = categories.map((category) => ({
-      label: category,
-      value: category,
-    }));
+  const { categories } = useCategories({
+    areaName: "product",
+  });
+
+  const categoryOptions = categories.map((category) => ({
+    label: category,
+    value: category,
+  }));
 
   const showSkeletons = isLoading || isFetching;
+
   return (
     <div className="font-Manrope mt-16">
       <div className="flex items-center justify-between">
@@ -57,15 +75,37 @@ const MyProducts = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-5 gap-4 mt-6">
-        {showSkeletons
-          ? Array.from({ length: 4 }).map((_, i) => (
-              <ProductCardSkeleton key={`skeleton-${i}`} />
-            ))
-          : products?.map((product: TProduct) => (
-              <ProductCard key={product?._id} product={product} isVendor={true} />
-            ))}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-6">
+        {showSkeletons ? (
+          Array.from({ length: LIMIT }).map((_, i) => (
+            <ProductCardSkeleton key={`skeleton-${i}`} />
+          ))
+        ) : (
+          products?.map((product: TProduct) => (
+            <ProductCard
+              key={product?._id}
+              product={product}
+              isVendor={true}
+            />
+          ))
+        )}
       </div>
+
+      {/* Load More / Pagination Section */}
+      {!isLoading && products?.length > 0 && meta?.hasMore && (
+        <div className="flex justify-center mt-8">
+          <Button
+            label={isFetching ? "Loading..." : "Load More"}
+            onClick={() => setPage((prev) => prev + 1)}
+            isLoading={isFetching}
+            isDisabled={isFetching}
+            className="px-8 py-2.5"
+          />
+        </div>
+      )}
+
+      {/* Empty State */}
+      {!isLoading && products?.length === 0 && <EmptyState />}
     </div>
   );
 };

@@ -1,63 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IMAGES } from "../../../assets";
 import Button from "../../../components/Reusable/Button/Button";
 import DashboardHeading from "../../../components/Reusable/DashboardHeading/DashboardHeading";
-import ProductCard from "../../../components/Dashboard/VedicShopPage/ProductCard/ProductCard";
 import ProductImageCarousel from "../../../components/Reusable/ProductImageCarousel/ProductImageCarousel";
 import { Link } from "react-router-dom";
-import FilterDropdown from "../../../components/Dashboard/SanathanSthalPage/Filters/FilterDropdown";
-import { useEffect, useState } from "react";
-import { IoSearchOutline } from "react-icons/io5";
-import { useGetAllProductsQuery } from "../../../redux/Features/Product/productApi";
-import type { TProduct } from "../../../types/product.type";
-import ProductCardSkeleton from "../../../components/SkeletonLoaders/ProductCardSkeleton/ProductCardSkeleton";
-import { useCategories } from "../../../hooks/useCategories";
 import { useGetMeQuery } from "../../../redux/Features/User/userApi";
+import AllProducts from "../../../components/Dashboard/VedicShopPage/AllProducts/AllProducts";
 
 const VedicShop = () => {
-  const { data:profile } = useGetMeQuery({});
-    const myProfile = profile?.data || {};
-
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [keyword, setKeyword] = useState<string>("");
-  const [category, setCategory] = useState<any>({ label: "", value: "" });
-
-  // Debounce: update `keyword` 500ms after the user stops typing
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setKeyword(searchTerm);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [searchTerm]);
-
-  const { data, isLoading, isFetching } = useGetAllProductsQuery({
-    keyword,
-    category: category?.value,
-  });
-
-  const products = data?.data?.data || [];
-  const showSkeletons = isLoading || isFetching;
-
-  const banners = [
-    IMAGES.dummyShopBanner,
-    IMAGES.dummyShopBanner,
-    IMAGES.dummyShopBanner,
-    IMAGES.dummyShopBanner,
-  ];
-
-  const handleCategorySelect = (selected: any) => {
-    setCategory(selected);
-  };
-
-  const { categories } = useCategories({
-    areaName: "product",
-  });
-
-  const categoryOptions = categories.map((category) => ({
-    label: category,
-    value: category,
-  }));
+  const { data: profile } = useGetMeQuery({});
+  const myProfile = profile?.data || {};
 
   return (
     <div className="font-Manrope">
@@ -66,28 +17,28 @@ const VedicShop = () => {
         <DashboardHeading
           title="Vedic Products"
           description="Discover Products That Inspire Your Spiritual Journey"
-        />        {
-          myProfile?.isVendor ?
+        />
+        {myProfile?.isVendor ? (
           <Link to={"/dashboard/vedic-shop/vendor/dashboard"}>
-          <Button
-            label="Go to Dashboard"
-            className="bg-[#f2c94c] hover:bg-[#e0b83d] text-black border-none shadow-md px-6 py-3 font-semibold rounded-lg text-sm"
-          />
-        </Link>
-        :
-        <Link to={"/dashboard/vedic-shop/become-a-vendor"}>
-          <Button
-            label="Become a Vendor"
-            className="bg-[#f2c94c] hover:bg-[#e0b83d] text-black border-none shadow-md px-6 py-3 font-semibold rounded-lg text-sm"
-          />
-        </Link>
-        }
+            <Button
+              label="Go to Dashboard"
+              className="bg-[#f2c94c] hover:bg-[#e0b83d] text-black border-none shadow-md px-6 py-3 font-semibold rounded-lg text-sm"
+            />
+          </Link>
+        ) : (
+          <Link to={"/dashboard/vedic-shop/become-a-vendor"}>
+            <Button
+              label="Become a Vendor"
+              className="bg-[#f2c94c] hover:bg-[#e0b83d] text-black border-none shadow-md px-6 py-3 font-semibold rounded-lg text-sm"
+            />
+          </Link>
+        )}
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Banner Section (70%) */}
         <div className="w-full lg:w-[70%]">
-          <ProductImageCarousel images={banners} />
+          <ProductImageCarousel />
         </div>
 
         {/* CTA Card Section (30%) */}
@@ -112,39 +63,7 @@ const VedicShop = () => {
         </div>
       </div>
 
-      <h4 className="text-neutral-90 font-bold text-xl mt-16">
-        Explore Products
-      </h4>
-      <div className="flex items-center justify-between gap-5 mt-6">
-        <div className="relative w-full">
-          <IoSearchOutline className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-          <input
-            onChange={(e) => setSearchTerm(e.target.value)}
-            value={searchTerm}
-            type="text"
-            className="w-full pl-10 pr-4 py-3.5 rounded-lg border leading-4.5 focus:outline-none focus:border-primary-10 transition duration-300 bg-white border-neutral-55"
-            placeholder="Search by product name..."
-          />
-        </div>
-        <FilterDropdown
-          options={categoryOptions}
-          value={category}
-          onChange={handleCategorySelect}
-          isRequired={false}
-          placeholder="Select category"
-          dropdownDirection="top-full"
-        />
-      </div>
-
-      <div className="grid grid-cols-5 gap-4 mt-6">
-        {showSkeletons
-          ? Array.from({ length: 4 }).map((_, i) => (
-              <ProductCardSkeleton key={`skeleton-${i}`} />
-            ))
-          : products?.map((product: TProduct) => (
-              <ProductCard key={product?._id} product={product} />
-            ))}
-      </div>
+      <AllProducts />
     </div>
   );
 };

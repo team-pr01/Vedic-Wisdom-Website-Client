@@ -94,6 +94,7 @@ export const baseApi = createApi({
     "quiz",
     "ayurveda",
     "product",
+    "shopBanner",
     "vendor",
     "productBanner",
     "consultation",

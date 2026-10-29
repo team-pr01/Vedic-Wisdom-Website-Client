@@ -2,11 +2,16 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
+import { useGetAllShopBannersQuery } from "../../../redux/Features/Shop/ShopBanner/shopBannerApi";
+import type { TShopBanner } from "../../../types/shopBanner.type";
+import { Link } from "react-router-dom";
 
-const ProductImageCarousel = ({ images }: { images: string[] }) => {
+const ProductImageCarousel = () => {
+  const { data } = useGetAllShopBannersQuery();
+  const shopBanners = data?.data || [];
   return (
     <div>
-      <div className="h-64 md:h-80 lg:h-[450px] rounded-2xl overflow-hidden shadow-sm">
+      <div className="h-64 md:h-80 lg:h-112.5 rounded-2xl overflow-hidden shadow-sm">
         <Swiper
           modules={[Autoplay, Pagination]}
           spaceBetween={0}
@@ -22,13 +27,15 @@ const ProductImageCarousel = ({ images }: { images: string[] }) => {
           loop={true}
           className="w-full h-full"
         >
-          {images?.map((img, index) => (
-            <SwiperSlide key={index}>
-              <img
-                src={img}
-                alt={`Banner ${index + 1}`}
-                className="object-cover w-full h-full"
-              />
+          {shopBanners?.map((banner: TShopBanner) => (
+            <SwiperSlide key={banner?._id}>
+              <Link target="_blank" to={banner?.link || "#"}>
+                <img
+                  src={banner?.imageUrl}
+                  alt={banner?.title}
+                  className="object-cover w-full h-full"
+                />
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>
