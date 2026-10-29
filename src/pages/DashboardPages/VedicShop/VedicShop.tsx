@@ -1,10 +1,10 @@
 import { IMAGES } from "../../../assets";
 import Button from "../../../components/Reusable/Button/Button";
 import DashboardHeading from "../../../components/Reusable/DashboardHeading/DashboardHeading";
-import ProductImageCarousel from "../../../components/Reusable/ProductImageCarousel/ProductImageCarousel";
 import { Link } from "react-router-dom";
 import { useGetMeQuery } from "../../../redux/Features/User/userApi";
 import AllProducts from "../../../components/Dashboard/VedicShopPage/AllProducts/AllProducts";
+import ShopBanners from "../../../components/Dashboard/VedicShopPage/ShopBanners/ShopBanners";
 
 const VedicShop = () => {
   const { data: profile } = useGetMeQuery({});
@@ -38,7 +38,7 @@ const VedicShop = () => {
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Banner Section (70%) */}
         <div className="w-full lg:w-[70%]">
-          <ProductImageCarousel />
+          <ShopBanners />
         </div>
 
         {/* CTA Card Section (30%) */}

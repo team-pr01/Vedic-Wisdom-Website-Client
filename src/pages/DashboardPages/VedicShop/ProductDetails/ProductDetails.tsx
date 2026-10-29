@@ -3,20 +3,49 @@ import Button from "../../../../components/Reusable/Button/Button";
 import Breadcrumb from "../../../../components/Reusable/Breadcrumb/Breadcrumb";
 import ProductImageCarousel from "../../../../components/Reusable/ProductImageCarousel/ProductImageCarousel";
 import { useParams } from "react-router-dom";
-import { useGetSingleProductQuery } from "../../../../redux/Features/Product/productApi";
+import {
+  useGetSingleProductQuery,
+  useIncrementClickMutation,
+} from "../../../../redux/Features/Product/productApi";
 import LogoLoader from "../../../../components/Shared/LogoLoader/LogoLoader";
 import DOMPurify from "dompurify";
 import { descriptionSanitizeConfig } from "@amitdhoju/tiptap-ui";
+import { useEffect } from "react";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetSingleProductQuery(id);
+  const [incrementClick] = useIncrementClickMutation();
+
+  useEffect(() => {
+    if (!id) return;
+
+    // 1. Check if they already viewed this product in this session
+    const viewedProducts = JSON.parse(
+      sessionStorage.getItem("viewedProducts") || "[]",
+    );
+
+    if (!viewedProducts.includes(id)) {
+      // 2. Fire API
+      incrementClick(id)
+        .unwrap()
+        .catch((err) => {
+          console.error("Failed to track click", err);
+        });
+
+      // 3. Save to session storage
+      viewedProducts.push(id);
+      sessionStorage.setItem("viewedProducts", JSON.stringify(viewedProducts));
+    }
+  }, [id, incrementClick]);
+
   const product = data?.data || {};
   const discountPercentage =
     ((product?.basePrice - product?.discountedPrice) / product?.basePrice) *
     100;
 
   if (isLoading) return <LogoLoader />;
+
   return (
     <div className="font-Manrope">
       <Breadcrumb
@@ -84,26 +113,10 @@ const ProductDetails = () => {
           />
 
           <div className="flex items-center gap-3 mt-6">
-            {/* <Button
-              variant="secondary"
-              leftIcon={ICONS.heart}
-              label="Add to Wishlist"
-              className="w-[30%]"
-            /> */}
             <Button label="Buy Now" className="w-full" />
           </div>
         </div>
       </div>
-      {/* 
-      <h4 className="text-neutral-90 font-bold text-xl mt-16">
-        Explore our other products
-      </h4>
-      <div className="grid grid-cols-5 gap-4 mt-6">
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-      </div> */}
     </div>
   );
 };

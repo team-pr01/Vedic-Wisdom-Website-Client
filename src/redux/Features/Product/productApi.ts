@@ -121,6 +121,15 @@ const productApi = baseApi.injectEndpoints({
       invalidatesTags: ["product"],
     }),
 
+    incrementClick: builder.mutation<any, any>({
+      query: (id) => ({
+        url: `/product/click/${id}`,
+        method: "PATCH",
+        credentials: "include",
+      }),
+      invalidatesTags: ["product"],
+    }),
+
     deleteProduct: builder.mutation<any, any>({
       query: (id) => ({
         url: `/product/delete/${id}`,
@@ -138,5 +147,6 @@ export const {
   useGetMyProductsQuery,
   useAddProductMutation,
   useUpdateProductMutation,
+  useIncrementClickMutation,
   useDeleteProductMutation,
 } = productApi;
