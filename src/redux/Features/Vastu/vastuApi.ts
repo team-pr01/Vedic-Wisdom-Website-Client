@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "../../API/baseApi";
 
 const vastuApi = baseApi.injectEndpoints({
@@ -45,9 +46,31 @@ const vastuApi = baseApi.injectEndpoints({
       },
       providesTags: ["vastu"],
     }),
+
+    generateMuhurta: builder.mutation<any, any>({
+      query: (data) => ({
+        url: `/ai/generate-muhurta`,
+        method: "POST",
+        body: data,
+        credentials: "include",
+      }),
+      invalidatesTags: ["vastu"],
+    }),
+
+    generateKundli: builder.mutation<any, any>({
+      query: (data) => ({
+        url: `/ai/generate-kundli`,
+        method: "POST",
+        body: data,
+        credentials: "include",
+      }),
+      invalidatesTags: ["vastu"],
+    }),
   }),
 });
 
 export const {
   useGetAllVastuQuery,
+  useGenerateMuhurtaMutation,
+  useGenerateKundliMutation,
 } = vastuApi;
