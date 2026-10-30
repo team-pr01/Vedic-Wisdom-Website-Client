@@ -102,6 +102,7 @@ export const baseApi = createApi({
     "bulkSms",
     "dailyHoroscope",
     "subscription",
+    "subscriptionPlan",
     "donations",
     "referral",
   ],

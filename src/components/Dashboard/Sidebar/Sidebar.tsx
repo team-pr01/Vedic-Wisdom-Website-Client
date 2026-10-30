@@ -178,7 +178,8 @@ const Sidebar = () => {
               Invite 2 Friends & Unlock 30% Premium Discount.
             </p>
 
-            <Button label="Get Started" className="w-full py-2 mt-4" />
+           <Link to="/dashboard/subscription-plans">
+            <Button label="Get Started" className="w-full py-2 mt-4" /></Link>
           </div>
           <img
             src={IMAGES.appFeatureGradient}

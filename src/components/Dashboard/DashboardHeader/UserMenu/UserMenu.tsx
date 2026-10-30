@@ -42,6 +42,11 @@ const UserMenu = () => {
       icon: <IoPersonOutline size={18} />,
     },
     {
+      label: "Manage Subscriptions",
+      path: "/dashboard/my-subscriptions",
+      icon: <IoPersonOutline size={18} />,
+    },
+    {
       label: "Settings",
       path: "/dashboard/account-settings",
       icon: <IoSettingsOutline size={18} />,

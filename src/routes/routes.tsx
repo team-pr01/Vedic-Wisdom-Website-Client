@@ -48,6 +48,7 @@ import TermsAndConditions from "../pages/Legal/TermsAndConditions/TermsAndCondit
 import PrivacyPolicy from "../pages/Legal/PrivacyPolicy/PrivacyPolicy";
 import RefundPolicy from "../pages/Legal/RefundPolicy/RefundPolicy";
 import AddOrEditProduct from "../components/Dashboard/VedicShopPage/VendorDashboardPage/AddProductPage/AddProductForm/AddProductForm";
+import MySubscriptions from "../pages/DashboardPages/MySubscriptions/MySubscriptions";
 
 export const router = createBrowserRouter([
   {
@@ -119,6 +120,10 @@ export const router = createBrowserRouter([
       {
         path: "my-library",
         element: <MyLibrary />,
+      },
+      {
+        path: "my-subscriptions",
+        element: <MySubscriptions />,
       },
       {
         path: "subscription-plans",

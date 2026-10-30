@@ -1,25 +1,59 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import toast from "react-hot-toast";
 import { ICONS } from "../../../assets";
-import type {
-  subscriptionPlans,
-  TPricingPlan,
-} from "../../../data/subscriptionData";
+import { useInitiateSubscriptionPaymentMutation } from "../../../redux/Features/Subscription/subscriptionApi";
 import Button from "../../Reusable/Button/Button";
+import type { TSubscriptionPlan } from "../../../types/subscriptionPlan.type";
 
 const PricingCard = ({
   plan,
   selectedTab,
 }: {
-  plan: TPricingPlan;
-  selectedTab: "Monthly" | "Yearly";
+  plan: TSubscriptionPlan;
+  selectedTab: "monthly" | "yearly";
 }) => {
-  const getPrice = (plan: (typeof subscriptionPlans)[0]) => {
-    return selectedTab === "Monthly" ? plan.price.monthly : plan.price.yearly;
+  const getPrice = (plan: TSubscriptionPlan) => {
+    return selectedTab === "monthly" ? plan.monthlyPrice : plan.yearlyPrice;
+  };
+
+  const getIcon = () => {
+    return plan?.name === "Basic Plan"
+      ? ICONS.basicPlan
+      : plan?.name === "Premium Monthly"
+        ? ICONS.basicPlan
+        : ICONS.proPlan;
   };
 
   // Helper to get period text
   const getPeriod = () => {
-    return selectedTab === "Monthly" ? "month" : "year";
+    return selectedTab === "monthly" ? "month" : "year";
   };
+
+  const [initiateSubscriptionPayment, { isLoading }] = useInitiateSubscriptionPaymentMutation();
+
+  const handleInitiateSubscriptionPayment = async () => {
+    try {
+      const payload = {
+        planId: plan._id,
+        billingType: selectedTab,
+      };
+      const response = await initiateSubscriptionPayment(payload).unwrap();
+
+      if (response?.success) {
+        if (response?.data?.paymentUrl) {
+          window.location.href = response.data.paymentUrl;
+        } else {
+          toast.error("Payment URL not received");
+        }
+      } else {
+        toast.error(response?.message || "Failed to initiate payment");
+      }
+    } catch (error: any) {
+      console.error("Payment failed:", error);
+      toast.error(error?.data?.message || "Payment initiation failed");
+    }
+  };
+
   return (
     <div
       className={`rounded-2xl border ${
@@ -27,10 +61,10 @@ const PricingCard = ({
       } bg-white p-6 relative h-fit  ${plan?.isPopular ? "shadow-lg" : ""}`}
     >
       <div className="flex items-center justify-between">
-        <h2 className="text-neutral-10 text-3xl font-bold">{plan?.title}</h2>
-        {plan?.icon && (
-          <img src={plan?.icon} alt={plan?.title} className="size-10" />
-        )}
+        <h2 className="text-neutral-10 text-3xl font-bold">{plan?.name}</h2>
+      
+          <img src={getIcon()} alt={plan?.name} className="size-10" />
+        
       </div>
       <p className="text-neutral-60 text-lg font-medium mt-2">
         {plan?.description}
@@ -38,7 +72,8 @@ const PricingCard = ({
 
       <div className="flex items-center justify-between mt-5">
         <h2 className="text-neutral-10 text-[34px] font-bold flex items-end gap-1 leading-none">
-          ${getPrice(plan)}
+          {plan?.currency}
+          {getPrice(plan)}
           <span className="text-sm font-normal text-neutral-10/70 -mb-1">
             /{getPeriod()}
           </span>
@@ -51,23 +86,24 @@ const PricingCard = ({
       </div>
 
       <div className="space-y-3 mt-6">
-        {plan?.features.map((feature) => (
-          <div key={feature.id} className="flex items-center gap-2">
+        {plan?.features.map((feature: string, index: number) => (
+          <div key={index} className="flex items-center gap-2">
             <img src={ICONS.checkMark} alt="" className="size-5" />
-            <p className="text-neutral-10 text-sm font-medium">
-              {feature.text}
-            </p>
+            <p className="text-neutral-10 text-sm font-medium">{feature}</p>
           </div>
         ))}
       </div>
 
       {plan?.isPopular ? (
-        <Button label="Get Started" className="w-full mt-8 py-2" />
+        <Button label="Get Started" className="w-full mt-8 py-2" onClick={handleInitiateSubscriptionPayment}
+          isLoading={isLoading} />
       ) : (
         <Button
           variant="secondary"
           label="Get Started"
           className="w-full mt-8 py-2"
+          onClick={handleInitiateSubscriptionPayment}
+          isLoading={isLoading}
         />
       )}
     </div>

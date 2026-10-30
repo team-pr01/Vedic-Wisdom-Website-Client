@@ -1,30 +1,21 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "../../API/baseApi";
 
 const subscriptionApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllSubscriptions: builder.query({
-      query: (params) => {
-        const queryParams = new URLSearchParams();
-
-        if (params?.keyword) {
-          queryParams.append("keyword", params.keyword);
-        }
-
-        const queryStr = queryParams.toString();
-        const url = queryStr ? `/subscription?${queryStr}` : "/subscription";
-
-        return {
-          url,
-          method: "GET",
-          credentials: "include",
-        };
-      },
-      providesTags: ["subscription"],
+    initiateSubscriptionPayment: builder.mutation<any, any>({
+      query: (data) => ({
+        url: `/subscription/initiate-payment`,
+        method: "POST",
+        body: data,
+        credentials: "include",
+      }),
+      invalidatesTags: ["subscription"],
     }),
 
-    getSingleSubscription: builder.query({
-      query: (id) => ({
-        url: `/subscription/${id}`,
+    getMySubscription: builder.query({
+      query: () => ({
+        url: `/subscription/my`,
         method: "GET",
         credentials: "include",
       }),
@@ -63,8 +54,8 @@ const subscriptionApi = baseApi.injectEndpoints({
 });
 
 export const {
-  useGetAllSubscriptionsQuery,
-  useGetSingleSubscriptionQuery,
+  useInitiateSubscriptionPaymentMutation,
+  useGetMySubscriptionQuery,
   useDeleteSubscriptionMutation,
   useMarkUserAsSubscribedMutation,
   useMarkUserAsUnSubscribedMutation,

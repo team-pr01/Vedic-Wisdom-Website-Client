@@ -3,9 +3,11 @@ import { ICONS, IMAGES } from "../../../assets";
 import Container from "../../Reusable/Container/Container";
 import Button from "../../Reusable/Button/Button";
 import { navLinks } from "./navlinks";
+import { useSelector } from 'react-redux';
+import { useCurrentUser, type TLoggedInUser } from './../../../redux/Features/Auth/authSlice';
 
 const Navbar = () => {
-  const user = false;
+  const user = useSelector(useCurrentUser) as TLoggedInUser;
   return (
     <div className="bg-neutral-45">
       <Container>
@@ -54,7 +56,7 @@ const Navbar = () => {
                 </Link>
               </div>
             ) : (
-              <Link to={`/dashboard//home`}>
+              <Link to={`/dashboard`}>
                 <Button label="Dashboard" className="text-sm" />
               </Link>
             )}
@@ -62,7 +64,7 @@ const Navbar = () => {
 
           {/* Hamburger */}
           <div className="flex lg:hidden items-center gap-3">
-            <Link to={`/dashboard//home`}>
+            <Link to={`/dashboard`}>
               <Button label="Dashboard" className="text-sm" />
             </Link>
             {/* <HamburgerMenu /> */}
