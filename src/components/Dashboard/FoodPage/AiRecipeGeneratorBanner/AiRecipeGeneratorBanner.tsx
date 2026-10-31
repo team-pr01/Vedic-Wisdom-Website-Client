@@ -27,7 +27,7 @@ const AiRecipeGeneratorBanner = () => {
         {aiRecipeGeneratorFeatures.map((feature) => (
           <div key={feature} className="flex items-center gap-2">
             <img src={ICONS.checkMark} alt="" />
-            <p className="text-neutral-81 text-sm font-semibold">{feature}</p>
+            <p className="text-primary-81 text-sm font-semibold">{feature}</p>
           </div>
         ))}
       </div>

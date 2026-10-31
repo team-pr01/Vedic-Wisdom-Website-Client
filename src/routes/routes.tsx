@@ -49,6 +49,7 @@ import PrivacyPolicy from "../pages/Legal/PrivacyPolicy/PrivacyPolicy";
 import RefundPolicy from "../pages/Legal/RefundPolicy/RefundPolicy";
 import AddOrEditProduct from "../components/Dashboard/VedicShopPage/VendorDashboardPage/AddProductPage/AddProductForm/AddProductForm";
 import MySubscriptions from "../pages/DashboardPages/MySubscriptions/MySubscriptions";
+import Quiz from "../pages/DashboardPages/LearnAndExplore/Quiz/Quiz";
 
 export const router = createBrowserRouter([
   {
@@ -228,6 +229,10 @@ export const router = createBrowserRouter([
       {
         path: "learn-and-explore/audio-book/:id",
         element: <AudioBookDetails />,
+      },
+      {
+        path: "learn-and-explore/quiz",
+        element: <Quiz />,
       },
       {
         path: "job-portal",

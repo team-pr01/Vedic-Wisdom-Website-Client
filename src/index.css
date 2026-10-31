@@ -18,9 +18,10 @@
   --color-primary-70: #a37d30;
   --color-primary-75: #ffbc3c;
   --color-primary-80: #F2E4C9;
-  --color-neutral-81: #785A00;
-  --color-neutral-82: #FFFAEF;
-  --color-neutral-83: #D5D5D5;
+  --color-primary-81: #785A00;
+  --color-primary-82: #FFFAEF;
+  --color-primary-83: #D5D5D5;
+    --color-primary-84: #DEB973;
 
   /* secondary */
   --color-secondary-10: #1a1f2c;
@@ -63,6 +64,7 @@
   --shadow-dashboard-header-button: 0 4px 6px 0 rgba(163, 163, 163, 0.11);
   --shadow-food-card: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-book-filter: 0 -2px 6px 0 rgba(163, 163, 163, 0.16), 0 4px 6px 0 rgba(163, 163, 163, 0.16);
+  --shadow-quiz-lock: 0 0 12.3px 0 rgba(214, 168, 80, 0.40);
 
   /* Gradients */
   --bg-gradient-primary-button:
@@ -274,4 +276,12 @@ button:disabled {
 .ai-chatbot-sidebar-scrollbar::-ms-scrollbar-thumb {
   background: #D1D5DB;
   border-radius: 10px;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

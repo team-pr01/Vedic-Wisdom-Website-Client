@@ -122,6 +122,9 @@ import copy from "./icons/copy.svg";
 import plusWhite from "./icons/plus-white.svg";
 import crown from "./icons/crown.svg";
 import shareGray from "./icons/share-gray.svg";
+import unlockPrimary from "./icons/unlock-primary.svg";
+import unlockWhite from "./icons/unlock-white.svg";
+import lockWhite from "./icons/lock-white.svg";
 
 export const IMAGES = {
     logo,
@@ -248,4 +251,7 @@ export const ICONS = {
     copy,
     crown,
     shareGray,
+    unlockPrimary,
+    unlockWhite,
+    lockWhite
 };

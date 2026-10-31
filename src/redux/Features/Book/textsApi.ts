@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "../../API/baseApi";
 
 const bookTextApi = baseApi.injectEndpoints({
@@ -14,6 +15,15 @@ const bookTextApi = baseApi.injectEndpoints({
     }),
 
     getSingleText: builder.query({
+      query: (id) => ({
+        url: `/book-text/${id}`,
+        method: "GET",
+        credentials: "include",
+      }),
+      providesTags: ["texts"],
+    }),
+
+    getAllBookTextsByBookId: builder.query({
       query: (id) => ({
         url: `/book-text/${id}`,
         method: "GET",
@@ -40,7 +50,7 @@ const bookTextApi = baseApi.injectEndpoints({
         });
 
         return {
-          url: `/book-text/find-by-details?${params.toString()}`,
+          url: `/book-text/filter?${params.toString()}`,
           method: "GET",
           credentials: "include",
         };
@@ -102,6 +112,7 @@ const bookTextApi = baseApi.injectEndpoints({
 export const {
   useGetAllTextsQuery,
   useGetSingleTextQuery,
+  useGetAllBookTextsByBookIdQuery,
   useGetTextByDetailsQuery,
   useAddTextMutation,
   useDeleteTextMutation,

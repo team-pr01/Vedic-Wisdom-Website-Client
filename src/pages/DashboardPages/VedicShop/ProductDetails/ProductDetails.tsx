@@ -86,7 +86,7 @@ const ProductDetails = () => {
               </span>
             </h4>
 
-            <div className="border border-neutral-83 bg-neutral-70 rounded-md px-2 py-1 text-primary-10 font-bold w-fit text-sm">
+            <div className="border border-primary-83 bg-neutral-70 rounded-md px-2 py-1 text-primary-10 font-bold w-fit text-sm">
               -{discountPercentage.toFixed(0)}%
             </div>
           </div>

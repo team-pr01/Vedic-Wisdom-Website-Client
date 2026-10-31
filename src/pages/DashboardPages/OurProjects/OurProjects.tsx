@@ -26,7 +26,7 @@ const OurProjects = () => {
             ))}
       </div>
 
-      <div className="bg-neutral-82 p-10 rounded-xl flex items-center justify-between sticky bottom-0 border border-neutral-55 z-10">
+      <div className="bg-primary-82 p-10 rounded-xl flex items-center justify-between sticky bottom-0 border border-neutral-55 z-10">
         <div className="flex items-center gap-6">
           <img src={ICONS.raiseFund} alt="" />
           <div className="relative z-10">
