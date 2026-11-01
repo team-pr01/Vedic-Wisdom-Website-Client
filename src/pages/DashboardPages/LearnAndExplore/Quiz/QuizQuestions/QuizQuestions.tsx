@@ -2,6 +2,8 @@ import { useState, useEffect, useMemo } from "react";
 import { FiCheckCircle } from "react-icons/fi";
 import { IMAGES } from "../../../../../assets";
 import Button from "../../../../../components/Reusable/Button/Button";
+import LevelCompletedModal from "../../../../../components/Dashboard/QuizPage/LevelCompletedModal/LevelCompletedModal";
+import QuizCompletedModal from "../../../../../components/Dashboard/QuizPage/QuizCard/QuizCompletedModal/QuizCompletedModal";
 
 type TOption = {
   id: string;
@@ -16,6 +18,10 @@ type TQuestion = {
 };
 
 const QuizQuestions = () => {
+  const [isLevelCompletedModalOpen, setIsLevelCompletedModalOpen] =
+    useState<boolean>(false);
+  const [isQuizCompletedModalOpen, setIsQuizCompletedModalOpen] =
+    useState<boolean>(false);
   // --- Mock Data (Static Timer, Dynamic Questions) ---
   // In a real app, this comes from the DB and props/API
   const TOTAL_TIME_MINUTES = 30;
@@ -207,6 +213,15 @@ const QuizQuestions = () => {
           className="w-full px-5 py-4"
         />
       </div>
+
+      <QuizCompletedModal
+        isModalOpen={isQuizCompletedModalOpen}
+        setIsModalOpen={setIsQuizCompletedModalOpen}
+      />
+      <LevelCompletedModal
+        isModalOpen={isLevelCompletedModalOpen}
+        setIsModalOpen={setIsLevelCompletedModalOpen}
+      />
     </div>
   );
 };

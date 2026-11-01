@@ -125,6 +125,7 @@ import shareGray from "./icons/share-gray.svg";
 import unlockPrimary from "./icons/unlock-primary.svg";
 import unlockWhite from "./icons/unlock-white.svg";
 import lockWhite from "./icons/lock-white.svg";
+import quizCompleted from "./icons/quiz-completed.svg";
 
 export const IMAGES = {
     logo,
@@ -253,5 +254,6 @@ export const ICONS = {
     shareGray,
     unlockPrimary,
     unlockWhite,
-    lockWhite
+    lockWhite,
+    quizCompleted,
 };
