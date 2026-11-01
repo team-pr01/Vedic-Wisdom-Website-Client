@@ -1,15 +1,21 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Dispatch, SetStateAction } from "react";
 import { ICONS } from "../../../../assets";
 import Button from "../../../Reusable/Button/Button";
 import Modal from "../../../Reusable/Modal/Modal";
+import { Link } from "react-router-dom";
 
 type TLevelCompletedModalProps = {
   isModalOpen: boolean;
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
+  quizId: string;
+  nextLevel: any;
 };
 const LevelCompletedModal: React.FC<TLevelCompletedModalProps> = ({
   isModalOpen,
   setIsModalOpen,
+  quizId,
+  nextLevel,
 }) => {
   return (
     <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
@@ -28,7 +34,8 @@ const LevelCompletedModal: React.FC<TLevelCompletedModalProps> = ({
             label="Will Play Later"
             className="px-8"
           />
-          <Button label="Continue to Next Level" className="px-8" />
+          <Link to={`/dashboard/quiz/questions/${quizId}?level=${nextLevel}`}>
+          <Button label="Continue to Next Level" className="px-8" /></Link>
         </div>
       </div>
     </Modal>

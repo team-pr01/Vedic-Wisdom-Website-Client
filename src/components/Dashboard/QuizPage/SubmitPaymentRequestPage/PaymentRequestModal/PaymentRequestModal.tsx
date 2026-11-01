@@ -1,5 +1,5 @@
-import Modal from "../../../Reusable/Modal/Modal";
-import { IMAGES } from "../../../../assets";
+import { IMAGES } from "../../../../../assets";
+import Modal from "../../../../Reusable/Modal/Modal";
 
 type TPaymentRequestModalProps = {
   isModalOpen: boolean;

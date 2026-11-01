@@ -1,9 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import DashboardHeading from "../../../../components/Reusable/DashboardHeading/DashboardHeading";
 import QuizList from "../../../../components/Dashboard/QuizPage/QuizList/QuizList";
+import { useGetAllQuizzesQuery } from "../../../../redux/Features/Quiz/quizApi";
 
 const Quiz = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
+
+  const { data } = useGetAllQuizzesQuery({});
+  const quizzes = data?.data?.data || [];
+  console.log(quizzes);
   const categories = [
     "All",
     "Free",
@@ -39,9 +45,9 @@ const Quiz = () => {
       </div>
 
       <div className="mt-8 flex flex-col gap-8">
-        <QuizList/>
-        <QuizList/>
-        <QuizList/>
+        {quizzes?.map((quiz:any) => (
+          <QuizList key={quiz._id} quiz={quiz} />
+        ))}
       </div>
     </div>
   );

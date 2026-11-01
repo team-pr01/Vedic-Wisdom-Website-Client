@@ -1,77 +1,63 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/set-state-in-effect */
 import { useState, useEffect, useMemo } from "react";
 import { FiCheckCircle, FiClock } from "react-icons/fi";
 import { IMAGES } from "../../../../../assets";
 import Button from "../../../../../components/Reusable/Button/Button";
 import LevelCompletedModal from "../../../../../components/Dashboard/QuizPage/LevelCompletedModal/LevelCompletedModal";
 import QuizCompletedModal from "../../../../../components/Dashboard/QuizPage/QuizCard/QuizCompletedModal/QuizCompletedModal";
-
-type TOption = {
-  id: string;
-  label: string;
-};
-
-type TQuestion = {
-  id: string;
-  questionText: string;
-  options: TOption[];
-  correctOptionId: string;
-};
+import { useParams, useSearchParams } from "react-router-dom";
+import {
+  useGetQuizQuestionsByLevelNoQuery,
+  useSubmitLevelAnswersMutation,
+} from "../../../../../redux/Features/Quiz/quizApi";
+import toast from "react-hot-toast";
 
 const QuizQuestions = () => {
-  const [isLevelCompletedModalOpen, setIsLevelCompletedModalOpen] = useState<boolean>(false);
-  const [isQuizCompletedModalOpen, setIsQuizCompletedModalOpen] = useState<boolean>(false);
-  
-  const TOTAL_TIME_MINUTES = 30;
+  const { quizId } = useParams();
+  const [searchParams] = useSearchParams();
+  const level = searchParams.get("level");
+
+  const [isLevelCompletedModalOpen, setIsLevelCompletedModalOpen] =
+    useState<boolean>(false);
+  const [isQuizCompletedModalOpen, setIsQuizCompletedModalOpen] =
+    useState<boolean>(false);
+
+  const [submitLevelAnswers, { isLoading: isSubmitting }] =
+    useSubmitLevelAnswersMutation();
+
+  const { data: quizQuestionsData, isLoading } =
+    useGetQuizQuestionsByLevelNoQuery({
+      quizId: quizId || "",
+      levelNo: level || "",
+    });
+
+  const data = quizQuestionsData?.data || {};
+  const questions = data?.questions || [];
+  const TOTAL_TIME_MINUTES = data?.duration || 0;
   const totalTimeInSeconds = TOTAL_TIME_MINUTES * 60;
 
-  const mockQuestions: TQuestion[] = [
-    {
-      id: "q1",
-      questionText: "Who is considered the author of the Mahabharata?",
-      options: [
-        { id: "A", label: "Vyasa" },
-        { id: "B", label: "Sage" },
-        { id: "C", label: "Krishna" },
-        { id: "D", label: "Gautama" },
-      ],
-      correctOptionId: "A",
-    },
-    {
-      id: "q2",
-      questionText: "What is the primary language of the ancient Vedas?",
-      options: [
-        { id: "A", label: "Pali" },
-        { id: "B", label: "Sanskrit" },
-        { id: "C", label: "Prakrit" },
-        { id: "D", label: "Tamil" },
-      ],
-      correctOptionId: "B",
-    },
-    {
-      id: "q3",
-      questionText: "Which deity is known as the destroyer in the Hindu trinity?",
-      options: [
-        { id: "A", label: "Brahma" },
-        { id: "B", label: "Vishnu" },
-        { id: "C", label: "Shiva" },
-        { id: "D", label: "Indra" },
-      ],
-      correctOptionId: "C",
-    },
-  ];
-
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState<Record<string, string>>({});
-  const [timeLeft, setTimeLeft] = useState(totalTimeInSeconds);
 
-  const currentQuestion = mockQuestions[currentQuestionIndex];
+  // Store answers as { questionId: optionIndex }
+  const [selectedAnswers, setSelectedAnswers] = useState<
+    Record<string, number>
+  >({});
+
+  const [timeLeft, setTimeLeft] = useState(0);
+
+  // --- Sync Timer with API Data ---
+  useEffect(() => {
+    if (totalTimeInSeconds > 0) {
+      setTimeLeft(totalTimeInSeconds);
+    }
+  }, [totalTimeInSeconds]);
+
+  const currentQuestion = questions[currentQuestionIndex];
 
   // --- Timer Logic ---
   useEffect(() => {
-    if (timeLeft <= 0) {
-      console.log("Time is up!");
-      return;
-    }
+    if (timeLeft <= 0) return;
 
     const timerId = setInterval(() => {
       setTimeLeft((prev) => prev - 1);
@@ -81,51 +67,96 @@ const QuizQuestions = () => {
   }, [timeLeft]);
 
   const formatTime = (seconds: number) => {
+    if (isNaN(seconds)) return "00:00";
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
-  // Calculate percentage for the circular ring
   const timeProgress = useMemo(() => {
+    if (totalTimeInSeconds === 0) return 0;
     return (timeLeft / totalTimeInSeconds) * 100;
   }, [timeLeft, totalTimeInSeconds]);
 
-  // Determine color based on time left (Turns red when < 5 mins / 300 seconds)
-  const timerColor = timeLeft < 300 ? "#EF4444" : "#F5B041"; 
+  const timerColor = timeLeft < 300 ? "#EF4444" : "#F5B041";
 
-  // SVG Circle Calculations
   const radius = 20;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (timeProgress / 100) * circumference;
 
   // --- Handlers ---
-  const handleSelectOption = (optionId: string) => {
+  const handleSelectOption = (questionId: string, optionIndex: number) => {
     setSelectedAnswers((prev) => ({
       ...prev,
-      [currentQuestion.id]: optionId,
+      [questionId]: optionIndex,
     }));
   };
 
-  const handleNext = () => {
-    if (currentQuestionIndex < mockQuestions.length - 1) {
+  const handleNext = async () => {
+    // If there are more questions, go to next
+    if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
-      console.log("Quiz Finished", selectedAnswers);
-      setIsQuizCompletedModalOpen(true);
+      // --- SUBMIT QUIZ ---
+      try {
+        // Format answers to match the expected payload exactly
+        const formattedAnswers = questions.map((q: any, index: number) => {
+          const selectedOpt = selectedAnswers[q._id];
+          return {
+            questionIndex: index,
+            // If they skipped a question, default to -1 (or you can use 0).
+            // Assuming the button is disabled until they select, this should always be a number.
+            selectedOption: selectedOpt !== undefined ? selectedOpt : -1,
+          };
+        });
+
+        const timeTaken = totalTimeInSeconds - timeLeft;
+
+        const payload = {
+          answers: formattedAnswers,
+          timeTaken: timeTaken,
+        };
+
+        console.log("Submitting Payload:", payload);
+
+        // Call API with query params
+        const response = await submitLevelAnswers({
+          quizId: quizId || "",
+          levelNo: level || "",
+          data: payload,
+        }).unwrap();
+
+        // Handle success
+        if (response?.success) {
+          toast.success("Quiz submitted successfully!");
+          setIsLevelCompletedModalOpen(true);
+          // Optional: You can use response.data to determine if they passed (LevelCompletedModal) vs failed
+        }
+      } catch (error: any) {
+        toast.error(error?.data?.message || "Failed to submit quiz");
+        console.error(error);
+      }
     }
   };
+
+  // Loading State (Prevents crashing on first render)
+  if (isLoading || !currentQuestion) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        Loading...
+      </div>
+    );
+  }
+
+  const currentSelectedOption = selectedAnswers[currentQuestion._id];
 
   return (
     <div className="font-Manrope min-h-[80vh] flex items-center justify-center p-4">
       <div className="w-full max-w-3xl bg-[#FCF9F2] border border-[#F2E8D9] rounded-3xl p-6 md:p-8 shadow-sm relative">
-        
         {/* --- Floating Timer Widget --- */}
         <div className="absolute -top-7 left-1/2 -translate-x-1/2 bg-white shadow-lg border border-[#F2E8D9] px-5 py-2.5 rounded-full flex items-center gap-3 z-20">
           <div className="relative flex items-center justify-center w-12 h-12">
-            {/* SVG Ring */}
             <svg className="transform -rotate-90 w-12 h-12">
-              {/* Background Ring */}
               <circle
                 cx="24"
                 cy="24"
@@ -134,7 +165,6 @@ const QuizQuestions = () => {
                 strokeWidth="4"
                 fill="transparent"
               />
-              {/* Animated Progress Ring */}
               <circle
                 cx="24"
                 cy="24"
@@ -148,13 +178,14 @@ const QuizQuestions = () => {
                 strokeLinecap="round"
               />
             </svg>
-            {/* Clock Icon inside Ring */}
             <FiClock className="absolute text-neutral-50" size={16} />
           </div>
           <div className="flex flex-col pr-2">
-            <span className="text-xs text-neutral-50 font-semibold uppercase tracking-wider">Time Left</span>
-            <span 
-              className="text-lg font-bold leading-none" 
+            <span className="text-xs text-neutral-50 font-semibold uppercase tracking-wider">
+              Time Left
+            </span>
+            <span
+              className="text-lg font-bold leading-none"
               style={{ color: timerColor }}
             >
               {formatTime(timeLeft)}
@@ -171,23 +202,23 @@ const QuizQuestions = () => {
           />
           <div className="relative z-10">
             <p className="text-neutral-50 font-medium text-sm md:text-base">
-              Question {currentQuestionIndex + 1} of {mockQuestions.length}
+              Question {currentQuestionIndex + 1} of {questions.length}
             </p>
             <h4 className="text-neutral-90 font-bold text-xl md:text-2xl mt-2 leading-snug">
-              {currentQuestion.questionText}
+              {currentQuestion?.question}
             </h4>
           </div>
         </div>
 
         {/* --- Options List --- */}
         <div className="space-y-3 mb-8">
-          {currentQuestion.options.map((option) => {
-            const isSelected = selectedAnswers[currentQuestion.id] === option.id;
+          {currentQuestion.options.map((option: string, index: number) => {
+            const isSelected = currentSelectedOption === index;
 
             return (
               <button
-                key={option.id}
-                onClick={() => handleSelectOption(option.id)}
+                key={option}
+                onClick={() => handleSelectOption(currentQuestion._id, index)}
                 className={`w-full flex items-center p-4 rounded-xl border transition-all duration-200 ${
                   isSelected
                     ? "bg-[#F5E6CC] border-primary-10 shadow-sm"
@@ -195,21 +226,17 @@ const QuizQuestions = () => {
                 }`}
               >
                 <span
-                  className={`w-8 h-8 flex items-center justify-center rounded-md font-bold text-sm ${
-                    isSelected ? "text-neutral-90" : "text-neutral-50"
-                  }`}
+                  className={`w-8 h-8 flex items-center justify-center rounded-md font-bold text-sm ${isSelected ? "text-neutral-90" : "text-neutral-50"}`}
                 >
-                  {option.id}
+                  {String.fromCharCode(65 + index)}
                 </span>
 
                 <span className="flex-1 text-center font-semibold text-neutral-90">
-                  {option.label}
+                  {option}
                 </span>
 
                 <FiCheckCircle
-                  className={`w-5 h-5 ${
-                    isSelected ? "text-primary-10" : "text-neutral-40"
-                  }`}
+                  className={`w-5 h-5 ${isSelected ? "text-primary-10" : "text-neutral-40"}`}
                 />
               </button>
             );
@@ -218,9 +245,16 @@ const QuizQuestions = () => {
 
         <Button
           onClick={handleNext}
-          isDisabled={!selectedAnswers[currentQuestion.id]}
+          isDisabled={currentSelectedOption === undefined || isSubmitting}
+          isLoading={isSubmitting}
           variant="primary"
-          label={currentQuestionIndex === mockQuestions.length - 1 ? "Finish" : "Next"}
+          label={
+            isSubmitting
+              ? "Submitting..."
+              : currentQuestionIndex === questions.length - 1
+                ? "Finish"
+                : "Next"
+          }
           className="w-full px-5 py-4"
         />
       </div>
@@ -232,6 +266,8 @@ const QuizQuestions = () => {
       <LevelCompletedModal
         isModalOpen={isLevelCompletedModalOpen}
         setIsModalOpen={setIsLevelCompletedModalOpen}
+        quizId={quizId || ""}
+        nextLevel={level && level + 1}
       />
     </div>
   );

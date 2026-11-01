@@ -238,7 +238,7 @@ export const router = createBrowserRouter([
         element: <Quiz />,
       },
       {
-        path: "learn-and-explore/quiz-questions/:id",
+        path: "quiz/questions/:quizId",
         element: <QuizQuestions />,
       },
       {

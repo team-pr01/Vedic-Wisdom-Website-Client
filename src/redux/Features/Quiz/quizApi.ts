@@ -1,19 +1,60 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "../../API/baseApi";
 
 const quizApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllQuizzes: builder.query({
-      query: () => {
+      query: ({
+        keyword,
+        name,
+        limit,
+        page,
+        skip,
+        type,
+      }: {
+        keyword?: string;
+        name?: string;
+        limit?: number;
+        page?: number;
+        skip?: number;
+        type?: string;
+      } = {}) => {
+        const params = new URLSearchParams();
+
+        // Handle keyword - skip if "All"
+        if (keyword && keyword !== "All") {
+          params.append("keyword", keyword);
+        }
+
+        // Handle name - skip if "All"
+        if (name && name !== "All") {
+          params.append("name", name);
+        }
+
+        // Handle limit
+        if (typeof limit === "number") params.append("limit", limit.toString());
+
+        // Handle page
+        if (typeof page === "number") params.append("page", page.toString());
+
+        // Handle skip
+        if (typeof skip === "number") params.append("skip", skip.toString());
+
+        // Handle type - skip if "All" or empty
+        if (type && type !== "All") {
+          params.append("type", type);
+        }
+
         return {
-          url: `/quiz`,
+          url: `/quiz/active?${params.toString()}`,
           method: "GET",
           credentials: "include",
         };
       },
-      providesTags: ["quiz"],
+      providesTags: ["food"],
     }),
 
-    getSingleQuiz: builder.query({
+    getSingleQuizById: builder.query({
       query: (id) => ({
         url: `/quiz/${id}`,
         method: "GET",
@@ -22,9 +63,27 @@ const quizApi = baseApi.injectEndpoints({
       providesTags: ["quiz"],
     }),
 
-    addQuizManually: builder.mutation<any, any>({
-      query: (data) => ({
-        url: `/quiz/add`,
+    getQuizQuestionsByLevelNo: builder.query({
+      query: ({quizId, levelNo}) => ({
+        url: `/quiz/${quizId}/level/${levelNo}`,
+        method: "GET",
+        credentials: "include",
+      }),
+      providesTags: ["quiz"],
+    }),
+
+    startQuiz: builder.mutation<any, any>({
+      query: (quizId) => ({
+        url: `/quiz/start/${quizId}`,
+        method: "POST",
+        credentials: "include",
+      }),
+      invalidatesTags: ["quiz"],
+    }),
+
+    submitLevelAnswers: builder.mutation<any, any>({
+      query: ({data, quizId, levelNo}) => ({
+        url: `/quiz/submit/${quizId}/level/${levelNo}`,
         method: "POST",
         body: data,
         credentials: "include",
@@ -55,8 +114,10 @@ const quizApi = baseApi.injectEndpoints({
 
 export const {
   useGetAllQuizzesQuery,
-  useGetSingleQuizQuery,
-  useAddQuizManuallyMutation,
+  useGetSingleQuizByIdQuery,
+  useGetQuizQuestionsByLevelNoQuery,
+  useStartQuizMutation,
+  useSubmitLevelAnswersMutation,
   useAddQuizByAIMutation,
   useDeleteQuizMutation,
 } = quizApi;

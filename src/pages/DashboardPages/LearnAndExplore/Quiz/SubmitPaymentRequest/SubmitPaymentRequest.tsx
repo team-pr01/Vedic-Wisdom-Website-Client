@@ -4,7 +4,7 @@ import SelectDropdown from "../../../../../components/Reusable/SelectDropdown/Se
 import TextInput from "../../../../../components/Reusable/TextInput/TextInput";
 import Textarea from "../../../../../components/Reusable/TextArea/TextArea";
 import Button from "../../../../../components/Reusable/Button/Button";
-import PaymentRequestModal from "../../../../../components/Dashboard/QuizPage/PaymentRequestModal/PaymentRequestModal";
+import PaymentRequestModal from "../../../../../components/Dashboard/QuizPage/SubmitPaymentRequestPage/PaymentRequestModal/PaymentRequestModal";
 
 type TPaymentFormData = {
   paymentMethod: string;
