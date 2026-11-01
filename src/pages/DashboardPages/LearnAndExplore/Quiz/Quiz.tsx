@@ -1,6 +1,6 @@
 import { useState } from "react";
 import DashboardHeading from "../../../../components/Reusable/DashboardHeading/DashboardHeading";
-import QuizCard from "../../../../components/Dashboard/QuizPage/QuizCard/QuizCard";
+import QuizList from "../../../../components/Dashboard/QuizPage/QuizList/QuizList";
 
 const Quiz = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -13,15 +13,6 @@ const Quiz = () => {
     "Rishi Siddha",
   ];
 
-  const quizData = [
-    { id: 1, variant: "unlock" },
-    { id: 2, variant: "lock" },
-    { id: 3, variant: "lock" },
-    { id: 4, variant: "lock" },
-    { id: 5, variant: "lock" },
-    { id: 6, variant: "lock" },
-    { id: 7, variant: "lock" },
-  ];
   return (
     <div className="font-Manrope">
       <div className="flex items-center justify-between">
@@ -47,16 +38,10 @@ const Quiz = () => {
         </div>
       </div>
 
-      <div className="mt-8">
-        <h3 className="text-neutral-90 font-bold text-2xl">Jnanarthi</h3>
-
-        <div className="flex items-center gap-4 mt-5 overflow-x-auto pb-4 snap-x snap-mandatory no-scrollbar">
-          {quizData.map((quiz) => (
-            <div key={quiz.id} className="shrink-0 snap-start">
-              <QuizCard variant={quiz.variant as "unlock" | "lock"} />
-            </div>
-          ))}
-        </div>
+      <div className="mt-8 flex flex-col gap-8">
+        <QuizList/>
+        <QuizList/>
+        <QuizList/>
       </div>
     </div>
   );
