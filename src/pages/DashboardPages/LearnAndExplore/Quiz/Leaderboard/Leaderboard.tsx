@@ -2,6 +2,9 @@ import LeaderboardPodium from "../../../../../components/Dashboard/QuizPage/Lead
 import YourRankCard from "../../../../../components/Dashboard/QuizPage/LeaderBoardPage/YourRankCard/YourRankCard";
 import Button from "../../../../../components/Reusable/Button/Button";
 import LeaderboardWinnerList from "../../../../../components/Dashboard/QuizPage/LeaderBoardPage/LeaderboardWinnerList/LeaderboardWinnerList";
+import WinnerModal from "../../../../../components/Dashboard/QuizPage/WinnerModal/WinnerModal";
+import { useState } from "react";
+import CoinsRequestModal from "../../../../../components/Dashboard/QuizPage/CoinsRequestModal/CoinsRequestModal";
 
 // Mock Data
 const topThree = [
@@ -74,6 +77,22 @@ const myUser = {
 };
 
 const Leaderboard = () => {
+  const [isWinnerModalOpen, setIsWinnerModalOpen] = useState<boolean>(false);
+  const [isCoinsModalOpen, setIsCoinsModalOpen] = useState<boolean>(false);
+
+  // Handlers for the modal buttons
+  const handleGetCoins = () => {
+    console.log("User chose to get coins");
+    // Call your API to credit coins here
+    setIsWinnerModalOpen(false);
+    setIsCoinsModalOpen(true);
+  };
+
+  const handleReceivePayment = () => {
+    console.log("User chose to receive payment");
+    // Redirect to payment/bank details form or open a new modal
+    setIsWinnerModalOpen(false);
+  };
   return (
     <div className="font-Manrope pb-10 max-w-4xl mx-auto">
       <h2 className="text-neutral-90 font-bold text-2xl mb-4 text-center">
@@ -110,6 +129,19 @@ const Leaderboard = () => {
           </div>
         </div>
       </div>
+
+      <WinnerModal
+        isModalOpen={isWinnerModalOpen}
+        setIsModalOpen={setIsWinnerModalOpen}
+        rewardAmount="$20 Prize"
+        onGetCoins={handleGetCoins}
+        onReceivePayment={handleReceivePayment}
+      />
+
+      <CoinsRequestModal
+        isModalOpen={isCoinsModalOpen}
+        setIsModalOpen={setIsCoinsModalOpen}
+      />
     </div>
   );
 };

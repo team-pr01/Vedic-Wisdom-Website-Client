@@ -52,6 +52,7 @@ import MySubscriptions from "../pages/DashboardPages/MySubscriptions/MySubscript
 import Quiz from "../pages/DashboardPages/LearnAndExplore/Quiz/Quiz";
 import QuizQuestions from "../pages/DashboardPages/LearnAndExplore/Quiz/QuizQuestions/QuizQuestions";
 import Leaderboard from "../pages/DashboardPages/LearnAndExplore/Quiz/Leaderboard/Leaderboard";
+import SubmitPaymentRequest from "../pages/DashboardPages/LearnAndExplore/Quiz/SubmitPaymentRequest/SubmitPaymentRequest";
 
 export const router = createBrowserRouter([
   {
@@ -243,6 +244,10 @@ export const router = createBrowserRouter([
       {
         path: "learn-and-explore/leaderboard",
         element: <Leaderboard />,
+      },
+      {
+        path: "submit-payment-request",
+        element: <SubmitPaymentRequest />,
       },
       {
         path: "job-portal",
