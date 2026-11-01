@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { FiCheckCircle } from "react-icons/fi";
+import { FiCheckCircle, FiClock } from "react-icons/fi";
 import { IMAGES } from "../../../../../assets";
 import Button from "../../../../../components/Reusable/Button/Button";
 import LevelCompletedModal from "../../../../../components/Dashboard/QuizPage/LevelCompletedModal/LevelCompletedModal";
@@ -14,16 +14,13 @@ type TQuestion = {
   id: string;
   questionText: string;
   options: TOption[];
-  correctOptionId: string; // Useful for showing if they got it right later
+  correctOptionId: string;
 };
 
 const QuizQuestions = () => {
-  const [isLevelCompletedModalOpen, setIsLevelCompletedModalOpen] =
-    useState<boolean>(false);
-  const [isQuizCompletedModalOpen, setIsQuizCompletedModalOpen] =
-    useState<boolean>(false);
-  // --- Mock Data (Static Timer, Dynamic Questions) ---
-  // In a real app, this comes from the DB and props/API
+  const [isLevelCompletedModalOpen, setIsLevelCompletedModalOpen] = useState<boolean>(false);
+  const [isQuizCompletedModalOpen, setIsQuizCompletedModalOpen] = useState<boolean>(false);
+  
   const TOTAL_TIME_MINUTES = 30;
   const totalTimeInSeconds = TOTAL_TIME_MINUTES * 60;
 
@@ -52,8 +49,7 @@ const QuizQuestions = () => {
     },
     {
       id: "q3",
-      questionText:
-        "Which deity is known as the destroyer in the Hindu trinity?",
+      questionText: "Which deity is known as the destroyer in the Hindu trinity?",
       options: [
         { id: "A", label: "Brahma" },
         { id: "B", label: "Vishnu" },
@@ -64,12 +60,8 @@ const QuizQuestions = () => {
     },
   ];
 
-  // --- State ---
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  // Store answers as a map: { questionId: optionId }
-  const [selectedAnswers, setSelectedAnswers] = useState<
-    Record<string, string>
-  >({});
+  const [selectedAnswers, setSelectedAnswers] = useState<Record<string, string>>({});
   const [timeLeft, setTimeLeft] = useState(totalTimeInSeconds);
 
   const currentQuestion = mockQuestions[currentQuestionIndex];
@@ -77,7 +69,6 @@ const QuizQuestions = () => {
   // --- Timer Logic ---
   useEffect(() => {
     if (timeLeft <= 0) {
-      // Handle timeout (e.g., auto-submit or show modal)
       console.log("Time is up!");
       return;
     }
@@ -89,17 +80,24 @@ const QuizQuestions = () => {
     return () => clearInterval(timerId);
   }, [timeLeft]);
 
-  // Format time as MM:SS
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
-  // Calculate progress bar width (percentage)
+  // Calculate percentage for the circular ring
   const timeProgress = useMemo(() => {
     return (timeLeft / totalTimeInSeconds) * 100;
   }, [timeLeft, totalTimeInSeconds]);
+
+  // Determine color based on time left (Turns red when < 5 mins / 300 seconds)
+  const timerColor = timeLeft < 300 ? "#EF4444" : "#F5B041"; 
+
+  // SVG Circle Calculations
+  const radius = 20;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (timeProgress / 100) * circumference;
 
   // --- Handlers ---
   const handleSelectOption = (optionId: string) => {
@@ -113,18 +111,59 @@ const QuizQuestions = () => {
     if (currentQuestionIndex < mockQuestions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
-      // Handle Submit / Finish
       console.log("Quiz Finished", selectedAnswers);
+      setIsQuizCompletedModalOpen(true);
     }
   };
 
   return (
-    // Center the card on the page
     <div className="font-Manrope min-h-[80vh] flex items-center justify-center p-4">
-      <div className="w-full max-w-3xl bg-[#FCF9F2] border border-[#F2E8D9] rounded-3xl p-6 md:p-8 shadow-sm">
+      <div className="w-full max-w-3xl bg-[#FCF9F2] border border-[#F2E8D9] rounded-3xl p-6 md:p-8 shadow-sm relative">
+        
+        {/* --- Floating Timer Widget --- */}
+        <div className="absolute -top-7 left-1/2 -translate-x-1/2 bg-white shadow-lg border border-[#F2E8D9] px-5 py-2.5 rounded-full flex items-center gap-3 z-20">
+          <div className="relative flex items-center justify-center w-12 h-12">
+            {/* SVG Ring */}
+            <svg className="transform -rotate-90 w-12 h-12">
+              {/* Background Ring */}
+              <circle
+                cx="24"
+                cy="24"
+                r={radius}
+                stroke="#E5E7EB"
+                strokeWidth="4"
+                fill="transparent"
+              />
+              {/* Animated Progress Ring */}
+              <circle
+                cx="24"
+                cy="24"
+                r={radius}
+                stroke={timerColor}
+                strokeWidth="4"
+                fill="transparent"
+                strokeDasharray={circumference}
+                strokeDashoffset={strokeDashoffset}
+                className="transition-all duration-1000 ease-linear"
+                strokeLinecap="round"
+              />
+            </svg>
+            {/* Clock Icon inside Ring */}
+            <FiClock className="absolute text-neutral-50" size={16} />
+          </div>
+          <div className="flex flex-col pr-2">
+            <span className="text-xs text-neutral-50 font-semibold uppercase tracking-wider">Time Left</span>
+            <span 
+              className="text-lg font-bold leading-none" 
+              style={{ color: timerColor }}
+            >
+              {formatTime(timeLeft)}
+            </span>
+          </div>
+        </div>
+
         {/* --- Question Header --- */}
-        <div className="bg-white border border-neutral-55 rounded-2xl px-6 py-8 relative overflow-hidden mb-6">
-          {/* Gradient Background from your assets */}
+        <div className="bg-white border border-neutral-55 rounded-2xl px-6 py-8 relative overflow-hidden mb-8 mt-4">
           <img
             src={IMAGES.referBonusGradient}
             alt=""
@@ -140,29 +179,10 @@ const QuizQuestions = () => {
           </div>
         </div>
 
-        {/* --- Timer Section --- */}
-        <div className="flex items-center gap-4 mb-8">
-          <span className="text-neutral-90 font-semibold text-sm">Time</span>
-
-          {/* Progress Bar Container */}
-          <div className="flex-1 h-3.5 bg-[#D9D9D9] rounded-full overflow-hidden">
-            {/* Animated Progress Bar */}
-            <div
-              className="h-full bg-[#F5B041] transition-all duration-1000 ease-linear rounded-full"
-              style={{ width: `${timeProgress}%` }}
-            />
-          </div>
-
-          <span className="text-neutral-90 font-semibold text-sm w-12 text-right">
-            {formatTime(timeLeft)}
-          </span>
-        </div>
-
         {/* --- Options List --- */}
         <div className="space-y-3 mb-8">
           {currentQuestion.options.map((option) => {
-            const isSelected =
-              selectedAnswers[currentQuestion.id] === option.id;
+            const isSelected = selectedAnswers[currentQuestion.id] === option.id;
 
             return (
               <button
@@ -174,7 +194,6 @@ const QuizQuestions = () => {
                     : "bg-white border-neutral-55 hover:bg-primary-10/10"
                 }`}
               >
-                {/* Option Letter */}
                 <span
                   className={`w-8 h-8 flex items-center justify-center rounded-md font-bold text-sm ${
                     isSelected ? "text-neutral-90" : "text-neutral-50"
@@ -183,14 +202,10 @@ const QuizQuestions = () => {
                   {option.id}
                 </span>
 
-                {/* Option Text */}
-                <span
-                  className={`flex-1 text-center font-semibold text-neutral-90`}
-                >
+                <span className="flex-1 text-center font-semibold text-neutral-90">
                   {option.label}
                 </span>
 
-                {/* Check Icon */}
                 <FiCheckCircle
                   className={`w-5 h-5 ${
                     isSelected ? "text-primary-10" : "text-neutral-40"
@@ -205,11 +220,7 @@ const QuizQuestions = () => {
           onClick={handleNext}
           isDisabled={!selectedAnswers[currentQuestion.id]}
           variant="primary"
-          label={
-            currentQuestionIndex === mockQuestions.length - 1
-              ? "Finish"
-              : "Next"
-          }
+          label={currentQuestionIndex === mockQuestions.length - 1 ? "Finish" : "Next"}
           className="w-full px-5 py-4"
         />
       </div>

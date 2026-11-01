@@ -51,6 +51,7 @@ import AddOrEditProduct from "../components/Dashboard/VedicShopPage/VendorDashbo
 import MySubscriptions from "../pages/DashboardPages/MySubscriptions/MySubscriptions";
 import Quiz from "../pages/DashboardPages/LearnAndExplore/Quiz/Quiz";
 import QuizQuestions from "../pages/DashboardPages/LearnAndExplore/Quiz/QuizQuestions/QuizQuestions";
+import Leaderboard from "../pages/DashboardPages/LearnAndExplore/Quiz/Leaderboard/Leaderboard";
 
 export const router = createBrowserRouter([
   {
@@ -238,6 +239,10 @@ export const router = createBrowserRouter([
       {
         path: "learn-and-explore/quiz-questions/:id",
         element: <QuizQuestions />,
+      },
+      {
+        path: "learn-and-explore/leaderboard",
+        element: <Leaderboard />,
       },
       {
         path: "job-portal",
