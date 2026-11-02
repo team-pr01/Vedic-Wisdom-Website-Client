@@ -53,6 +53,7 @@ import Quiz from "../pages/DashboardPages/LearnAndExplore/Quiz/Quiz";
 import QuizQuestions from "../pages/DashboardPages/LearnAndExplore/Quiz/QuizQuestions/QuizQuestions";
 import Leaderboard from "../pages/DashboardPages/LearnAndExplore/Quiz/Leaderboard/Leaderboard";
 import SubmitPaymentRequest from "../pages/DashboardPages/LearnAndExplore/Quiz/SubmitPaymentRequest/SubmitPaymentRequest";
+import QuizResults from "../pages/DashboardPages/LearnAndExplore/Quiz/QuizResults/QuizResults";
 
 export const router = createBrowserRouter([
   {
@@ -242,7 +243,11 @@ export const router = createBrowserRouter([
         element: <QuizQuestions />,
       },
       {
-        path: "learn-and-explore/leaderboard",
+        path: "quiz/results/:quizId",
+        element: <QuizResults />,
+      },
+      {
+        path: "quiz/leaderboard/:quizId",
         element: <Leaderboard />,
       },
       {

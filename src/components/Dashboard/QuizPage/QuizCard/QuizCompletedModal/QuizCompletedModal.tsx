@@ -2,6 +2,7 @@ import React from "react";
 import Modal from "../../../../Reusable/Modal/Modal";
 import { ICONS } from "../../../../../assets";
 import Button from "../../../../Reusable/Button/Button";
+import { Link } from "react-router-dom";
 
 type TQuizCompletedModalProps = {
   isModalOpen: boolean;
@@ -31,14 +32,14 @@ const QuizCompletedModal: React.FC<TQuizCompletedModalProps> = ({
 
         <div className="flex flex-col sm:flex-row items-center gap-3 mt-8 w-full max-w-md">
           {/* Secondary Action */}
-          <Button
-            variant="secondary"
-            label="Back to Dashboard"
-            className="w-full sm:w-1/2"
-          />
+          <Link to="/dashboard" className="w-full sm:w-1/2">
+            <Button variant="secondary" label="Back to Dashboard" className="w-full" />
+          </Link>
 
           {/* Primary Action */}
-          <Button label="View Leaderboard" className="w-full sm:w-1/2" />
+          <Link to="/dashboard/quiz/results" className="w-full sm:w-1/2">
+            <Button label="View Result" className="w-full" />
+          </Link>
         </div>
       </div>
     </Modal>

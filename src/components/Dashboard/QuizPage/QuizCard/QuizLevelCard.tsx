@@ -8,23 +8,29 @@ import { useStartQuizMutation } from "../../../../redux/Features/Quiz/quizApi";
 import toast from "react-hot-toast";
 
 const QuizLevelCard = ({
-  variant,
+  status,
   level,
   quizId,
+  isStarted,
 }: {
-  variant: string;
+  status: string;
   level: any;
   quizId: string;
+  isStarted?: boolean;
 }) => {
   const navigate = useNavigate();
   const [startQuiz, { isLoading }] = useStartQuizMutation();
   const [isPlayQuizConfirmationModalOpen, setIsPlayQuizConfirmationModalOpen] =
     useState<boolean>(false);
 
+  const isLocked = status === "locked";
+  const isCompleted = status === "completed";
+
   const handleStartQuiz = async () => {
+    if (isLocked || isCompleted) return;
+
     try {
       const response = await startQuiz(quizId).unwrap();
-
       if (response?.success) {
         setIsPlayQuizConfirmationModalOpen(false);
         navigate(`/dashboard/quiz/questions/${quizId}?level=${level?.no}`);
@@ -35,21 +41,52 @@ const QuizLevelCard = ({
     }
   };
 
+  // ✅ Handle Button Click
+  const handleButtonClick = () => {
+    if (isLocked || isCompleted) return;
+
+    if (isStarted) {
+      // If already started, bypass the modal and navigate directly
+      // We call handleStartQuiz to ensure the backend session is still valid
+      handleStartQuiz(); 
+    } else {
+      // If not started, open the confirmation modal
+      setIsPlayQuizConfirmationModalOpen(true);
+    }
+  };
+
+  // Determine button text
+  let buttonText = "Start Quiz";
+  if (isLocked) buttonText = "Locked";
+  if (isCompleted) buttonText = "Completed";
+  if (!isLocked && !isCompleted && isStarted) buttonText = "Continue";
+
   return (
     <div
-      className={`${variant === "lock" ? "bg-neutral-70" : "bg-white"} p-4 border border-primary-80 rounded-xl w-63`}
+      className={`${isLocked ? "bg-neutral-70" : "bg-white"} p-4 border border-primary-80 rounded-xl w-63`}
     >
       <div className="flex items-center justify-between">
         <h4 className="text-neutral-90 font-bold text-xl">
           Level - {level?.no}
         </h4>
+        
+        {/* Icon Logic */}
         <div
-          className={`${variant === "lock" ? "bg-gradient-primary-button" : "bg-white"} border border-primary-80 size-8 rounded-full shadow-quiz-lock flex items-center justify-center`}
+          className={`${
+            isLocked ? "bg-gradient-primary-button" : 
+            isCompleted ? "bg-green-500" : "bg-white"
+          } border border-primary-80 size-8 rounded-full shadow-quiz-lock flex items-center justify-center`}
         >
-          <img
-            src={variant === "lock" ? ICONS.lockWhite : ICONS.unlockPrimary}
-            alt=""
-          />
+          {isCompleted ? (
+            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+            </svg>
+          ) : (
+            <img
+              src={isLocked ? ICONS.lockWhite : ICONS.unlockPrimary}
+              alt=""
+            />
+          )}
         </div>
       </div>
 
@@ -65,11 +102,13 @@ const QuizLevelCard = ({
       </div>
 
       <Button
-        label="Start Quiz"
+        label={isLoading ? "Loading..." : buttonText}
         variant="secondary"
-        className="w-full border border-primary-84"
-        onClick={() => setIsPlayQuizConfirmationModalOpen(true)}
-        // isDisabled={variant === "lock"}
+        className={`w-full border border-primary-84 ${
+          (isLocked || isCompleted) ? "opacity-50 cursor-not-allowed" : ""
+        }`}
+        onClick={handleButtonClick}
+        isDisabled={isLocked || isCompleted || isLoading}
       />
 
       <ConfirmationModal

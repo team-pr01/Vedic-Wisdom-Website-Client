@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "../../API/baseApi";
 
 const quizProgressApi = baseApi.injectEndpoints({
@@ -11,9 +10,19 @@ const quizProgressApi = baseApi.injectEndpoints({
             }),
             providesTags: ["quiz"],
         }),
+
+        getMyAllProgress: builder.query({
+            query: () => ({
+                url: `/quiz-progress/my-progress`,
+                method: "GET",
+                credentials: "include",
+            }),
+            providesTags: ["quiz"],
+        }),
     }),
 });
 
 export const {
     useGetMyProgressQuery,
+    useGetMyAllProgressQuery,
 } = quizProgressApi;

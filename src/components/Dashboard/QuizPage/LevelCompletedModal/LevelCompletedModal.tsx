@@ -9,12 +9,14 @@ type TLevelCompletedModalProps = {
   isModalOpen: boolean;
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
   quizId: string;
+  isLastLevel: boolean;
   nextLevel: any;
 };
 const LevelCompletedModal: React.FC<TLevelCompletedModalProps> = ({
   isModalOpen,
   setIsModalOpen,
   quizId,
+  isLastLevel,
   nextLevel,
 }) => {
   return (
@@ -29,13 +31,22 @@ const LevelCompletedModal: React.FC<TLevelCompletedModalProps> = ({
           now proceed to next level.
         </p>
         <div className="flex items-center gap-4 mt-6">
+          <Link to={`/dashboard/learn-and-explore/quiz`}>
           <Button
             variant="secondary"
             label="Will Play Later"
             className="px-8"
-          />
-          <Link to={`/dashboard/quiz/questions/${quizId}?level=${nextLevel}`}>
-          <Button label="Continue to Next Level" className="px-8" /></Link>
+          /></Link>
+          {!isLastLevel && (
+            <a href={`/dashboard/quiz/questions/${quizId}?level=${nextLevel}`}>
+              <Button label="Continue to Next Level" className="px-8" />
+            </a>
+          )}
+          {isLastLevel && (
+            <Link to={`/dashboard/learn-and-explore/quiz`}>
+              <Button label="Back to Quizzes" className="px-8" />
+            </Link>
+          )}
         </div>
       </div>
     </Modal>

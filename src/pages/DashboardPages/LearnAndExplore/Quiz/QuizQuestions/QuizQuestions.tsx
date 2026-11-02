@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useState, useEffect, useMemo } from "react";
@@ -6,6 +7,7 @@ import { IMAGES } from "../../../../../assets";
 import Button from "../../../../../components/Reusable/Button/Button";
 import LevelCompletedModal from "../../../../../components/Dashboard/QuizPage/LevelCompletedModal/LevelCompletedModal";
 import QuizCompletedModal from "../../../../../components/Dashboard/QuizPage/QuizCard/QuizCompletedModal/QuizCompletedModal";
+import LevelFailedModal from "../../../../../components/Dashboard/QuizPage/LevelFailedModal/LevelFailedModal"; // <-- Import the new modal
 import { useParams, useSearchParams } from "react-router-dom";
 import {
   useGetQuizQuestionsByLevelNoQuery,
@@ -23,6 +25,11 @@ const QuizQuestions = () => {
   const [isQuizCompletedModalOpen, setIsQuizCompletedModalOpen] =
     useState<boolean>(false);
 
+  // New States for Failure Modal
+  const [isLevelFailedModalOpen, setIsLevelFailedModalOpen] =
+    useState<boolean>(false);
+  const [failedScore, setFailedScore] = useState<number>(0);
+
   const [submitLevelAnswers, { isLoading: isSubmitting }] =
     useSubmitLevelAnswersMutation();
 
@@ -39,11 +46,16 @@ const QuizQuestions = () => {
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
+  // 2. Reset the form and timer when the level changes (e.g., from retry)
+  useEffect(() => {
+    setCurrentQuestionIndex(0);
+    setSelectedAnswers({});
+  }, [level]);
+
   // Store answers as { questionId: optionIndex }
   const [selectedAnswers, setSelectedAnswers] = useState<
     Record<string, number>
   >({});
-
   const [timeLeft, setTimeLeft] = useState(0);
 
   // --- Sync Timer with API Data ---
@@ -84,6 +96,10 @@ const QuizQuestions = () => {
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (timeProgress / 100) * circumference;
 
+  const nextLevel = level ? Number(level) + 1 : null;
+  const isLastLevel = Number(level) === data?.lastLevelNo;
+  const isTimeUp = timeLeft <= 0;
+
   // --- Handlers ---
   const handleSelectOption = (questionId: string, optionIndex: number) => {
     setSelectedAnswers((prev) => ({
@@ -93,19 +109,14 @@ const QuizQuestions = () => {
   };
 
   const handleNext = async () => {
-    // If there are more questions, go to next
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
-      // --- SUBMIT QUIZ ---
       try {
-        // Format answers to match the expected payload exactly
         const formattedAnswers = questions.map((q: any, index: number) => {
           const selectedOpt = selectedAnswers[q._id];
           return {
             questionIndex: index,
-            // If they skipped a question, default to -1 (or you can use 0).
-            // Assuming the button is disabled until they select, this should always be a number.
             selectedOption: selectedOpt !== undefined ? selectedOpt : -1,
           };
         });
@@ -117,20 +128,30 @@ const QuizQuestions = () => {
           timeTaken: timeTaken,
         };
 
-        console.log("Submitting Payload:", payload);
-
-        // Call API with query params
         const response = await submitLevelAnswers({
           quizId: quizId || "",
           levelNo: level || "",
           data: payload,
         }).unwrap();
 
-        // Handle success
+        console.log(response);
+
         if (response?.success) {
-          toast.success("Quiz submitted successfully!");
-          setIsLevelCompletedModalOpen(true);
-          // Optional: You can use response.data to determine if they passed (LevelCompletedModal) vs failed
+          const currentLevelProgress = response?.data?.levelProgress?.find(
+            (p: any) => p.levelNo === Number(level),
+          );
+
+          if (currentLevelProgress?.status === "failed") {
+            setFailedScore(currentLevelProgress.score || 0);
+            setIsLevelFailedModalOpen(true);
+            setIsLevelCompletedModalOpen(false);
+          } else if (currentLevelProgress?.status === "completed" && !isLastLevel) {
+            setIsLevelCompletedModalOpen(true);
+            setIsLevelFailedModalOpen(false);
+          } else if (currentLevelProgress?.status === "completed" && isLastLevel) {
+            setIsQuizCompletedModalOpen(true);
+            setIsLevelFailedModalOpen(false);
+          }
         }
       } catch (error: any) {
         toast.error(error?.data?.message || "Failed to submit quiz");
@@ -139,7 +160,6 @@ const QuizQuestions = () => {
     }
   };
 
-  // Loading State (Prevents crashing on first render)
   if (isLoading || !currentQuestion) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -218,15 +238,27 @@ const QuizQuestions = () => {
             return (
               <button
                 key={option}
-                onClick={() => handleSelectOption(currentQuestion._id, index)}
+                onClick={() => {
+                  if (isTimeUp) return; // 🟢 Prevent clicking if time is up
+                  handleSelectOption(currentQuestion._id, index);
+                }}
+                disabled={isTimeUp} // 🟢 Disable the button
                 className={`w-full flex items-center p-4 rounded-xl border transition-all duration-200 ${
-                  isSelected
-                    ? "bg-[#F5E6CC] border-primary-10 shadow-sm"
-                    : "bg-white border-neutral-55 hover:bg-primary-10/10"
+                  isTimeUp 
+                    ? "opacity-60 cursor-not-allowed bg-gray-100 border-gray-300" // 🟢 Disabled style
+                    : isSelected
+                      ? "bg-[#F5E6CC] border-primary-10 shadow-sm"
+                      : "bg-white border-neutral-55 hover:bg-primary-10/10"
                 }`}
               >
                 <span
-                  className={`w-8 h-8 flex items-center justify-center rounded-md font-bold text-sm ${isSelected ? "text-neutral-90" : "text-neutral-50"}`}
+                  className={`w-8 h-8 flex items-center justify-center rounded-md font-bold text-sm ${
+                    isTimeUp 
+                      ? "text-gray-400" 
+                      : isSelected 
+                        ? "text-neutral-90" 
+                        : "text-neutral-50"
+                  }`}
                 >
                   {String.fromCharCode(65 + index)}
                 </span>
@@ -236,7 +268,13 @@ const QuizQuestions = () => {
                 </span>
 
                 <FiCheckCircle
-                  className={`w-5 h-5 ${isSelected ? "text-primary-10" : "text-neutral-40"}`}
+                  className={`w-5 h-5 ${
+                    isTimeUp 
+                      ? "text-gray-400" 
+                      : isSelected 
+                        ? "text-primary-10" 
+                        : "text-neutral-40"
+                  }`}
                 />
               </button>
             );
@@ -259,15 +297,27 @@ const QuizQuestions = () => {
         />
       </div>
 
+      {/* Modals */}
       <QuizCompletedModal
         isModalOpen={isQuizCompletedModalOpen}
         setIsModalOpen={setIsQuizCompletedModalOpen}
       />
+
       <LevelCompletedModal
         isModalOpen={isLevelCompletedModalOpen}
         setIsModalOpen={setIsLevelCompletedModalOpen}
         quizId={quizId || ""}
-        nextLevel={level && level + 1}
+        isLastLevel={isLastLevel}
+        nextLevel={isLastLevel ? null : nextLevel}
+      />
+
+      {/* Failure Modal integrated here */}
+      <LevelFailedModal
+        isModalOpen={isLevelFailedModalOpen}
+        setIsModalOpen={setIsLevelFailedModalOpen}
+        score={failedScore}
+        passingScore={data?.passingScore || 0}
+        retryUrl={`/dashboard/quiz/questions/${quizId}?level=${level}`}
       />
     </div>
   );
