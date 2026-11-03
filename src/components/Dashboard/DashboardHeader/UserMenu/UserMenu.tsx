@@ -9,6 +9,7 @@ import {
 } from "react-icons/io5";
 import { useEffect, useRef, useState } from "react";
 import { ICONS } from "../../../../assets";
+import { MdOutlineAssignmentTurnedIn } from "react-icons/md";
 
 const UserMenu = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState<boolean>(false);
@@ -40,6 +41,11 @@ const UserMenu = () => {
       label: "My Profile",
       path: "/dashboard/my-profile",
       icon: <IoPersonOutline size={18} />,
+    },
+    {
+      label: "Quiz Results",
+      path: "/dashboard/quiz/results",
+      icon: <MdOutlineAssignmentTurnedIn size={18} />,
     },
     {
       label: "Manage Subscriptions",

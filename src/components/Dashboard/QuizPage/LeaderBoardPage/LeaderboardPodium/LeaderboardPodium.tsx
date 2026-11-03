@@ -1,7 +1,21 @@
 import { FaCrown, FaUser } from "react-icons/fa";
 
-const LeaderboardPodium = ({ topThree }) => {
-  console.log(topThree);
+export type TLeaderboardWinner = {
+  _id?: string;
+  rank: number;
+  userId: string;
+  name: string;
+  profilePicture: string | null;
+  quizId: string;
+  prizeAmount: number;
+  currency: string;
+};
+
+export type TLeaderboardPodiumProps = {
+  topThree: TLeaderboardWinner[];
+};
+
+const LeaderboardPodium = ({ topThree }: TLeaderboardPodiumProps) => {
   return (
     <div className="flex items-end justify-center gap-6 md:gap-12 mb-10 w-full max-w-2xl">
       {/* 2nd Place */}

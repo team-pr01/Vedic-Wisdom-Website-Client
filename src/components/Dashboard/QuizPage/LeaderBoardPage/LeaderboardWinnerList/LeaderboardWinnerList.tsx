@@ -1,4 +1,11 @@
-const LeaderboardWinnerList = ({ winners }) => {
+import { FaUser } from "react-icons/fa";
+import type { TLeaderboardWinner } from "../LeaderboardPodium/LeaderboardPodium";
+
+const LeaderboardWinnerList = ({
+  winners,
+}: {
+  winners: TLeaderboardWinner[];
+}) => {
   return (
     <div className="flex flex-col gap-2">
       {winners.map((winner, index) => (
@@ -11,11 +18,19 @@ const LeaderboardWinnerList = ({ winners }) => {
           }`}
         >
           <div className="flex items-center gap-3">
-            <img
-              src={winner.profilePicture}
-              alt={winner.name}
-              className="size-14 rounded-full object-cover border border-neutral-200"
-            />
+            {winner.profilePicture ? (
+              <img
+                src={winner.profilePicture}
+                alt={winner.name}
+                referrerPolicy="no-referrer"
+                className="size-14 rounded-full object-cover border border-neutral-200"
+              />
+            ) : (
+              <div className="size-14 rounded-full bg-gray-200 flex items-center justify-center border border-neutral-200">
+                <FaUser className="text-gray-400 text-xl" />
+              </div>
+            )}
+            
             <span className="text-neutral-90 font-semibold">{winner.name}</span>
           </div>
           <span className="text-neutral-90 font-bold">{winner.rank}</span>

@@ -6,6 +6,7 @@ import ConfirmationModal from "../../../Reusable/ConfirmationModal/ConfirmationM
 import { useState } from "react";
 import { useStartQuizMutation } from "../../../../redux/Features/Quiz/quizApi";
 import toast from "react-hot-toast";
+import type { TLevels } from "../../../../types/quiz.type";
 
 const QuizLevelCard = ({
   status,
@@ -14,10 +15,11 @@ const QuizLevelCard = ({
   isStarted,
 }: {
   status: string;
-  level: any;
+  level: TLevels;
   quizId: string;
   isStarted?: boolean;
 }) => {
+  console.log(level);
   const navigate = useNavigate();
   const [startQuiz, { isLoading }] = useStartQuizMutation();
   const [isPlayQuizConfirmationModalOpen, setIsPlayQuizConfirmationModalOpen] =
@@ -41,16 +43,13 @@ const QuizLevelCard = ({
     }
   };
 
-  // ✅ Handle Button Click
+  // Handle Button Click
   const handleButtonClick = () => {
     if (isLocked || isCompleted) return;
 
     if (isStarted) {
-      // If already started, bypass the modal and navigate directly
-      // We call handleStartQuiz to ensure the backend session is still valid
       handleStartQuiz(); 
     } else {
-      // If not started, open the confirmation modal
       setIsPlayQuizConfirmationModalOpen(true);
     }
   };

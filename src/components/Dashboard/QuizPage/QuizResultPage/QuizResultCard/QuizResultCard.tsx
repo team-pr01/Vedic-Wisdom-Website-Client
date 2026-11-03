@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -9,8 +8,9 @@ import {
   FaCrown,
 } from "react-icons/fa";
 import Button from "../../../../../components/Reusable/Button/Button";
+import type { TQuizProgress } from "../../../../../types/quizProgress.type";
 
-const QuizResultCard = ({ result }: { result: any }) => {
+const QuizResultCard = ({ result }: { result: TQuizProgress }) => {
   const totalLevels = result?.quizId?.levels?.length || 0;
   const accuracy =
     result.totalScore > 0
