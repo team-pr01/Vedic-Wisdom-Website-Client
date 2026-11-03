@@ -19,10 +19,20 @@ const quizProgressApi = baseApi.injectEndpoints({
             }),
             providesTags: ["quiz"],
         }),
+
+        getLeaderboardOfAQuiz: builder.query({
+            query: (quizId) => ({
+                url: `/quiz-progress/${quizId}/leaderboard`,
+                method: "GET",
+                credentials: "include",
+            }),
+            providesTags: ["quiz"],
+        }),
     }),
 });
 
 export const {
     useGetMyProgressQuery,
     useGetMyAllProgressQuery,
+    useGetLeaderboardOfAQuizQuery,
 } = quizProgressApi;

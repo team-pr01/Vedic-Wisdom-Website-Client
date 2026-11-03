@@ -243,7 +243,7 @@ export const router = createBrowserRouter([
         element: <QuizQuestions />,
       },
       {
-        path: "quiz/results/:quizId",
+        path: "quiz/results",
         element: <QuizResults />,
       },
       {
