@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import { IMAGES } from "../../../../../assets";
+import Button from "../../../../Reusable/Button/Button";
 import Modal from "../../../../Reusable/Modal/Modal";
 
 type TPaymentRequestModalProps = {
@@ -35,6 +37,14 @@ const PaymentRequestModal = ({
             Admin will review your details and send the reward shortly.
           </p>
         </div>
+
+        <Link to="/dashboard">
+          <Button
+            label="Back to Dashboard"
+            variant="secondary"
+            className="w-full py-3.5"
+          />
+        </Link>
       </div>
     </Modal>
   );

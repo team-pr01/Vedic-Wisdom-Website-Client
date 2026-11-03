@@ -54,6 +54,7 @@ import QuizQuestions from "../pages/DashboardPages/LearnAndExplore/Quiz/QuizQues
 import Leaderboard from "../pages/DashboardPages/LearnAndExplore/Quiz/Leaderboard/Leaderboard";
 import SubmitPaymentRequest from "../pages/DashboardPages/LearnAndExplore/Quiz/SubmitPaymentRequest/SubmitPaymentRequest";
 import QuizResults from "../pages/DashboardPages/LearnAndExplore/Quiz/QuizResults/QuizResults";
+import SubmitCoinRequest from "../pages/DashboardPages/LearnAndExplore/Quiz/SubmitCoinRequest/SubmitCoinRequest";
 
 export const router = createBrowserRouter([
   {
@@ -251,8 +252,12 @@ export const router = createBrowserRouter([
         element: <Leaderboard />,
       },
       {
-        path: "submit-payment-request",
+        path: "quiz/submit-payment-request/:quizId",
         element: <SubmitPaymentRequest />,
+      },
+      {
+        path: "quiz/submit-coin-request/:quizId",
+        element: <SubmitCoinRequest />,
       },
       {
         path: "job-portal",

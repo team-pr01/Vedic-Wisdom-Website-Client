@@ -14,6 +14,9 @@ interface DepositCoinProps {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+// 1 Coin = 5 BDT
+export const COIN_RATE = 5;
+
 const DepositCoin = ({ isModalOpen, setIsModalOpen }: DepositCoinProps) => {
   const { data } = useGetAllCoinPackagesQuery({});
   const coinPackages = data?.data?.packages || [];
@@ -22,9 +25,6 @@ const DepositCoin = ({ isModalOpen, setIsModalOpen }: DepositCoinProps) => {
   );
 
   const [initiatePayment, { isLoading }] = useInitiatePaymentMutation();
-
-  // 1 Coin = 5 BDT
-  const COIN_RATE = 5;
 
   const handleInitiatePayment = async () => {
     if (!selectedPackage) {
@@ -37,12 +37,12 @@ const DepositCoin = ({ isModalOpen, setIsModalOpen }: DepositCoinProps) => {
         packageId: selectedPackage._id,
       };
       const response = await initiatePayment(payload).unwrap();
-      
+
       if (response?.success) {
         if (response?.data?.paymentUrl) {
           window.location.href = response.data.paymentUrl;
         } else {
-          toast .error("Payment URL not received");
+          toast.error("Payment URL not received");
         }
       } else {
         toast.error(response?.message || "Failed to initiate payment");

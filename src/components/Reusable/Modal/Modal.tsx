@@ -110,7 +110,7 @@ const Modal: React.FC<TModalProps> = ({
             <div className="bg-gradient-rounded-radial absolute -top-20 -left-28 w-45 h-35 rounded-full blur-[80px]"></div>
             <div className="bg-gradient-rounded-radial absolute right-0 -top-18 w-45 h-35 rounded-full blur-[80px]"></div>
             <button
-              className="absolute top-3 right-3 z-10 size-8 flex items-center justify-center rounded-full bg-white border border-neutral-55 hover:bg-gray-100 transition-colors"
+              className="absolute top-3 right-3 z-20 size-8 flex items-center justify-center rounded-full bg-white border border-neutral-55 hover:bg-gray-100 transition-colors"
               onClick={() => setIsModalOpen(false)}
             >
               <RxCross1 className="cursor-pointer text-gray-500 hover:text-gray-700" />

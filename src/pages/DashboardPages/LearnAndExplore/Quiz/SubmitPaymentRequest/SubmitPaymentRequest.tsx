@@ -1,17 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import SelectDropdown from "../../../../../components/Reusable/SelectDropdown/SelectDropdown";
 import TextInput from "../../../../../components/Reusable/TextInput/TextInput";
-import Textarea from "../../../../../components/Reusable/TextArea/TextArea";
 import Button from "../../../../../components/Reusable/Button/Button";
 import PaymentRequestModal from "../../../../../components/Dashboard/QuizPage/SubmitPaymentRequestPage/PaymentRequestModal/PaymentRequestModal";
+import { Link, useParams } from "react-router-dom";
+import { useSubmitPaymentDetailsMutation } from "../../../../../redux/Features/Quiz/quizProgressApi";
+import toast from "react-hot-toast";
 
 type TPaymentFormData = {
   paymentMethod: string;
   accountNumber: string;
   accountName?: string;
   branchName?: string;
-  note?: string;
+  routingNumber?: string;
 };
 
 const paymentMethods = [
@@ -22,8 +25,10 @@ const paymentMethods = [
 ];
 
 const SubmitPaymentRequest = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const { quizId } = useParams();
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState<boolean>(false);
+  const [submitPaymentDetails, { isLoading }] =
+    useSubmitPaymentDetailsMutation();
 
   const {
     register,
@@ -37,23 +42,31 @@ const SubmitPaymentRequest = () => {
   const isBank = selectedMethod === "bank";
 
   const onSubmit = async (data: TPaymentFormData) => {
-    console.log(data);
     try {
-      setIsLoading(true);
+      const payload = {
+        paymentDetails: {
+          method: data.paymentMethod,
+          accountNumber: data.accountNumber,
+          ...(isBank && {
+            accountName: data.accountName,
+            branchName: data.branchName,
+            routingNumber: data.routingNumber,
+          }),
+        },
+      };
 
-      // TODO: Call your actual API here
-      // await submitPaymentRequestAPI(data).unwrap();
+      const response = await submitPaymentDetails({
+        quizId,
+        data: payload,
+      }).unwrap();
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // On Success:
-      setIsSuccessModalOpen(true); // <-- Open Modal here
-      reset(); // Clear the form
-    } catch (error) {
+      if (response?.success) {
+        setIsSuccessModalOpen(true);
+        reset();
+      }
+    } catch (error: any) {
       console.error(error);
-    } finally {
-      setIsLoading(false);
+      toast.error(error?.data?.message || "Failed to submit payment details");
     }
   };
 
@@ -66,7 +79,7 @@ const SubmitPaymentRequest = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Select Payment Method */}
         <SelectDropdown
-          label="Select Payment Method"
+          label="Payment Method"
           error={errors.paymentMethod}
           {...register("paymentMethod", {
             required: "Please select a payment method",
@@ -95,6 +108,16 @@ const SubmitPaymentRequest = () => {
               })}
               isRequired={true}
             />
+
+            <TextInput
+              label="Routing Number"
+              placeholder="Enter routing number"
+              error={errors.routingNumber}
+              {...register("routingNumber", {
+                required: "Routing number is required for bank transfer",
+              })}
+              isRequired={true}
+            />
           </>
         )}
 
@@ -109,17 +132,16 @@ const SubmitPaymentRequest = () => {
           isRequired={true}
         />
 
-        {/* Note - Always visible */}
-        <Textarea
-          label="Note (optional)"
-          placeholder="Additional payment instructions."
-          error={errors.note}
-          {...register("note")}
-          isRequired={false}
-        />
-
         {/* Submit Button */}
-        <div className="pt-4 flex justify-end">
+        <div className="pt-4 flex gap-3 justify-end">
+          <Link to={`/dashboard/quiz/leaderboard/${quizId}`}>
+            <Button
+              variant="secondary"
+              label="Cancel"
+              className="w-full md:w-auto px-8 py-3"
+              isDisabled={isLoading}
+            />
+          </Link>
           <Button
             type="submit"
             label={isLoading ? "Submitting..." : "Submit Request"}
