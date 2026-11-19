@@ -339,13 +339,16 @@ const AddTemple = () => {
       />
 
       {/* Progress Steps Indicator */}
-      <div className="mb-10">
-        <div className="flex items-center justify-between max-w-3xl mx-auto">
+      <div className="mb-8 sm:mb-10">
+        <div className="flex items-center justify-between max-w-3xl mx-auto px-2 sm:px-0">
           {steps.map((step, index) => (
-            <div key={step.number} className="flex items-center">
-              <div className="flex flex-col items-center">
+            <div
+              key={step.number}
+              className="flex items-center flex-1 last:flex-none"
+            >
+              <div className="flex flex-col items-center min-w-0">
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-colors ${
+                  className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm transition-colors shrink-0 ${
                     currentStep >= step.number
                       ? "bg-primary-10 text-white"
                       : "bg-neutral-30 text-neutral-60"
@@ -354,7 +357,7 @@ const AddTemple = () => {
                   {step.number}
                 </div>
                 <span
-                  className={`text-xs mt-2 font-medium ${
+                  className={`text-[10px] sm:text-xs mt-1.5 sm:mt-2 font-medium text-center whitespace-nowrap ${
                     currentStep >= step.number
                       ? "text-primary-10"
                       : "text-neutral-60"
@@ -363,9 +366,10 @@ const AddTemple = () => {
                   {step.label}
                 </span>
               </div>
+
               {index < steps.length - 1 && (
                 <div
-                  className={`w-16 h-0.5 mx-2 ${
+                  className={`flex-1 h-0.5 mx-1 sm:mx-2 min-w-4 ${
                     currentStep > step.number
                       ? "bg-primary-10"
                       : "bg-neutral-60/50"
@@ -398,7 +402,7 @@ const AddTemple = () => {
                 {...register("basicInfo.mainDeity", { required: "Required" })}
               />
 
-              <div className="md:col-span-2 space-y--4">
+              <div className="md:col-span-2 space-y-4">
                 <Textarea
                   label="Description"
                   placeholder="Write about the temple"
@@ -609,13 +613,16 @@ const AddTemple = () => {
                 {videoUrls.map((url, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-2 bg-neutral-10/10 px-3 py-1.5 rounded-full"
+                    className="flex items-center gap-2 bg-neutral-10/10 px-3 py-1.5 rounded-full max-w-full min-w-0"
                   >
-                    <span className="text-sm truncate max-w-xs">{url}</span>
+                    <span className="text-sm truncate flex-1 min-w-0">
+                      {url}
+                    </span>
                     <button
                       type="button"
                       onClick={() => removeVideoUrl(i)}
-                      className="text-red-500"
+                      className="text-red-500 shrink-0"
+                      aria-label="Remove video URL"
                     >
                       <FaTimes className="w-3 h-3" />
                     </button>

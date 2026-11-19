@@ -1,7 +1,7 @@
 import { ICONS } from "../../../../assets";
 import Button from "../../../Reusable/Button/Button";
 
-const AiRecipeGeneratorBanner = () => {
+const AiRecipeGeneratorBanner = ({setIsGenerateRecipeModalOpen} : {setIsGenerateRecipeModalOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
   const aiRecipeGeneratorFeatures = [
     "100% Sattvic Compliance",
     "100% Health Benefits",
@@ -32,7 +32,7 @@ const AiRecipeGeneratorBanner = () => {
         ))}
       </div>
 
-      <Button label="Try AI Assistant" className="w-full" />
+      <Button onClick={() => setIsGenerateRecipeModalOpen(true)} label="Try AI Assistant" className="w-full" />
     </div>
   );
 };

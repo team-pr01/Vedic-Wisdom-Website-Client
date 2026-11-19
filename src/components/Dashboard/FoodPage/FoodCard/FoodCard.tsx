@@ -4,7 +4,7 @@ import Button from "../../../Reusable/Button/Button";
 
 const FoodCard = ({ recipe }: { recipe: TFood }) => {
   return (
-    <div className="rounded-2xl relative shadow-food-card border border-primary-80/60 bg-white">
+    <div className="rounded-2xl relative shadow-food-card border border-primary-80/60 bg-white h-fit max-h-119.5 flex flex-col justify-between">
       <div className="relative aspect-video bg-black/5 h-56 rounded-t-2xl w-full">
         <iframe
           src={recipe?.videoUrl}
@@ -17,7 +17,7 @@ const FoodCard = ({ recipe }: { recipe: TFood }) => {
 
       <div className="p-5">
         <div className="flex items-center justify-between">
-          <h4 className="text-neutral-90 font-bold w-[80%]">{recipe?.title}</h4>
+          <h4 className="text-neutral-90 font-bold w-[80%]">{recipe?.title} </h4>
           <div className="px-2 py-1 rounded bg-primary-50 text-neutral-5 text-xs font-bold text-center">
             <span>{recipe?.category}</span>
           </div>

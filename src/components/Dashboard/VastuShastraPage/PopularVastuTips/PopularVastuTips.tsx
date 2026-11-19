@@ -18,7 +18,7 @@ const PopularVastuTips = () => {
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-3 gap-5 mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mt-6">
           {vastuTips.map((vastuTips: TVastuTips) => (
             <VastuTipsCard key={vastuTips?._id} vastuTips={vastuTips} />
           ))}

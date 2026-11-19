@@ -13,7 +13,6 @@ const Astrology = () => {
 
   const [selectedZodiac, setSelectedZodiac] = useState<string>("All");
 
-  // API States
   const [day, setDay] = useState<string>("today");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -47,7 +46,6 @@ const Astrology = () => {
       setError(null);
 
       if (selectedZodiac === "All") {
-        // Fetch all 12 signs concurrently using Promise.all
         const promises = zodiacSigns.map(async (sign) => {
           const res = await fetch(
             `https://freehoroscopeapi.com/api/v1/get-horoscope/daily?sign=${sign.value}`,
@@ -61,7 +59,6 @@ const Astrology = () => {
 
         const results = await Promise.all(promises);
 
-        // Convert array of results into an object: { Aries: "...", Taurus: "..." }
         const newHoroscopes: Record<string, string> = {};
         results.forEach((item) => {
           newHoroscopes[item.sign] = item.text;
@@ -69,7 +66,6 @@ const Astrology = () => {
 
         setHoroscopes(newHoroscopes);
       } else {
-        // Fetch single sign
         const res = await fetch(
           `https://freehoroscopeapi.com/api/v1/get-horoscope/daily?sign=${selectedZodiac}`,
         );
@@ -87,12 +83,10 @@ const Astrology = () => {
     }
   };
 
-  // Trigger API on change
   useEffect(() => {
     fetchHoroscopes();
   }, [selectedZodiac, day]);
 
-  // Filter the signs to display based on selection
   const signsToDisplay =
     selectedZodiac === "All"
       ? zodiacSigns
@@ -100,7 +94,8 @@ const Astrology = () => {
 
   return (
     <div className="font-Manrope">
-      <div className="flex items-center justify-between">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-start md:items-center justify-between gap-4">
         <DashboardHeading
           title="Jyotish And Astrology"
           description="Discover the art of Jyotish and astrology to balance your mind, body and soul."
@@ -109,15 +104,15 @@ const Astrology = () => {
           onClick={() => setIsAiReadingModalOpen(true)}
           leftIcon={ICONS.ai}
           label="AI Reading"
-          className="py-2.5"
+          className="py-2.5 w-full sm:w-auto shrink-0"
         />
       </div>
 
-      {/* Zodiac Sign Selector */}
-      <div className="flex flex-wrap items-center gap-3 mt-10">
+      {/* Zodiac Sign Selector — horizontal scroll on mobile, wrap on desktop */}
+      <div className="flex lg:flex-wrap lg:items-center gap-2 lg:gap-3 mt-6 lg:mt-10 overflow-x-auto lg:overflow-visible -mx-4 px-4 lg:mx-0 lg:px-0 pb-2 lg:pb-0 scrollbar-hide">
         <button
           onClick={() => setSelectedZodiac("All")}
-          className={`px-4 py-2 rounded-3xl border border-primary-80 hover:bg-primary-10 hover:text-white transition duration-300 text-sm font-medium ${
+          className={`px-3 lg:px-4 py-2 rounded-3xl border border-primary-80 hover:bg-primary-10 hover:text-white transition duration-300 text-xs lg:text-sm font-medium shrink-0 whitespace-nowrap ${
             selectedZodiac === "All"
               ? "bg-primary-10 text-white"
               : "bg-white text-neutral-40"
@@ -130,7 +125,7 @@ const Astrology = () => {
           <button
             key={sign.label}
             onClick={() => setSelectedZodiac(sign.value)}
-            className={`px-4 py-2 rounded-3xl border border-primary-80 hover:bg-primary-10 hover:text-white transition duration-300 text-sm ${
+            className={`px-3 lg:px-4 py-2 rounded-3xl border border-primary-80 hover:bg-primary-10 hover:text-white transition duration-300 text-xs lg:text-sm shrink-0 whitespace-nowrap ${
               selectedZodiac === sign.value
                 ? "bg-primary-10 text-white"
                 : "bg-white text-neutral-40"
@@ -142,15 +137,15 @@ const Astrology = () => {
       </div>
 
       {/* Day Selector */}
-      <div className="flex items-center gap-3 mt-6">
-        <span className="text-sm font-semibold text-neutral-60">
+      <div className="flex flex-wrap items-center gap-2 lg:gap-3 mt-4 lg:mt-6">
+        <span className="text-xs lg:text-sm font-semibold text-neutral-60">
           Select Day:
         </span>
         {dayOptions.map((option) => (
           <button
             key={option.value}
             onClick={() => setDay(option.value)}
-            className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
+            className={`px-3 lg:px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
               day === option.value
                 ? "bg-primary-10 text-white"
                 : "bg-neutral-10/10 text-neutral-10 hover:bg-neutral-10/10"
@@ -161,12 +156,12 @@ const Astrology = () => {
         ))}
       </div>
 
-      <div className="flex gap-10 mt-6">
-        <div className="w-[70%] grid grid-cols-1 lg:grid-cols-2 gap-4">
+      {/* Content: horoscopes + experts */}
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 mt-6">
+        <div className="w-full lg:w-[70%] grid grid-cols-1 sm:grid-cols-2 gap-4">
           {signsToDisplay.map((sign) => {
             let displayText = horoscopes[sign.value] || "";
 
-            // Simulate day variation for the UI
             if (displayText && day === "previous") {
               displayText = "Yesterday: " + displayText;
             } else if (displayText && day === "tomorrow") {
@@ -185,10 +180,10 @@ const Astrology = () => {
           })}
         </div>
 
-        <div className="w-[30%]">
+        <div className="w-full lg:w-[30%]">
           <AvailableExperts
             areaOfExpertise="Astrology"
-            gridDirection="grid grid-cols-1"
+            gridDirection="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1"
           />
         </div>
       </div>

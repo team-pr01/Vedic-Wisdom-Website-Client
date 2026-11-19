@@ -27,22 +27,21 @@ const TempleInformation = ({ data }: { data: TTemple }) => {
     <div className="lg:w-1/3 space-y-8">
       {/* Basic Information */}
       <section>
-        <h2 className="text-xl font-bold text-neutral-90 mb-4">
+        {/* <h2 className="text-xl font-bold text-neutral-90 mb-4">
           Basic information
-        </h2>
+        </h2> */}
         <div className="space-y-2 text-sm">
-          <p>
-            <span className="text-neutral-90 font-bold">Name:</span>{" "}
+          <p className="text-lg xl:text-xl font-bold text-neutral-5">
             {templeData.basic.name}
+          </p>
+          <p className="leading-relaxed">
+            {templeData.basic.description}
           </p>
           <p>
             <span className="text-neutral-90 font-bold">Main Deity:</span>{" "}
             {templeData.basic.deity}
           </p>
-          <p className="leading-relaxed">
-            <span className="text-neutral-90 font-bold">Description:</span>{" "}
-            {templeData.basic.description}
-          </p>
+          
         </div>
       </section>
 

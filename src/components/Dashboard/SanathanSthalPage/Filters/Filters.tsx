@@ -223,9 +223,9 @@ const Filters: React.FC<TFilters> = ({
   };
 
   return (
-    <div className="bg-white border border-neutral-55 rounded-2xl px-6 py-5 h-fit">
+    <div className="bg-none lg:bg-white border-none lg:border lg:border-solid border-neutral-55 rounded-2xl p-0 lg:px-6 lg:py-5 h-fit overflow-y-auto">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-neutral-40/60 pb-4">
+      <div className="hidden lg:flex items-center justify-between border-b border-neutral-40/60 pb-4">
         <h3 className="text-neutral-5 font-medium">Apply Filters</h3>
         <button
           onClick={handleClearFilters}

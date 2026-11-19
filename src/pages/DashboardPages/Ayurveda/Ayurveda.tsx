@@ -19,22 +19,24 @@ const Ayurveda = () => {
     areaName: "ayurveda",
   });
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-between">
+    <div className="flex flex-col gap-4 lg:gap-6">
+      <div className="flex flex-col sm:flex-row sm:items-start md:items-center justify-between gap-4">
         <DashboardHeading
           title="Ayurveda"
           description="Discover the art of Ayurveda to balance your mind, body and soul."
         />
 
-        <Link to="/dashboard/consultancy">
-          <Button label="View Experts" />
+        <Link to="/dashboard/consultancy" className="w-full sm:w-auto shrink-0">
+          <Button label="View Experts" className="w-full sm:w-auto" />
         </Link>
-      </div>{" "}
+      </div>
+
       <CategoryFilter
         categories={categories}
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
       />
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {isLoading
           ? Array.from({ length: 8 }).map((_, index) => (

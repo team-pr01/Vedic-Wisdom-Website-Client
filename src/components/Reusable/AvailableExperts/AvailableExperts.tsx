@@ -7,7 +7,7 @@ import ConsultantCardSkeleton from "../../SkeletonLoaders/ConsultantCardSkeleton
 
 const AvailableExperts = ({
   areaOfExpertise,
-  gridDirection = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+  gridDirection = "grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3",
 }: {
   areaOfExpertise: string;
   gridDirection?: string;
@@ -31,7 +31,7 @@ const AvailableExperts = ({
       </div>
 
       {isLoading ? (
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {[1, 2, 3]?.map((_, index) => (
             <ConsultantCardSkeleton key={index} />
           ))}

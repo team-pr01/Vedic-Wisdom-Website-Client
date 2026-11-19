@@ -102,7 +102,7 @@ const NewsContent = ({
   };
 
   const handleTranslateClick = () => {
-    setTranslationError(""); // Clear previous error
+    setTranslationError("");
     setIsTranslateNewsModalOpen(true);
   };
 

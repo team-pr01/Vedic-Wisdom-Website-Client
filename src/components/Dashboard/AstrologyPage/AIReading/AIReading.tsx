@@ -26,7 +26,7 @@ const AIReading = ({
   ];
   return (
     <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
-      <div className="flex flex-col items-center text-center p-4">
+      <div className="flex flex-col items-center text-center p-2 md:p-4">
         <h2 className="text-neutral-90 text-2xl font-bold">
           AI Jyotish Reading
         </h2>
@@ -34,7 +34,7 @@ const AIReading = ({
           Choose the type of astrology guidance you need.
         </p>
 
-        <div className="flex items-center justify-center gap-4 mt-6 w-full">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-4 mt-6 w-full">
           {tabButtons?.map((item) => (
             <Button
               onClick={() =>

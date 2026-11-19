@@ -31,7 +31,7 @@ const TempleImages = ({ images }: { images: string[] }) => {
         <img
           src={selectedImage}
           alt="Temple"
-          className="w-full h-125 object-cover transition-opacity duration-300"
+          className="w-full aspect-video object-cover transition-opacity duration-300"
         />
       </div>
 
@@ -40,7 +40,7 @@ const TempleImages = ({ images }: { images: string[] }) => {
         {images?.map((img, index) => (
           <div
             key={index}
-            className={`shrink-0 w-24 h-24 rounded-lg overflow-hidden border-2 cursor-pointer transition-all duration-300 hover:scale-105 ${
+            className={`shrink-0 w-17 lg:w-30 h-12 lg:h-24 aspect-video rounded-lg overflow-hidden border-2 cursor-pointer transition-all duration-300 hover:scale-105 ${
               selectedImage === img
                 ? "border-primary-10 shadow-md"
                 : "border-transparent hover:border-primary-10/50"

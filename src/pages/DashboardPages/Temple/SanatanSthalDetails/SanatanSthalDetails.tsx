@@ -13,7 +13,7 @@ const SanatanSthalDetails = () => {
 
   if (isLoading) return <LogoLoader />;
   return (
-    <div className="font-Manrope space-y-12">
+    <div className="font-Manrope space-y-8 lg:space-y-12">
       <Breadcrumb
         items={[
           { label: "Dashboard", path: "/dashboard" },
@@ -29,7 +29,7 @@ const SanatanSthalDetails = () => {
         ]}
       />
 
-      <div className="flex flex-col lg:flex-row gap-10">
+      <div className="flex flex-col-reverse lg:flex-row gap-10">
         {/* LEFT COLUMN: INFORMATION */}
         <TempleInformation data={templeData} />
 
