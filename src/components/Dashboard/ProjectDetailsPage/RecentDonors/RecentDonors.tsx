@@ -11,8 +11,8 @@ const RecentDonors = ({
   donors: TDonor[];
 }) => {
   return (
-    <div className="bg-white rounded-4xl p-6 border border-slate-100 shadow-sm">
-      <h4 className="text-sm font-bold text-neutral-5 mb-4 flex items-center gap-2">
+    <div className="bg-white rounded-2xl xl:rounded-4xl p-4 md:p-6 border border-slate-100 shadow-sm">
+      <h4 className="text-sm font-bold text-neutral-5 mb-3 lg:mb-4 flex items-center gap-2">
         <IoPeopleOutline className="text-primary-5" />
         Recent Donations
       </h4>

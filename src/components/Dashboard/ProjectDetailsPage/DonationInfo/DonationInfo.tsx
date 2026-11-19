@@ -20,12 +20,12 @@ const DonationInfo = ({
 
   return (
     <>
-      <div className="bg-white rounded-[2.5rem] p-8 shadow-2xl shadow-neutral-10/10 border border-slate-50 space-y-6">
+      <div className="bg-white rounded-2xl xl:rounded-4xl p-4 lg:p-8 shadow-2xl shadow-neutral-10/10 border border-slate-50 space-y-6">
         <div>
           <h4 className="text-xs font-bold text-neutral-25 uppercase tracking-[0.2em] mb-2">
             Fundraising Status
           </h4>
-          <p className="text-3xl font-black text-neutral-5">
+          <p className="text-2xl md:text-3xl font-black text-neutral-5">
             {currency}
             {amountRaised}{" "}
             <span className="text-sm font-medium text-neutral-10">

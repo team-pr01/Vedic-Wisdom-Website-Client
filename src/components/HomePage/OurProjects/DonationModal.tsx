@@ -61,7 +61,7 @@ const DonationModal: React.FC<TDonationModalProps> = ({isModalOpen, setIsModalOp
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       >
-        <div className="flex flex-col items-center text-center p-4">
+        <div className="flex flex-col items-center text-center p-2 md:p-4">
           <h2 className="text-neutral-90 text-2xl font-bold">
             Support Us Do Good
           </h2>

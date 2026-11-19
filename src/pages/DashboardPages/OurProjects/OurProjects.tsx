@@ -16,7 +16,7 @@ const OurProjects = () => {
         description="Explore our project and learn more about our mission and vision."
       />
 
-      <div className="grid grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
         {isLoading
           ? Array.from({ length: 8 }).map((_, index) => (
               <FoodCardSkeleton key={index} />
@@ -26,14 +26,14 @@ const OurProjects = () => {
             ))}
       </div>
 
-      <div className="bg-primary-82 p-10 rounded-xl flex items-center justify-between sticky bottom-0 border border-neutral-55 z-10">
-        <div className="flex items-center gap-6">
+      <div className="bg-primary-82 p-6 xl:p-10 rounded-xl flex flex-col md:flex-row items-center justify-between gap-5 md:gap-0 lg:sticky lg:bottom-0 border border-neutral-55 z-10">
+        <div className="flex flex-col md:flex-row items-center justify-center md:justify-end text-center md:text-left gap-6">
           <img src={ICONS.raiseFund} alt="" />
           <div className="relative z-10">
             <h2 className="text-neutral-10 text-xl font-bold">
               Every Contribution Creates a Lasting Impact
             </h2>
-            <p className="text-neutral-60 text-sm mt-2 max-w-[80%]">
+            <p className="text-neutral-60 text-sm mt-2 max-w-full md:max-w-[80%] mx-auto md:mx-0">
               Choose a project that inspires you and help bring it to life. Your
               support fuels spiritual growth, community welfare, temple
               preservation, and cultural initiatives.
@@ -41,7 +41,11 @@ const OurProjects = () => {
           </div>
         </div>
 
-        <Button variant="secondary" label="Your Support Matters" />
+        <Button
+          variant="secondary"
+          label="Your Support Matters"
+          className="rounded-3xl text-nowrap"
+        />
       </div>
     </div>
   );
