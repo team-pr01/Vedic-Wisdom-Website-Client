@@ -26,7 +26,6 @@ const AudioBookDetails = () => {
   const [isPurchaseAudioBookModalOpen, setIsPurchaseAudioBookModalOpen] =
     useState<boolean>(false);
 
-  // Set initial active track
   useEffect(() => {
     if (tracks.length > 0) {
       setActiveTrack(tracks[0]);
@@ -34,7 +33,6 @@ const AudioBookDetails = () => {
     }
   }, [tracks]);
 
-  // Handle Next
   const handleNext = () => {
     if (tracks.length === 0) return;
     const nextIndex = (activeTrackIndex + 1) % tracks.length;
@@ -42,7 +40,6 @@ const AudioBookDetails = () => {
     setActiveTrack(tracks[nextIndex]);
   };
 
-  // Handle Previous
   const handlePrevious = () => {
     if (tracks.length === 0) return;
     const prevIndex = (activeTrackIndex - 1 + tracks.length) % tracks.length;
@@ -64,50 +61,57 @@ const AudioBookDetails = () => {
       />
 
       {/* Header Metadata */}
-      <div className="mt-8 mb-10 flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl md:text-4xl font-bold text-neutral-10">
+      <div className="mt-6 md:mt-8 mb-6 md:mb-10 flex flex-col sm:flex-row sm:items-start md:items-center justify-between gap-4">
+        <div className="min-w-0">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-neutral-10 wrap-break-word">
             {audioTrack?.audioBookName}
           </h1>
-          <div className="flex items-center gap-4 mt-3 text-neutral-50 font-medium text-sm">
-            <span className="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-xs">
+          <div className="flex items-center flex-wrap gap-x-3 gap-y-2 mt-3 text-neutral-50 font-medium text-xs sm:text-sm">
+            <span className="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-xs whitespace-nowrap">
               {tracks.length} Chapters
             </span>
-            <span className="w-1.5 h-1.5 bg-neutral-60/50 rounded-full"></span>
+            <span className="hidden sm:inline-block w-1.5 h-1.5 bg-neutral-60/50 rounded-full"></span>
             {!audioTrack?.isPremium && (
-              <span className={`text-green-500`}>Free</span>
+              <span className="text-green-500 whitespace-nowrap">Free</span>
             )}
             {audioTrack?.isPremium && hasPurchased && (
-              <span className={`text-green-500`}>Unlocked</span>
+              <span className="text-green-500 whitespace-nowrap">Unlocked</span>
             )}
             {audioTrack?.isPremium && !hasPurchased && (
-              <span className={`text-primary-10`}>
+              <span className="text-primary-10 whitespace-nowrap">
                 {audioTrack?.coinPrice} Coins to Unlock
               </span>
             )}
           </div>
         </div>
 
-        {hasPurchased ? (
-          <Link to={`/dashboard/my-library`}>
-            <Button variant="secondary" label="View My Library" />
-          </Link>
-        ) : (
-          <Button
-            onClick={() => setIsPurchaseAudioBookModalOpen(true)}
-            leftIcon={ICONS.unlock}
-            label="Unlock Now"
-          />
-        )}
+        <div className="w-full sm:w-auto shrink-0">
+          {hasPurchased ? (
+            <Link to={`/dashboard/my-library`} className="block w-full sm:w-auto">
+              <Button
+                variant="secondary"
+                label="View My Library"
+                className="w-full sm:w-auto"
+              />
+            </Link>
+          ) : (
+            <Button
+              onClick={() => setIsPurchaseAudioBookModalOpen(true)}
+              leftIcon={ICONS.unlock}
+              label="Unlock Now"
+              className="w-full sm:w-auto"
+            />
+          )}
+        </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-12 items-start">
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-start">
         {/* --- LEFT: TRACK LIST --- */}
         <div className="w-full lg:w-3/5 space-y-2">
-          <h3 className="text-lg font-bold text-gray-800 mb-4 px-2">
+          <h3 className="text-base sm:text-lg font-bold text-gray-800 mb-3 md:mb-4 px-1 sm:px-2">
             Table of Contents
           </h3>
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {tracks?.length > 0 ? (
               tracks?.map((track: TAudioTrack) => (
                 <AudioTrackCard
@@ -118,7 +122,7 @@ const AudioBookDetails = () => {
                 />
               ))
             ) : (
-              <p className="text-neutral-40 text-center py-8">
+              <p className="text-neutral-40 text-center py-8 text-sm sm:text-base">
                 No tracks available for this audio book.
               </p>
             )}

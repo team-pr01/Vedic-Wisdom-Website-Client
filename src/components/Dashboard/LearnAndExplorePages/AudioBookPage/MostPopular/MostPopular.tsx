@@ -15,25 +15,25 @@ const MostPopular = () => {
   const swiperRef = useRef<SwiperType | null>(null);
   const popularSkeletonCount = 6;
 
-  // Update navigation on render
   useEffect(() => {
     if (swiperRef.current) {
       swiperRef.current.update();
     }
   }, [popularAudioBooks]);
+
   return (
     <div>
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h4 className="text-neutral-90 font-bold text-xl capitalize">
+      <div className="flex items-center justify-between gap-3">
+        <h4 className="text-neutral-90 font-bold text-lg sm:text-xl capitalize truncate min-w-0">
           Most Popular
         </h4>
-        {/* Navigation */}
-        <div className="flex items-center justify-center gap-3">
-          {/* Previous */}
+
+        <div className="flex items-center justify-center gap-2 sm:gap-3 shrink-0">
           <button
             onClick={() => swiperRef.current?.slidePrev()}
             className="bg-neutral-30 hover:bg-primary-10/20 transition duration-300 border border-neutral-50/20 p-2 rounded-lg flex items-center justify-center"
+            aria-label="Previous"
           >
             <img
               src={ICONS.arrowRight}
@@ -42,10 +42,10 @@ const MostPopular = () => {
             />
           </button>
 
-          {/* Next */}
           <button
             onClick={() => swiperRef.current?.slideNext()}
             className="bg-neutral-30 hover:bg-primary-10/20 transition duration-300 border border-neutral-50/20 p-2 rounded-lg flex items-center justify-center"
+            aria-label="Next"
           >
             <img src={ICONS.arrowRight} alt="Next" className="size-4" />
           </button>
@@ -53,27 +53,43 @@ const MostPopular = () => {
       </div>
 
       {isPopularLoading ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mt-3">
-          {Array.from({ length: popularSkeletonCount }).map((_, index) => (
-            <AudioBookCardSkeleton key={`new-${index}`} />
-          ))}
+        /* Skeleton matches carousel breakpoints so no layout jump */
+        <div className="mt-3">
+          <div className="flex gap-4 sm:gap-5 lg:gap-7 overflow-hidden">
+            {Array.from({ length: popularSkeletonCount }).map((_, index) => (
+              <div
+                key={`popular-skeleton-${index}`}
+                className="shrink-0 w-full sm:w-[calc((100%-1.25rem)/2)] md:w-[calc((100%-2.5rem)/3)] lg:w-[calc((100%-8.4rem)/5.7)]"
+              >
+                <AudioBookCardSkeleton />
+              </div>
+            ))}
+          </div>
         </div>
       ) : (
         <div className="w-full relative mt-3">
           <Swiper
             modules={[Navigation, Pagination]}
-            spaceBetween={0}
-            slidesPerView={4.5}
+            slidesPerView={1}
+            spaceBetween={20}
             breakpoints={{
-              320: {
-                slidesPerView: 1,
+              640: {
+                slidesPerView: 2,
                 spaceBetween: 20,
               },
               768: {
-                slidesPerView: 2,
+                slidesPerView: 3,
                 spaceBetween: 25,
               },
               1024: {
+                slidesPerView: 4.7,
+                spaceBetween: 30,
+              },
+              1280: {
+                slidesPerView: 4.7,
+                spaceBetween: 30,
+              },
+              1440: {
                 slidesPerView: 5.7,
                 spaceBetween: 30,
               },
@@ -85,7 +101,7 @@ const MostPopular = () => {
           >
             {popularAudioBooks?.map((audioBook: TAudioBook) => (
               <SwiperSlide key={audioBook?._id}>
-                <AudioBookCard key={audioBook?._id} book={audioBook} />
+                <AudioBookCard book={audioBook} />
               </SwiperSlide>
             ))}
           </Swiper>

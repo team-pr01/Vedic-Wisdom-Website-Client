@@ -42,62 +42,66 @@ const PurchaseAudioBookModal = ({
     <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
       <div className="p-2 font-Manrope">
         {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
-          <div className="bg-amber-50 p-3 rounded-xl border border-amber-200">
-            <FaCoins className="text-amber-500 text-2xl" />
+        <div className="flex items-center gap-3 mb-5 sm:mb-6">
+          <div className="bg-amber-50 p-2.5 sm:p-3 rounded-xl border border-amber-200 shrink-0">
+            <FaCoins className="text-amber-500 text-xl sm:text-2xl" />
           </div>
-          <div>
-            <h2 className="text-xl font-bold text-neutral-90">
+          <div className="min-w-0">
+            <h2 className="text-lg sm:text-xl font-bold text-neutral-90">
               Purchase Audio Book
             </h2>
-            <p className="text-sm text-neutral-60">Unlock premium content</p>
+            <p className="text-xs sm:text-sm text-neutral-60">
+              Unlock premium content
+            </p>
           </div>
         </div>
 
         {/* Book Details */}
-        <div className="bg-neutral-10/5 rounded-2xl p-2 border border-neutral-20">
-          <div className="flex gap-4">
+        <div className="bg-neutral-10/5 rounded-2xl p-3 sm:p-2 border border-neutral-20">
+          <div className="flex gap-3 sm:gap-4">
             {/* Book Image */}
             <img
               src={book?.thumbnailUrl || IMAGES.imagePlaceholder}
               alt={book?.name || "Audio Book"}
-              className="w-24 h-24 rounded-xl object-cover"
+              className="w-16 h-16 sm:w-24 sm:h-24 rounded-xl object-cover shrink-0"
             />
 
             {/* Book Info */}
-            <div className="flex-1">
-              <h3 className="text-lg font-bold text-neutral-90">
+            <div className="flex-1 min-w-0">
+              <h3 className="text-base sm:text-lg font-bold text-neutral-90 line-clamp-2">
                 {book?.name}
               </h3>
-              <p className="text-sm text-neutral-60 capitalize">
+              <p className="text-xs sm:text-sm text-neutral-60 capitalize truncate">
                 {book?.category}
               </p>
 
               {/* Coin Price */}
-              <div className="flex items-center gap-2 mt-2">
-                <div className="flex items-center gap-1 bg-amber-50 px-3 py-1.5 rounded-full border border-amber-200">
-                  <FaCoins className="text-amber-500 text-sm" />
-                  <span className="font-semibold text-amber-700">
+              <div className="flex items-center flex-wrap gap-2 mt-2">
+                <div className="flex items-center gap-1 bg-amber-50 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-amber-200">
+                  <FaCoins className="text-amber-500 text-xs sm:text-sm shrink-0" />
+                  <span className="font-semibold text-amber-700 text-xs sm:text-sm whitespace-nowrap">
                     {book?.coinPrice || 0} coins
                   </span>
                 </div>
-                <span className="text-neutral-40 font-medium">• Premium</span>
+                <span className="text-neutral-40 font-medium text-xs sm:text-sm whitespace-nowrap">
+                  • Premium
+                </span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Price Breakdown */}
-        <div className="mt-4 bg-white border border-neutral-20 rounded-xl p-4">
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-neutral-60">Price</span>
-            <span className="text-sm font-semibold text-neutral-90">
+        <div className="mt-4 bg-white border border-neutral-20 rounded-xl p-3 sm:p-4">
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-xs sm:text-sm text-neutral-60">Price</span>
+            <span className="text-xs sm:text-sm font-semibold text-neutral-90 text-right">
               {book?.coinPrice || 0} coins
             </span>
           </div>
-          <div className="flex items-center justify-between mt-1">
-            <span className="text-sm text-neutral-60">Status</span>
-            <span className="text-sm font-semibold text-green-600">
+          <div className="flex items-center justify-between gap-3 mt-1">
+            <span className="text-xs sm:text-sm text-neutral-60">Status</span>
+            <span className="text-xs sm:text-sm font-semibold text-green-600 text-right">
               Available
             </span>
           </div>
@@ -106,12 +110,12 @@ const PurchaseAudioBookModal = ({
         {/* Note */}
         <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-xl">
           <div className="flex items-start gap-2">
-            <FaLock className="text-amber-500 text-sm mt-0.5" />
-            <div>
-              <p className="text-sm font-medium text-amber-700">
+            <FaLock className="text-amber-500 text-sm mt-0.5 shrink-0" />
+            <div className="min-w-0">
+              <p className="text-xs sm:text-sm font-medium text-amber-700">
                 Non-refundable Purchase
               </p>
-              <p className="text-xs text-amber-600 mt-0.5">
+              <p className="text-[11px] sm:text-xs text-amber-600 mt-0.5 leading-relaxed">
                 Once purchased, this audio book cannot be refunded and coins
                 cannot be reverted. Please ensure you want to proceed.
               </p>
@@ -120,11 +124,12 @@ const PurchaseAudioBookModal = ({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-center flex-col sm:flex-row gap-3 mt-6">
+        <div className="flex flex-col sm:flex-row justify-center gap-3 mt-5 sm:mt-6">
           <Button
             variant="secondary"
             label={`Cancel`}
             onClick={() => setIsModalOpen(false)}
+            className="w-full sm:w-auto"
           />
           <Button
             label={`Unlock for ${book?.coinPrice || 0} coins`}
@@ -132,11 +137,12 @@ const PurchaseAudioBookModal = ({
             onClick={handlePurchaseAudioBook}
             isLoading={isLoading}
             isDisabled={isLoading}
+            className="w-full sm:w-auto"
           />
         </div>
 
         {/* Footer Note */}
-        <p className="text-xs text-center text-neutral-40 mt-4">
+        <p className="text-[11px] sm:text-xs text-center text-neutral-40 mt-3 sm:mt-4">
           You will have lifetime access to this audio book after purchase
         </p>
       </div>

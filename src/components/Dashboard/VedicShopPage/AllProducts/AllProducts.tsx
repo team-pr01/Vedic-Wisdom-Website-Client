@@ -18,7 +18,6 @@ const AllProducts = () => {
   const [page, setPage] = useState<number>(1);
   const skip = (page - 1) * LIMIT;
 
-  // Debounce
   useEffect(() => {
     const timer = setTimeout(() => {
       setKeyword(searchTerm);
@@ -54,11 +53,15 @@ const AllProducts = () => {
     label: category,
     value: category,
   }));
+
   return (
-    <div className="mt-16">
-      <h4 className="text-neutral-90 font-bold text-xl">Explore Products</h4>
-      <div className="flex items-center justify-between gap-5 mt-6">
-        <div className="relative w-full">
+    <div className="mt-6 md:mt-10 xl:mt-16">
+      <h4 className="text-neutral-90 font-bold text-lg sm:text-xl">
+        Explore Products
+      </h4>
+
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-5 mt-4 md:mt-6">
+        <div className="relative w-full md:flex-1">
           <IoSearchOutline className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
           <input
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -68,17 +71,20 @@ const AllProducts = () => {
             placeholder="Search by product name..."
           />
         </div>
-        <FilterDropdown
-          options={categoryOptions}
-          value={category}
-          onChange={handleCategorySelect}
-          isRequired={false}
-          placeholder="Select category"
-          dropdownDirection="top-full"
-        />
+
+        <div className="w-full md:w-auto md:shrink-0">
+          <FilterDropdown
+            options={categoryOptions}
+            value={category}
+            onChange={handleCategorySelect}
+            isRequired={false}
+            placeholder="Select category"
+            dropdownDirection="top-full"
+          />
+        </div>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 mt-4 md:mt-6">
         {showSkeletons && page === 1
           ? Array.from({ length: LIMIT }).map((_, i) => (
               <ProductCardSkeleton key={`skeleton-${i}`} />
@@ -88,15 +94,14 @@ const AllProducts = () => {
             ))}
       </div>
 
-      {/* Load More / Pagination Section */}
       {!isLoading && products?.length > 0 && meta?.hasMore && (
-        <div className="flex justify-center mt-10">
+        <div className="flex justify-center mt-8 md:mt-10">
           <Button
             label={isFetching ? "Loading..." : "Load More Products"}
             onClick={() => setPage((prev) => prev + 1)}
             isLoading={isFetching}
             isDisabled={isFetching}
-            className="px-8 py-3 font-semibold text-sm"
+            className="px-6 sm:px-8 py-3 font-semibold text-sm w-full sm:w-auto"
           />
         </div>
       )}

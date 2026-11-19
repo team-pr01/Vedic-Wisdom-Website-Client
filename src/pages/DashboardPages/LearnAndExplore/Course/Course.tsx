@@ -12,7 +12,6 @@ const Course = () => {
   const { data, isLoading, isFetching } = useGetAlCoursesQuery({ keyword });
   const allCourses = data?.data?.courses || [];
 
-  // Group courses by category
   const groupedCourses = useMemo(() => {
     const groups: { [key: string]: TCourse[] } = {};
 
@@ -27,29 +26,29 @@ const Course = () => {
     return groups;
   }, [allCourses]);
 
-  // Get unique categories
   const categories = useMemo(() => {
     return Object.keys(groupedCourses);
   }, [groupedCourses]);
 
-  // Loading state
+  // Loading state — mirrors loaded layout to prevent jumps
   if (isLoading || isFetching) {
     return (
-      <div className="font-Manrope space-y-8">
-        <div className="flex items-center justify-between">
+      <div className="font-Manrope space-y-6 lg:space-y-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <DashboardHeading
             title="Our Courses"
             description="Explore our various spiritual courses."
           />
-          <div className="relative w-full max-w-100">
+          <div className="relative w-full sm:w-80 lg:w-100">
             <div className="w-full h-12 bg-neutral-20 rounded-lg animate-pulse" />
           </div>
         </div>
-        <div className="space-y-8">
+
+        <div className="space-y-6 lg:space-y-8">
           {[1, 2, 3].map((_, index) => (
             <div key={index}>
-              <div className="h-7 bg-neutral-20 rounded w-40 animate-pulse mb-4" />
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+              <div className="h-6 bg-neutral-20 rounded w-32 sm:w-40 animate-pulse mb-3 lg:mb-4" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-5">
                 {[1, 2, 3, 4].map((_, idx) => (
                   <FoodCardSkeleton key={idx} />
                 ))}
@@ -62,7 +61,7 @@ const Course = () => {
   }
 
   return (
-    <div className="font-Manrope space-y-8">
+    <div className="font-Manrope space-y-6 lg:space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <DashboardHeading
@@ -74,7 +73,7 @@ const Course = () => {
           <input
             onChange={(e) => setKeyword(e.target.value)}
             type="text"
-            className="w-full pl-10 pr-4 py-3.5 rounded-lg border leading-4.5 focus:outline-none focus:border-primary-10 transition duration-300 bg-white border-neutral-55"
+            className="w-full pl-10 pr-4 py-3.5 rounded-lg border leading-4.5 focus:outline-none focus:border-primary-10 transition duration-300 bg-white border-neutral-55 placeholder:text-sm"
             placeholder="Search by course name..."
             value={keyword}
           />
@@ -82,19 +81,19 @@ const Course = () => {
       </div>
 
       {/* Courses by Category */}
-      <div className="space-y-10">
+      <div className="space-y-6 lg:space-y-10">
         {categories.map((category) => (
           <div key={category}>
-            <div className="flex items-center justify-between mb-4">
-              <h4 className="text-neutral-90 font-bold text-xl capitalize">
+            <div className="flex items-center justify-between gap-3 mb-3 lg:mb-4">
+              <h4 className="text-neutral-90 font-bold text-lg sm:text-xl capitalize truncate min-w-0">
                 {category}
               </h4>
-              <span className="text-sm text-neutral-60">
+              <span className="text-xs sm:text-sm text-neutral-60 whitespace-nowrap shrink-0">
                 {groupedCourses[category].length} course
                 {groupedCourses[category].length > 1 ? "s" : ""}
               </span>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-5">
               {groupedCourses[category].map((course: TCourse) => (
                 <CourseCard key={course?._id} course={course} />
               ))}

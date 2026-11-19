@@ -10,14 +10,12 @@ const ShopBanners = () => {
   const { data, isLoading } = useGetAllShopBannersQuery();
   const shopBanners = data?.data || [];
 
-  // 1. Show Skeleton if loading
   if (isLoading) {
     return (
       <div className="animate-pulse">
-        {/* Skeleton for the main image carousel */}
-        <div className="h-64 md:h-80 lg:h-112.5 w-full rounded-2xl bg-neutral-200 shadow-sm" />
-        
-        {/* Skeleton for the custom dots */}
+        {/* Skeleton matches real carousel height exactly — no jump on load */}
+        <div className="h-50 md:h-80 lg:h-112.5 w-full rounded-2xl bg-neutral-200 shadow-sm" />
+
         <div className="w-full flex justify-center mt-5 gap-1.5">
           <div className="w-8 h-[3px] rounded-full bg-neutral-300" />
           <div className="w-2 h-[3px] rounded-full bg-neutral-300" />
@@ -28,15 +26,13 @@ const ShopBanners = () => {
     );
   }
 
-  // Optional: Don't render anything if no banners are found and not loading
   if (shopBanners.length === 0) {
-    return null; 
+    return null;
   }
 
-  // 2. Render actual carousel
   return (
     <div>
-      <div className="h-64 md:h-80 lg:h-112.5 rounded-2xl overflow-hidden shadow-sm">
+      <div className="h-50 md:h-80 lg:h-112.5 rounded-2xl overflow-hidden shadow-sm">
         <Swiper
           modules={[Autoplay, Pagination]}
           spaceBetween={0}
@@ -54,10 +50,16 @@ const ShopBanners = () => {
         >
           {shopBanners.map((banner: TShopBanner) => (
             <SwiperSlide key={banner?._id}>
-              <Link target="_blank" to={banner?.link || "#"}>
+              <Link
+                target="_blank"
+                rel="noopener noreferrer"
+                to={banner?.link || "#"}
+                className="block w-full h-full"
+              >
                 <img
                   src={banner?.imageUrl}
                   alt={banner?.title}
+                  loading="lazy"
                   className="object-cover w-full h-full"
                 />
               </Link>
@@ -66,10 +68,10 @@ const ShopBanners = () => {
         </Swiper>
       </div>
 
-      {/* Custom Dots - Styled to match SS */}
-      <div className="w-full flex justify-center mt-5">
+      {/* Custom Dots */}
+      <div className="w-full flex justify-center mt-5 px-4">
         <div
-          className="custom-dots !relative !left-0 !bottom-0 !w-fit flex items-center justify-center gap-1.5
+          className="custom-dots !relative !left-0 !bottom-0 !w-fit max-w-full overflow-hidden flex items-center justify-center gap-1.5
     [&_.swiper-pagination-bullet]:!w-2
     [&_.swiper-pagination-bullet]:!h-[3px]
     [&_.swiper-pagination-bullet]:!rounded-full

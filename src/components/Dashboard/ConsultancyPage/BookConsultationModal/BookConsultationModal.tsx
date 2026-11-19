@@ -29,7 +29,6 @@ const BookConsultationModal: React.FC<TModalProps> = ({
   closeOnEsc = true,
   consultant,
 }) => {
-  // Handle ESC key press
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (closeOnEsc && e.key === "Escape" && isModalOpen) {
@@ -39,7 +38,6 @@ const BookConsultationModal: React.FC<TModalProps> = ({
 
     window.addEventListener("keydown", handleEsc);
 
-    // Prevent body scroll when modal is open
     if (isModalOpen) {
       const scrollbarWidth =
         window.innerWidth - document.documentElement.clientWidth;
@@ -57,43 +55,23 @@ const BookConsultationModal: React.FC<TModalProps> = ({
     };
   }, [isModalOpen, closeOnEsc, setIsModalOpen]);
 
-  // Animation variants for slide from bottom to center
   const backdropVariants: any = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { duration: 0.2 },
-    },
-    exit: {
-      opacity: 0,
-      transition: { duration: 0.2 },
-    },
+    visible: { opacity: 1, transition: { duration: 0.2 } },
+    exit: { opacity: 0, transition: { duration: 0.2 } },
   };
 
   const modalVariants: any = {
-    hidden: {
-      y: "100%",
-      opacity: 0,
-    },
+    hidden: { y: "100%", opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: {
-        type: "spring",
-        damping: 20,
-        stiffness: 250,
-        duration: 0.4,
-      },
+      transition: { type: "spring", damping: 20, stiffness: 250, duration: 0.4 },
     },
     exit: {
       y: "100%",
       opacity: 0,
-      transition: {
-        type: "spring",
-        damping: 20,
-        stiffness: 250,
-        duration: 0.3,
-      },
+      transition: { type: "spring", damping: 20, stiffness: 250, duration: 0.3 },
     },
   };
 
@@ -133,11 +111,12 @@ const BookConsultationModal: React.FC<TModalProps> = ({
     "Multiple Consultation Options",
     "Easy Reschedule & Support",
   ];
+
   return (
     <AnimatePresence>
       {isModalOpen && (
         <motion.div
-          className="fixed inset-0 z-1000 bg-black/60 h-full backdrop-blur-sm flex items-center justify-center"
+          className="fixed inset-0 z-1000 bg-black/60 h-full backdrop-blur-sm flex items-end sm:items-center justify-center"
           variants={backdropVariants}
           initial="hidden"
           animate="visible"
@@ -145,73 +124,79 @@ const BookConsultationModal: React.FC<TModalProps> = ({
           onClick={() => closeOnBackdropClick && setIsModalOpen(false)}
         >
           <motion.div
-            className={`w-[90%] sm:w-[60%] lg:w-[50%] xl:w-[60%] 2xl:w-[60%] h-[75vh] overflow-y-auto bg-white rounded-2xl shadow-2xl relative`}
+            className="w-full sm:w-[90%] md:w-[85%] lg:w-[90%] xl:w-[75%] 2xl:w-[60%] h-h-dvh sm:h-[90vh] lg:h-[75vh] overflow-y-auto bg-white rounded-none md:rounded-t-2xl sm:rounded-2xl shadow-2xl relative"
             variants={modalVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="bg-gradient-rounded-radial absolute -top-20 -left-28 w-45 h-35 rounded-full blur-[80px]"></div>
-            <div className="bg-gradient-rounded-radial absolute right-0 -top-18 w-45 h-35 rounded-full blur-[80px]"></div>
+            <div className="bg-gradient-rounded-radial absolute -top-20 -left-28 w-45 h-35 rounded-none md:rounded-full blur-[80px]" />
+            <div className="bg-gradient-rounded-radial absolute right-0 -top-18 w-45 h-35 rounded-none md:rounded-full blur-[80px]" />
+
             <button
-              className="absolute top-3 right-3 z-10 size-8 flex items-center justify-center rounded-full bg-white border border-neutral-55 hover:bg-gray-100 transition-colors"
+              className="absolute top-3 right-3 z-20 size-8 flex items-center justify-center rounded-none md:rounded-full bg-white border border-neutral-55 hover:bg-gray-100 transition-colors"
               onClick={() => setIsModalOpen(false)}
             >
               <RxCross1 className="cursor-pointer text-gray-500 hover:text-gray-700" />
             </button>
 
-            <div className="flex items-center gap-8 relative h-full">
-              {/* Left side */}
-              <div className="bg-gradient-book-consultation-modal px-16 py-10 flex flex-col justify-between w-[60%] h-full rounded-l-2xl">
-                <img src={IMAGES.logo} alt="Logo" className="mx-0 w-40" />
+            {/* Stacked on mobile/tablet, side-by-side on lg+ */}
+            <div className="flex flex-col lg:flex-row lg:items-stretch lg:gap-8 relative h-full">
+              {/* Left side — image/consultant info */}
+              <div className="bg-gradient-book-consultation-modal px-5 sm:px-8 lg:px-16 py-6 lg:py-10 flex flex-col justify-between w-full lg:w-[60%] lg:h-full rounded-none md:rounded-t-2xl lg:rounded-l-2xl lg:rounded-tr-none">
+                <img
+                  src={IMAGES.logo}
+                  alt="Logo"
+                  className="mx-auto lg:mx-0 w-28 sm:w-32 lg:w-40"
+                />
 
-                <div className="size-75 mx-auto rounded-full relative">
+                <div className="w-40 h-40 sm:w-52 sm:h-52 lg:size-75 mx-auto rounded-full relative my-5 lg:my-0">
                   <img
                     src={consultant?.imageUrl}
                     alt=""
-                    className="size-full rounded-full"
+                    className="size-full rounded-full object-cover"
                   />
 
-                  <div className="p-2 rounded-lg bg-neutral-20/80 absolute left-0 bottom-16 min-w-16">
-                    <h2 className="text-neutral-90 font-bold">
+                  <div className="p-1.5 sm:p-2 rounded-lg bg-neutral-20/80 absolute -left-10 lg:left-0 bottom-10 sm:bottom-16 min-w-14 sm:min-w-16">
+                    <h2 className="text-neutral-90 font-bold text-xs sm:text-base">
                       {consultant?.fees}
                     </h2>
-                    <p className="text-neutral-50 font-medium text-xs mt-px">
+                    <p className="text-neutral-50 font-medium text-[10px] sm:text-xs mt-px">
                       Per hr
                     </p>
                   </div>
 
-                  <div className="p-2 rounded-lg bg-neutral-20/80 absolute right-0 top-3">
-                    <h2 className="text-neutral-90 font-bold">
+                  <div className="p-1.5 sm:p-2 rounded-lg bg-neutral-20/80 absolute right-0 top-2 sm:top-3">
+                    <h2 className="text-neutral-90 font-bold text-xs sm:text-base">
                       {consultant?.experience}
                     </h2>
-                    <p className="text-neutral-50 font-medium text-xs mt-px">
+                    <p className="text-neutral-50 font-medium text-[10px] sm:text-xs mt-px">
                       Experience
                     </p>
                   </div>
 
-                  <div className="p-2 rounded-lg bg-neutral-20/80 absolute right-0 bottom-3">
-                    <h2 className="text-neutral-90 font-bold">
+                  <div className="p-1.5 sm:p-2 rounded-lg bg-neutral-20/80 absolute -right-10 lg:right-0 bottom-2 sm:bottom-3">
+                    <h2 className="text-neutral-90 font-bold text-xs sm:text-base">
                       {consultant?.name}
                     </h2>
-                    <p className="text-neutral-50 font-medium text-xs mt-px capitalize">
+                    <p className="text-neutral-50 font-medium text-[10px] sm:text-xs mt-px capitalize">
                       {consultant?.category} Expert
                     </p>
                   </div>
                 </div>
 
-                <p className="text-sm text-neutral-50 font-medium mt-2 text-center">
+                <p className="text-xs sm:text-sm text-neutral-50 font-medium mt-2 text-center px-2">
                   You're just one step away from scheduling your Jyotish
                   consultation. Please review your appointment details and
                   confirm your booking to reserve your preferred time slot.
                 </p>
               </div>
 
-              {/* Right side */}
-              <div className="flex flex-col justify-between text-center p-6 h-[80%] w-[40%]">
+              {/* Right side — form */}
+              <div className="flex flex-col justify-between text-center p-5 sm:p-6 lg:p-6 gap-5 lg:gap-0 lg:h-[80%] w-full lg:w-[40%] lg:mt-0">
                 <div>
-                  <h2 className="text-neutral-90 text-2xl font-bold">
+                  <h2 className="text-neutral-90 text-xl sm:text-2xl font-bold">
                     Book Consultation
                   </h2>
                   <p className="text-sm text-neutral-50 font-medium mt-2">
@@ -221,15 +206,15 @@ const BookConsultationModal: React.FC<TModalProps> = ({
                 </div>
 
                 <div>
-                  <h3 className="text-neutral-90 text-xl font-semibold text-left">
+                  <h3 className="text-neutral-90 text-lg sm:text-xl font-semibold text-left">
                     Why Book With Us?
                   </h3>
 
-                  <div className="space-y-2 mt-4 text-left">
+                  <div className="space-y-2 mt-3 sm:mt-4 text-left">
                     {whyUs?.map((item) => (
-                      <div className="flex items-center gap-1">
-                        <img src={ICONS.checkMark} alt="" />
-                        <p className="text-sm text-neutral-50 font-medium">
+                      <div key={item} className="flex items-center gap-1">
+                        <img src={ICONS.checkMark} alt="" className="shrink-0" />
+                        <p className="text-xs sm:text-sm text-neutral-50 font-medium">
                           {item}
                         </p>
                       </div>
