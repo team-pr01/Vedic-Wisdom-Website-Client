@@ -85,7 +85,7 @@ const CompanyInformation: React.FC<TCompanyInformationProps> = ({
     },
   ];
   return (
-    <div className="bg-white border border-neutral-55 rounded-2xl p-6">
+    <div className="bg-white border border-neutral-55 rounded-2xl p-4 md:p-6">
       <div className="flex items-center gap-3 mb-6">
         {companyInfo?.logo ? (
           <img

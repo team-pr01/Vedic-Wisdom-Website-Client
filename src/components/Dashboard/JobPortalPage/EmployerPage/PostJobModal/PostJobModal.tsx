@@ -158,7 +158,7 @@ const PostJobModal = ({ isModalOpen, setIsModalOpen }: PostJobModalProps) => {
   if (isSubmitted) {
     return (
       <Modal isModalOpen={isModalOpen} setIsModalOpen={handleClose}>
-        <SuccessStep />
+        <SuccessStep setIsModalOpen={setIsModalOpen} />
       </Modal>
     );
   }
@@ -208,7 +208,7 @@ const PostJobModal = ({ isModalOpen, setIsModalOpen }: PostJobModalProps) => {
       isModalOpen={isModalOpen}
       setIsModalOpen={handleClose}
     >
-      <div className="max-h-[80vh] overflow-y-auto custom-scrollbar">
+      <div>
         {/* Progress Steps */}
         <div className="flex items-center justify-center gap-5 mt-7 mb-6">
           {steps.map((step, index) => (
@@ -250,21 +250,20 @@ const PostJobModal = ({ isModalOpen, setIsModalOpen }: PostJobModalProps) => {
           {renderStep()}
 
           {/* Navigation Buttons */}
-          <div className="flex items-center justify-between mt-6 pt-4 border-t border-neutral-20">
+          <div className="flex items-center gap-3 md:gap-4 justify-end mt-6 pt-4 border-t border-neutral-20">
             <Button
               type="button"
               label="Previous"
               variant="secondary"
               onClick={handlePrevStep}
-              className={`px-6 ${currentStep === 1 ? "invisible" : ""}`}
-              leftIcon={ICONS.arrowLeft}
+              className={`w-[50%] sm:w-auto ${currentStep === 1 ? "invisible" : ""}`}
             />
             <div className="flex gap-3">
               {currentStep === totalSteps ? (
                 <Button
                   type="submit"
-                  label={isSubmitting ? "Submitting..." : "Submit Job"}
-                  className="px-8"
+                  label={isSubmitting ? "Submitting..." : "Submit"}
+                  className="px-8 w-full sm:w-auto"
                   rightIcon={!isSubmitting && ICONS.arrowRight}
                   isDisabled={isSubmitting}
                 />
@@ -272,7 +271,7 @@ const PostJobModal = ({ isModalOpen, setIsModalOpen }: PostJobModalProps) => {
                 <Button
                   type="button"
                   label="Next"
-                  className="px-8"
+                  className="px-8 w-full sm:w-auto"
                   onClick={handleNextStep}
                   rightIcon={ICONS.arrowRight}
                 />

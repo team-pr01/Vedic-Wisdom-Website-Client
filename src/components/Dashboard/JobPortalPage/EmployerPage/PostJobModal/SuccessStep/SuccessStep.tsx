@@ -1,7 +1,7 @@
 import Button from "../../../../../Reusable/Button/Button";
 import { IMAGES } from "../../../../../../assets";
 
-const SuccessStep = () => {
+const SuccessStep = ({setIsModalOpen} : {setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
   return (
     <div className="flex flex-col items-center text-center py-3">
       <img src={IMAGES.successTick} alt="Success" className="w-20 h-20" />
@@ -12,7 +12,7 @@ const SuccessStep = () => {
         Your job is under admin review. You will be notified once
         approved.
       </p>
-      <Button label="View Posted Jobs" className="mt-6 px-8" />
+      <Button onClick={() => setIsModalOpen(false)} label="Back to Jobs" className="mt-6 px-8" />
     </div>
   );
 };

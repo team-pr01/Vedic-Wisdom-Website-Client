@@ -47,7 +47,7 @@ const JobDetails = () => {
   };
 
   const isApplied = job?.applications?.some(
-    (application:string) => application === user?._id,
+    (application: string) => application === user?._id,
   );
 
   if (isLoading) return <LogoLoader />;
@@ -64,7 +64,7 @@ const JobDetails = () => {
       />
 
       {/* Header with Actions */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-10 lg:mt-4">
         <div className="flex items-center gap-3">
           <Link to={"/dashboard/job-portal"}>
             <img src={ICONS.arrowLeft} alt="" className="size-5" />
@@ -91,7 +91,7 @@ const JobDetails = () => {
       {/* Main Content */}
       <div className="flex flex-col lg:flex-row gap-8 mt-6">
         {/* Left Column */}
-        <div className="w-full lg:w-[65%] space-y-6">
+        <div className="w-full lg:w-[65%] space-y-5">
           {/* Job Header */}
           <JobDetailsHeader job={job} />
 
@@ -109,17 +109,13 @@ const JobDetails = () => {
 
           {/* Company Info (Mobile) */}
           <div className="lg:hidden">
-            <CompanyInformation
-              companyInfo={job?.company}
-            />
+            <CompanyInformation companyInfo={job?.company} />
           </div>
         </div>
 
         {/* Right Column - Sidebar */}
         <div className="w-full lg:w-[35%] space-y-6 hidden lg:block">
-         <CompanyInformation
-              companyInfo={job?.company}
-            />
+          <CompanyInformation companyInfo={job?.company} />
         </div>
       </div>
 

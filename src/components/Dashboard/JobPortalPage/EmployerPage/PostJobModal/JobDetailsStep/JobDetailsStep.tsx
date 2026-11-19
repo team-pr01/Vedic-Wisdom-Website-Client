@@ -99,7 +99,7 @@ const JobDetailsStep = ({
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-xl font-bold text-neutral-90">Post a New Job</h2>
+        <h2 className="text-lg md:text-xl font-bold text-neutral-90">Post a New Job</h2>
         <p className="text-sm text-neutral-60 mt-0.5">
           Fill in the job details below
         </p>
@@ -116,7 +116,7 @@ const JobDetailsStep = ({
       />
 
       {/* Mode & Job Type - Side by Side */}
-      <div className="flex gap-5">
+      <div className="flex flex-col md:flex-row gap-5">
         {/* Mode */}
         <div>
           <label className="text-neutral-10 text-sm font-medium block mb-2">
@@ -317,26 +317,15 @@ const JobDetailsStep = ({
           },
         })}
       />
-
-      {/* Required Skills */}
-      <div className="flex flex-col gap-1.5">
-        <label className="text-neutral-10 text-sm font-medium">
-          Required Skills <span className="text-red-500">*</span>
-        </label>
-        <textarea
-          placeholder="Skills: communication, teamwork..."
-          className="w-full px-4 py-3 rounded-lg border border-neutral-55 focus:outline-none focus:border-primary-10 transition duration-300 bg-white resize-none"
-          rows={2}
-          {...register("requiredSkills", {
-            required: "Required skills are required",
-          })}
-        />
-        {errors.requiredSkills && (
-          <span className="text-red-500 text-sm">
-            {errors.requiredSkills.message}
-          </span>
-        )}
-      </div>
+      <Textarea
+        label="Required Skills"
+        placeholder="e.g.Communication, teamwork..."
+        error={errors.requiredSkills}
+        rows={3}
+        {...register("requiredSkills", {
+          required: "Skills are required"
+        })}
+      />
 
       {/* Application Deadline & Vacancies */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

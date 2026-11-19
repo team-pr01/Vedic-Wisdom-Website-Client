@@ -100,7 +100,7 @@ const Modal: React.FC<TModalProps> = ({
           onClick={() => closeOnBackdropClick && setIsModalOpen(false)}
         >
           <motion.div
-            className={`${width} h-fit max-h-[85vh] overflow-y-auto bg-white rounded-lg shadow-2xl relative`}
+            className={`${width} h-fit max-h-[85vh] overflow-y-auto custom-scrollbar bg-white rounded-lg shadow-2xl relative`}
             variants={modalVariants}
             initial="hidden"
             animate="visible"

@@ -93,7 +93,7 @@ const CompanyInfoStep = ({
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-xl font-bold text-neutral-90">
+        <h2 className="text-lg md:text-xl font-bold text-neutral-90">
           Company Information
         </h2>
         <p className="text-sm text-neutral-60 mt-0.5">
@@ -111,7 +111,7 @@ const CompanyInfoStep = ({
       />
 
       {/* Location */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <FilterDropdown
           label="Country"
           options={countryOptions}
@@ -184,7 +184,7 @@ const CompanyInfoStep = ({
       />
 
       {/* Social Media */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <TextInput
           label="Facebook"
           placeholder="e.g., facebook.com/yourpage"
