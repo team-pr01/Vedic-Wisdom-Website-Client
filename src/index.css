@@ -134,15 +134,22 @@ button:disabled {
 }
 
 .heading {
-  @apply text-neutral-40 text-[66px] font-medium leading-17 font-Manrope;
+  @apply text-neutral-40 text-[32px] sm:text-[42px] md:text-[52px] lg:text-[66px] font-medium leading-tight sm:leading-snug md:leading-[1.15] lg:leading-17 font-Manrope;
 }
 
 .description {
   @apply text-neutral-10 text-sm max-w-175 font-Manrope;
 }
+
+.sectionPadding {
+  @apply py-8 md:py-12 lg:py-17 xl:py-23;
+}
+
  .body{
   @apply font-Manrope;
  }
+
+
 /* Override PhoneInput default focus styles */
 .PhoneInputInput:focus {
   border-color: #c9753e !important;

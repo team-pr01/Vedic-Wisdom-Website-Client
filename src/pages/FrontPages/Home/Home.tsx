@@ -15,7 +15,7 @@ const Home = () => {
       <AppFeatures />
       <AIFeatures />
       <WhyChooseVedicWisdom />
-      <div className="py-23 bg-gradient-ai-features">
+      <div className="sectionPadding bg-gradient-ai-features">
         <Container>
           <SubscriptionPricing />
         </Container>

@@ -4,7 +4,7 @@ import Container from "../../Reusable/Container/Container";
 
 const AIFeatures = () => {
   return (
-    <div className="py-23 bg-gradient-ai-features font-Manrope">
+    <div className="sectionPadding bg-gradient-ai-features font-Manrope">
       <img src={IMAGES.horizontalLine} alt="" className="mx-auto" />
       <Container>
         <div className="flex flex-col gap-5 items-center text-center mt-20">

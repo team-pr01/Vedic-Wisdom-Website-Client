@@ -56,7 +56,7 @@ const OurProjects = () => {
   );
 
   return (
-    <div className="py-23 font-Manrope">
+    <div className="sectionPadding font-Manrope">
       <img src={IMAGES.horizontalLine} alt="" className="mx-auto" />
 
       <Container>
@@ -74,7 +74,7 @@ const OurProjects = () => {
             donation-driven initiatives.
           </p>
 
-          <div className="w-full mt-15 relative">
+          <div className="w-full mt-5 lg:mt-15 relative">
             <Swiper
               modules={[Navigation, Pagination]}
               spaceBetween={30}

@@ -13,10 +13,9 @@ const SubscriptionPricing = () => {
     "yearly",
   );
 
-  const {data:mySubscription} = useGetMySubscriptionQuery({});
+  const { data: mySubscription } = useGetMySubscriptionQuery({});
   console.log(mySubscription);
 
-  // Destructure isLoading from the query
   const { data, isLoading } = useGetAllActiveSubscriptionPlansQuery({
     limit: 1000,
   });
@@ -25,8 +24,8 @@ const SubscriptionPricing = () => {
   return (
     <div className="font-Manrope">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="space-y-5">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-10">
+        <div className="space-y-4 lg:space-y-5">
           <Badge label="Simple Pricing" />
           <h1 className="heading">
             Start Your <span className="text-primary-10">Vedic</span> <br />
@@ -34,18 +33,18 @@ const SubscriptionPricing = () => {
           </h1>
         </div>
 
-        <div>
-          <p className="text-neutral-10 text-sm max-w-100">
+        <div className="w-full lg:w-auto">
+          <p className="text-neutral-10 text-sm max-w-full lg:max-w-100">
             Begin your spiritual journey at no cost. Upgrade to Premium for the
             full experience — no commitment, cancel anytime.
           </p>
 
-          <div className="p-2 border border-neutral-20 bg-primary-50 rounded-2xl mt-4 flex items-center gap-3 w-fit">
+          <div className="p-2 border border-neutral-20 bg-primary-50 rounded-2xl mt-4 flex items-center gap-2 sm:gap-3 w-fit max-w-full overflow-x-auto">
             {tabButtons?.map((item) => (
               <button
                 onClick={() => setSelectedTab(item as "monthly" | "yearly")}
                 key={item}
-                className={`px-4 py-2 text-neutral-10 font-bold text-lg rounded-lg flex items-center gap-3 capitalize ${
+                className={`px-3 sm:px-4 py-2 text-neutral-10 font-bold text-base sm:text-lg rounded-lg flex items-center gap-2 sm:gap-3 capitalize whitespace-nowrap ${
                   selectedTab === item
                     ? "bg-gradient-primary-button shadow-button"
                     : "bg-none shadow-none"
@@ -53,7 +52,7 @@ const SubscriptionPricing = () => {
               >
                 {item}
                 {item === "yearly" && (
-                  <div className="bg-white rounded-3xl px-2 py-1 text-sm">
+                  <div className="bg-white rounded-3xl px-2 py-1 text-xs sm:text-sm">
                     Save 30%
                   </div>
                 )}
@@ -63,8 +62,7 @@ const SubscriptionPricing = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-8 mt-15 items-end mb-15">
-        {/* Show 3 skeletons if loading */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mt-10 lg:mt-15 items-end mb-10 lg:mb-15">
         {isLoading
           ? Array.from({ length: 3 }).map((_, index) => (
               <SubscriptionPlanCardSkeleton key={`skeleton-${index}`} />

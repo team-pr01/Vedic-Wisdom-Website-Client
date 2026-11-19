@@ -57,7 +57,7 @@ const FAQ = () => {
   ];
 
   return (
-    <div className="py-23 font-Manrope bg-gradient-app-features">
+    <div className="sectionPadding font-Manrope bg-gradient-app-features">
       <img src={IMAGES.horizontalLine} alt="" className="mx-auto" />
       <Container>
         <div className="flex flex-col gap-5 items-center text-center mt-20">
@@ -74,7 +74,7 @@ const FAQ = () => {
             guidance, and spiritual tools.
           </p>
           <motion.div
-            className="flex gap-6 flex-col w-full text-neutral-5 mt-12"
+            className="flex gap-4 md:gap-6 flex-col w-full text-neutral-5 mt-5 md:mt-12"
             variants={listVariants}
             initial="hidden"
             animate="visible"
@@ -91,7 +91,7 @@ const FAQ = () => {
                   onClick={() => handleClick(index)}
                 >
                   <h2
-                    className={`font-Satoshi font-semibold text-2xl leading-9 ${
+                    className={`font-Satoshi font-semibold text-lg lg:text-2xl leading-normal lg:leading-9 text-left w-[90%] ${
                       isAccordingOpen === index && "text-primary-5"
                     }`}
                   >
@@ -124,7 +124,7 @@ const FAQ = () => {
                         ease: [0.04, 0.62, 0.23, 0.98],
                       }}
                     >
-                      <p className="text-neutral-10 text-left max-w-[90%]">
+                      <p className="text-neutral-10 text-sm md:text-base text-left max-w-[90%]">
                         {according.description}
                       </p>
                     </motion.section>
