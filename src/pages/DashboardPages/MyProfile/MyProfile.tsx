@@ -38,6 +38,7 @@ const MyProfile = () => {
 
   const [isCoinUsageModalOpen, setIsCoinUsageModalOpen] =
     useState<boolean>(false);
+
   const statics = [
     {
       title: "Saved Audio Books",
@@ -55,7 +56,7 @@ const MyProfile = () => {
       icon: ICONS.quizTaken,
     },
     {
-      title: "Membership Plan",
+      title: "Membership",
       value: myProfile?.plan || "Free",
       icon: ICONS.membershipPlan,
     },
@@ -118,11 +119,11 @@ const MyProfile = () => {
   return (
     <div className="font-Manrope">
       <h2 className="heading-dashboard">My Profile</h2>
-      <div className="border border-neutral-50/10 bg-neutral-30 rounded-4xl p-6 mt-6">
+      <div className="border border-neutral-50/10 bg-neutral-30 rounded-xl lg:rounded-4xl p-4 md:p-6 mt-4">
         {/* Top Section */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div className="flex items-center gap-5">
-            <div className="bg-white border border-primary-10 size-25 rounded-full p-1 shrink-0">
+        <div className="flex flex-row items-start md:items-center justify-between gap-4">
+          <div className="flex items-start gap-5">
+            <div className="bg-white border border-primary-10 size-18 md:size-25 rounded-full p-1 shrink-0">
               <div className="size-full">
                 <img
                   src={myProfile?.profilePicture || IMAGES.imagePlaceholder}
@@ -137,7 +138,7 @@ const MyProfile = () => {
                 <h3 className="text-neutral-40 text-lg font-bold">
                   {myProfile?.name || "User"}
                 </h3>
-                <div className="px-2 py-1 border border-neutral-20 bg-white text-xs text-neutral-40 uppercase font-semibold rounded-3xl">
+                <div className="px-2 py-1 border border-neutral-20 bg-white text-[9px] md:text-xs text-neutral-40 uppercase font-semibold rounded-3xl">
                   {myProfile?.plan || "Free"} Plan
                 </div>
               </div>
@@ -152,7 +153,14 @@ const MyProfile = () => {
             </div>
           </div>
 
-          <Link to="/dashboard/edit-profile">
+          <Link
+            to="/dashboard/edit-profile"
+            className="bg-white border border-neutral-20 rounded-lg flex items-center justify-center p-2 md:hidden"
+          >
+            <img src={ICONS.editProfile} alt="" className="size-5" />
+          </Link>
+
+          <Link to="/dashboard/edit-profile" className="hidden md:flex">
             <Button
               leftIcon={ICONS.editProfile}
               label="Edit Profile"
@@ -241,10 +249,12 @@ const MyProfile = () => {
           </div>
         </div>
       </div>
+
       <hr className="border border-neutral-75/60 h-px my-6" />
-      <div className="flex gap-10">
-        <div className="w-[50%] space-y-4">
-          <h3 className="text-neutral-90 font-bold">Statistics</h3>
+
+      <div className="flex flex-col md:flex-row gap-10">
+        <div className="w-full md:w-[50%] space-y-4">
+          <h3 className="heading-dashboard">Statistics</h3>
           {/* Plan & Coin info */}
           <div className="p-4 border border-neutral-55 rounded-lg bg-white relative">
             <img
@@ -252,7 +262,7 @@ const MyProfile = () => {
               alt=""
               className="absolute left-0 bottom-0 top-0 h-full"
             />
-            <div className="w-[60%] flex items-center justify-between">
+            <div className="w-full lg:w-[60%] flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="border border-neutral-50/10 bg-neutral-30 rounded-full size-8 flex items-center justify-center">
                   <img
@@ -261,7 +271,7 @@ const MyProfile = () => {
                     className="size-5"
                   />
                 </div>
-                <h3 className="text-neutral-90 font-bold">Premium Plan</h3>
+                <h3 className="heading-dashboard">Premium Plan</h3>
               </div>
               <div className="h-16 bg-primary-80 w-px"></div>
               <div className="flex items-center gap-2">
@@ -294,20 +304,27 @@ const MyProfile = () => {
             ))}
           </div>
 
-          <h3 className="text-neutral-90 font-bold mt-6">Plan</h3>
+          <h3 className="heading-dashboard mt-6">Plan</h3>
           <div className="relative">
             <div className="absolute inset-0 flex flex-col justify-center text-left px-6">
-              <h4 className="text-white font-bold text-2xl">Get Premium</h4>
-              <p className="text-white mt-2">
+              <h4 className="text-white font-bold text-lg md:text-2xl">
+                Get Premium
+              </h4>
+              <p className="text-white mt-0 md:mt-2 text-sm md:text-base">
                 Enjoy all the benefits of the app
               </p>
             </div>
-            <img src={IMAGES.getPremiumBanner} alt="" className="w-full" />
+            <img
+              src={IMAGES.getPremiumBanner}
+              alt=""
+              className="w-full h-30 lg:h-auto"
+            />
           </div>
         </div>
 
-        <div className="w-[50%] space-y-4">
-          <h3 className="text-neutral-90 font-bold">General</h3>
+        {/* General */}
+        <div className="w-full md:w-[50%] space-y-4">
+          <h3 className="heading-dashboard">General</h3>
           {generalLinks?.map((item) =>
             item?.onClick ? (
               <button
@@ -341,6 +358,7 @@ const MyProfile = () => {
           )}
         </div>
       </div>
+
       <SelectSystemLanguage
         isModalOpen={isTranslateNewsModalOpen}
         setIsModalOpen={setIsTranslateNewsModalOpen}

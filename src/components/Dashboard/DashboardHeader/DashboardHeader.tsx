@@ -5,7 +5,7 @@ import UserMenu from "./UserMenu/UserMenu";
 
 const DashboardHeader = () => {
   return (
-    <div className="p-6 flex items-center justify-between">
+    <div className="p-6 hidden lg:flex items-center justify-between">
       <div className="bg-primary-50 rounded-2xl p-0.75 flex items-center gap-1 w-fit">
         <div className="relative w-130">
           <img

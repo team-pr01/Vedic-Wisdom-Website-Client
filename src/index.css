@@ -130,7 +130,7 @@ button:disabled {
 }
 
 .heading-dashboard {
-  @apply text-neutral-40 text-[28px] font-semibold font-Manrope;
+  @apply text-neutral-40 text-lg md:text-xl lg:text-[28px] font-semibold font-Manrope;
 }
 
 .heading {

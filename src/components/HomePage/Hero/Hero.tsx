@@ -6,7 +6,7 @@ import Badge from "../../Reusable/Badge/Badge";
 
 const Hero = () => {
   return (
-    <div className="bg-gradient-hero rounded-b-[32px] sm:rounded-b-[48px] lg:rounded-b-[68px] font-Manrope pt-10 sm:pt-14 lg:pt-20 relative overflow-hidden">
+    <div className="bg-gradient-hero rounded-b-4xl sm:rounded-b-[48px] lg:rounded-b-[68px] font-Manrope pt-10 sm:pt-14 lg:pt-20 relative overflow-hidden">
       <Container>
         <div className="flex flex-col gap-5 items-center text-center">
           <Badge label="“ॐ नमः शिवाय”" />
@@ -40,7 +40,7 @@ const Hero = () => {
 
           {/* Hero image + stat card wrapper */}
           <div className="relative w-full mt-6 lg:mt-0">
-            <img src={IMAGES.heroImg} alt="" className="w-full h-auto" />
+            <img src={IMAGES.heroImg} alt="" className="mx-auto" />
 
             {/* Stat card — absolutely positioned on desktop only */}
             <div className="hidden lg:block absolute top-[60%] left-10">
