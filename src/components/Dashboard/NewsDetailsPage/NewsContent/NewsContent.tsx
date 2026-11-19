@@ -109,7 +109,7 @@ const NewsContent = ({
   return (
     <div className="">
       <div className="flex items-center justify-between">
-        <h4 className="text-neutral-90 font-bold text-2xl w-[90%]">
+        <h4 className="text-neutral-90 font-bold text-xl md:text-2xl w-[80%] md:w-[90%]">
           {news?.title}
         </h4>
         <button
@@ -124,7 +124,7 @@ const NewsContent = ({
       <img
         src={news?.imageUrl}
         alt=""
-        className="w-full rounded-xl h-100 object-cover mt-3"
+        className="w-full rounded-xl aspect-video object-cover mt-3"
       />
 
       <div className="flex items-center justify-between mt-4">

@@ -45,8 +45,8 @@ const NewsDetails = () => {
         ]}
       />
 
-      <div className="flex gap-8 mt-8">
-        <div className="space-y-5 w-[60%]">
+      <div className="flex flex-col lg:flex-row gap-8 mt-8">
+        <div className="space-y-5 w-full lg:w-[60%]">
           <NewsContent
             news={news}
             setSelectedLanguageCode={setSelectedLanguageCode}
@@ -54,7 +54,7 @@ const NewsDetails = () => {
           />
         </div>
 
-        <div className="w-[40%] sticky top-5 h-fit">
+        <div className="w-full lg:w-[40%] sticky top-5 h-fit">
           <h4 className="text-neutral-90 font-bold text-xl">
             Other Trending News
           </h4>
